@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador AI de Peinados - Diseño Neón Oscuro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Import Sci-Fi Font 'Orbitron' and Neon Font 'Monoton' -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Monoton&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ff88;
+            /* ... existing ... */
+            --secondary-color: #00ccff;
+            --bg-color: #0a0a0a;
+            --card-bg: #111111;
+            --text-color: #ffffff;
+            --border-color: #333;
+        }
+
+        /* ... existing ... */
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 10vh;
+        }
+
+        /* ... existing ... */
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            margin: 0;
+
+            /* OUTLINE ONLY EFFECT (Hollow Tube) */
+            color: transparent;
+            -webkit-text-stroke: 3px #fffacd;
+            /* The "Tube" */
+
+            /* GLOW from the outline */
+            text-shadow:
+                0 0 10px #FFD700,
+                0 0 20px #FFD700,
+                0 0 40px #DAA520,
+                0 0 80px #FF8C00;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        /* --- Layout System --- */
+        .responsive-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .layout-row {
+            display: flex;
+            width: 100%;
+            gap: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Top Row: Camera & Result (Side by Side) */
+        .top-row .card {
+            flex: 1;
+            /* 50% width roughly */
+        }
+
+        /* Middle Row: Styles & Colors (Full Width Stacked) */
+        .middle-row {
+            flex-direction: column;
+        }
+
+        .middle-row .card {
+            width: 100%;
+        }
+
+        /* Bottom Row: Full width */
+        .layout-row.bottom-row .card {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .layout-row {
+                flex-direction: column;
+            }
+
+            .top-row .card,
+            .middle-row .card {
+                width: 100%;
+            }
+        }
+
+        /* --- Card Components --- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 0;
+            /* Handled by layout gap */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin: 0 0 1.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 1rem;
+        }
+
+        /* --- Camera Area --- */
+        .camera-upload-area {
+            border: 2px dashed #333;
+            border-radius: 15px;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            /* Square */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: border-color 0.3s, background 0.3s;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .camera-upload-area:hover {
+            border-color: var(--secondary-color);
+            background-color: rgba(0, 204, 255, 0.05);
+        }
+
+        .camera-icon-circle {
+            background: #222;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #555;
+            transition: all 0.3s;
+            z-index: 2;
+        }
+
+        .camera-upload-area:hover .camera-icon-circle {
+            background: var(--secondary-color);
+            color: #000;
+            box-shadow: 0 0 20px var(--secondary-color);
+        }
+
+        /* --- Selection Grids --- */
+        .options-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding: 1rem 0.5rem;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        .options-grid::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .options-grid::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .options-grid::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        /* --- Option Item --- */
+        .option {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid transparent;
+            text-align: center;
+            padding-bottom: 0.5rem;
+            transition: all 0.3s;
+            flex: 0 0 250px;
+            /* Fixed width */
+            width: 250px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .option img,
+        .option .color-block {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            background: #000;
+            margin-bottom: 0.5rem;
+        }
+
+        .option p {
+            margin: 0;
+            padding: 0 0.5rem;
+            font-size: 0.9rem;
+            color: #ccc;
+            height: 40px;
+            /* Fixed text height area */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .option.selected p {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* --- Result Area --- */
+        .result-area {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #000;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            border: 1px solid #222;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .result-area.empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Inputs & Buttons --- */
+        textarea {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            resize: none;
+            height: 100px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #333;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            background: #444;
+        }
+
+        .btn-generate {
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            color: #000;
+            font-size: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+            max-width: 600px;
+            margin: 2rem auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-generate:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.6);
+        }
+
+        .btn-generate:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* --- Navigation Links --- */
+        .nav-link {
+            position: absolute;
+            top: 2rem;
+            color: #555;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .nav-back {
+            left: 2rem;
+        }
+
+        .nav-admin {
+            right: 2rem;
+            border: 1px solid #333;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .nav-admin:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-network"></div>
+
+    <a href="/mis-finanzas" class="nav-link nav-back">
+        <i class="fas fa-arrow-left"></i> Volver
+    </a>
+
+    <a href="/api/mirror/admin" class="nav-link nav-admin">
+        <i class="fas fa-shield-alt"></i> Admin
+    </a>
+
+    <div class="container">
+        <header>
+            <h1 class="title">MIRROR IA</h1>
+            <p class="subtitle">Transforma tu look con inteligencia artificial</p>
+        </header>
+
+        <main class="responsive-layout">
+            <!-- Row 1: Camera & Result -->
+            <div class="layout-row top-row">
+                <section class="card step-1">
+                    <h2 class="step-title">1. Tu Foto</h2>
+                    <div class="camera-upload-area" onclick="document.getElementById('fileInput').click()">
+                        <div class="camera-icon-circle">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" hidden accept="image/*">
+                    <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                        SUBIR / TOMAR FOTO
+                    </button>
+                    <div style="text-align:center; margin-top:0.5rem; color:#666;">
+                        <small>Usa una foto con buena luz y sin gafas</small>
+                    </div>
+                </section>
+
+                <section class="card step-5">
+                    <h2 class="step-title">5. Resultado</h2>
+                    <div class="result-area empty" id="resultArea">
+                        <i class="fas fa-magic"></i>
+                        <p>Tu nuevo look aparecerá aquí</p>
+                    </div>
+                </section>
+
+                <section class="card step-extra">
+                    <h2 class="step-title">Tutorial / Video</h2>
+                    <div
+                        style="width:100%; aspect-ratio: 1/1; display:flex; align-items:center; justify-content:center; background:#000; border-radius:10px; overflow:hidden;">
+                        <video controls style="width:100%; height:100%; object-fit:contain;">
+                            <!-- Points to the uploaded video. Browser handles caching via timestamp logic if we inject it server-side, 
+                                 but here we just point to the static file. User can reload to see changes. -->
+                            <!-- Fallback/Default path -->
+                            <source src="/static/uploads/mirror/tutorial.mp4" type="video/mp4"
+                                onerror="this.src='https://www.w3schools.com/html/mov_bbb.mp4'">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Row 2: Hairstyles & Colors -->
+            <div class="layout-row middle-row">
+                <section class="card step-2">
+                    <h2 class="step-title">2. Estilo de Peinado</h2>
+                    <div class="options-grid hairstyles-grid" id="hairstylesGrid">
+                        <!-- Items injected by JS -->
+                        <div class="option">
+                            <div class="color-block" style="display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                            <p>Cargando...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card step-3">
+                    <h2 class="step-title">3. Tono (Opcional)</h2>
+                    <div class="options-grid colors-grid" id="colorsGrid">
+                        <!-- Items injected by JS -->
+                        <div class="option">
+                            <div class="color-block" style="display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                            <p>Cargando...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Row 3: Instructions -->
+            <div class="layout-row bottom-row">
+                <section class="card step-4">
+                    <h2 class="step-title">4. Detalles Adicionales</h2>
+                    <textarea id="instructionsInput"
+                        placeholder="Ejemplo: Quiero fleco lateral, más volumen en la raíz, estilo despeinado..."></textarea>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <button class="btn btn-generate" onclick="generateHairstyle()">
+                ✨ Generar Nuevo Look
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        // --- State Management ---
+        let state = {
+            selectedHairstyle: null,
+            selectedColor: null,
+            isGenerating: false
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', loadMirrorItems);
+
+        // --- Core Functions ---
+
+        async function loadMirrorItems() {
+            const hGrid = document.getElementById('hairstylesGrid');
+            const cGrid = document.getElementById('colorsGrid');
+
+            try {
+                const response = await fetch('/api/mirror/items');
+                if (!response.ok) throw new Error('Failed loading items');
+                const items = await response.json();
+
+                hGrid.innerHTML = '';
+                cGrid.innerHTML = '';
+
+                if (items.length === 0) {
+                    hGrid.innerHTML = '<p style="padding:1rem; color:#555;">No hay estilos disponibles.</p>';
+                    return;
+                }
+
+                items.forEach(item => {
+                    const el = createOptionElement(item);
+                    if (item.category === 'hairstyle') {
+                        hGrid.appendChild(el);
+                    } else if (item.category === 'color') {
+                        cGrid.appendChild(el);
+                    }
+                });
+
+            } catch (err) {
+                console.error(err);
+                hGrid.innerHTML = '<p style="color:red; padding:1rem;">Error de conexión.</p>';
+                cGrid.innerHTML = '<p style="color:red; padding:1rem;">Error de conexión.</p>';
+            }
+        }
+
+        function createOptionElement(item) {
+            const div = document.createElement('div');
+            div.className = 'option';
+            div.onclick = () => selectItem(div, item);
+
+            let visualContent;
+
+            if (item.image_url) {
+                visualContent = `<img src="${item.image_url}" alt="${item.name}" loading="lazy">`;
+            } else if (item.color_code) {
+                // Render Solid Color Block
+                visualContent = `<div class="color-block" style="background-color: ${item.color_code};" title="${item.name}"></div>`;
+            } else {
+                // Placeholder
+                visualContent = `<div class="color-block" style="background:#222; display:flex; align-items:center; justify-content:center;"><span>?</span></div>`;
+            }
+
+            div.innerHTML = `
+                ${visualContent}
+                <p>${item.name}</p>
+            `;
+            return div;
+        }
+
+        function selectItem(element, item) {
+            // Determine category and update state
+            if (item.category === 'hairstyle') {
+                state.selectedHairstyle = item;
+                updateSelectionUI(element, 'hairstylesGrid');
+            } else {
+                state.selectedColor = item;
+                updateSelectionUI(element, 'colorsGrid');
+            }
+        }
+
+        function updateSelectionUI(element, gridId) {
+            const grid = document.getElementById(gridId);
+            grid.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        async function generateHairstyle() {
+            if (state.isGenerating) return;
+
+            const fileInput = document.getElementById('fileInput');
+            const instructions = document.getElementById('instructionsInput').value;
+            const btn = document.querySelector('.btn-generate');
+            const originalBtnText = btn.innerHTML;
+            const resultArea = document.getElementById('resultArea');
+
+            // Validation
+            if (!fileInput.files[0]) {
+                alert('⚠️ Por favor sube una foto tuya primero.');
+                return;
+            }
+
+            // Start Loading State
+            state.isGenerating = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando Transformación...';
+            btn.disabled = true;
+            resultArea.innerHTML = `
+                <div style="text-align:center; animation: pulse 1.5s infinite;">
+                    <i class="fas fa-magic fa-spin" style="font-size:3rem; color:var(--primary-color);"></i>
+                    <p style="margin-top:1rem;">La IA está trabajando en tu look...</p>
+                    <small style="color:#666;">Esto puede tardar unos segundos.</small>
+                </div>
+            `;
+
+            try {
+                const formData = new FormData();
+                formData.append('image', fileInput.files[0]);
+                if (state.selectedHairstyle) formData.append('hairstyle', state.selectedHairstyle.prompt || state.selectedHairstyle.name);
+                if (state.selectedColor) formData.append('color', state.selectedColor.prompt || state.selectedColor.name);
+                formData.append('instructions', instructions);
+
+                const response = await fetch('/api/mirror/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Server returned ' + response.status);
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    // Success UI
+                    resultArea.classList.remove('empty');
+                    resultArea.innerHTML = `
+                        <img src="${data.result_url}" alt="Resultado" style="width:100%; height:100%; object-fit:contain; border-radius:10px;">
+                        <a href="${data.result_url}" download="mi_nuevo_look.png" class="btn btn-primary" style="margin-top:1rem; width:auto; display:inline-block; padding:0.5rem 2rem;">
+                            <i class="fas fa-download"></i> Guardar Imagen
+                        </a>
+                    `;
+                    // Log Debug Info
+                    if (data.ai_description) console.info("AI Info:", data.ai_description);
+                } else {
+                    // Start Error UI
+                    resultArea.innerHTML = `<div style="color:red;"><i class="fas fa-exclamation-triangle"></i> Error: ${data.error}</div>`;
+                    alert('Error: ' + data.error);
+                }
+
+            } catch (error) {
+                console.error('Generation Failed:', error);
+                resultArea.innerHTML = `<div style="color:red;"><i class="fas fa-wifi"></i> Fallo de conexión</div>`;
+                alert('No se pudo conectar con el servidor.');
+            } finally {
+                // Reset Loading State
+                state.isGenerating = false;
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
+            }
+        }
+
+        // --- File Upload UI Handling ---
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const uploadArea = document.querySelector('.camera-upload-area');
+                    uploadArea.style.backgroundImage = `url(${e.target.result})`;
+                    uploadArea.style.backgroundColor = '#000';
+                    // Hide icon
+                    const icon = uploadArea.querySelector('.camera-icon-circle');
+                    if (icon) icon.style.opacity = '0';
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\asesoriaimss.io\scripts\test_semantic_cache.py", line 9, in <module>
+    from app.services.cache_service import cache_service
+  File "C:\asesoriaimss.io\app\services\cache_service.py", line 123
+    else:
+    ^^^^
+SyntaxError: invalid syntax

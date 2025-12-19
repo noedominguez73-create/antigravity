@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendientes - Mis Finanzas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-display {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Sidebar active state */
+        .nav-item.active {
+            background-color: #f3f4f6;
+            color: #111827;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+    {% include 'sidebar.html' %}
+
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+                    <div class="w-full md:w-auto flex flex-col gap-4">
+                        <div>
+                            <h1 class="font-display text-3xl font-bold text-gray-900 leading-none">Tareas y Pendientes
+                            </h1>
+                            <p class="text-gray-500 font-medium mt-1">Organiza tu día a día</p>
+                        </div>
+
+                        <!-- Period Selector Dropdown -->
+                        <div class="relative inline-block text-left w-fit">
+                            <div>
+                                <button type="button" onclick="togglePeriodDropdown()"
+                                    class="inline-flex items-center gap-x-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all min-w-[140px] justify-between">
+                                    <span id="period-label">Este Mes</span>
+                                    <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                                </button>
+                            </div>
+                            <!-- Dropdown menu (hidden by default) -->
+                            <div id="period-menu-dropdown"
+                                class="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden opacity-0 scale-95 transition-all duration-100 ease-out">
+                                <div class="py-1">
+                                    <a href="#" onclick="selectPeriod('week')"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-rose-600 transition-colors">Esta
+                                        Semana</a>
+                                    <a href="#" onclick="selectPeriod('month')"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-rose-600 transition-colors">Este
+                                        Mes</a>
+                                    <a href="#" onclick="selectPeriod('year')"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-rose-600 transition-colors">Este
+                                        Año</a>
+                                    <hr class="my-1 border-gray-100">
+                                    <a href="#" onclick="selectPeriod('range')"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-rose-600 transition-colors">Rango
+                                        Personalizado...</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Voice Interaction Card -->
+                    <div
+                        class="bg-white p-4 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-row items-center gap-4 transition-transform hover:scale-[1.02] flex-shrink-0">
+                        <button id="voice-assistant-btn" onclick="toggleVoiceAssistant()"
+                            class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-lg shadow-amber-200 flex items-center justify-center hover:shadow-xl hover:scale-110 active:scale-95 transition-all group">
+                            <i data-lucide="mic" class="h-5 w-5 group-hover:animate-pulse"></i>
+                        </button>
+                        <div class="text-left">
+                            <h3 class="font-serif text-gray-900 font-medium text-sm">Toca para hablar</h3>
+                            <p class="text-[10px] text-gray-400">Agrega tareas o recordatorios</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <!-- Total Pending -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                                <i data-lucide="list-todo" class="h-5 w-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Pendientes</p>
+                                <p class="text-xl font-bold text-gray-900" id="kpi-total-pending">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- High Priority -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center">
+                                <i data-lucide="alert-circle" class="h-5 w-5 text-orange-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Alta Prioridad</p>
+                                <p class="text-xl font-bold text-orange-600" id="kpi-high-priority">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Overdue -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
+                                <i data-lucide="timer" class="h-5 w-5 text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Vencidas</p>
+                                <p class="text-xl font-bold text-red-600" id="kpi-overdue">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 mb-6">
+                    <button onclick="openNewTaskModal()"
+                        class="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium bg-rose-600 text-white hover:bg-rose-700 shadow-sm transition-all hover:shadow-md transform hover:-translate-y-0.5">
+                        <i data-lucide="plus" class="h-4 w-4 mr-2"></i>Nueva Tarea
+                    </button>
+
+                </div>
+
+                <!-- Filters -->
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex gap-2 bg-gray-100 p-1 rounded-lg">
+                        <button data-filter="all"
+                            class="filter-btn px-3 py-1.5 rounded-md text-xs font-medium text-gray-500 hover:text-gray-900 transition-all">Todas</button>
+                        <button data-filter="pending"
+                            class="filter-btn px-3 py-1.5 rounded-md text-xs font-medium bg-white text-gray-900 shadow-sm transition-all">Pendientes</button>
+                        <button data-filter="completed"
+                            class="filter-btn px-3 py-1.5 rounded-md text-xs font-medium text-gray-500 hover:text-gray-900 transition-all">Completados
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button
+                            class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                            <i data-lucide="arrow-up-down" class="h-3 w-3"></i>Ordenar
+                        </button>
+                        <button
+                            class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                            <i data-lucide="trash-2" class="h-3 w-3"></i>Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Todo List -->
+                <div id="todo-list" class="space-y-3">
+                    <!-- Empty State -->
+                    <div class="text-center py-16 bg-white border border-dashed border-gray-200 rounded-xl">
+                        <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="list-todo" class="h-6 w-6 text-gray-300"></i>
+                        </div>
+                        <p class="text-gray-500 text-sm">No tienes tareas pendientes</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- New Task Modal -->
+    <div id="new-task-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-lg mx-4 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-900">Nueva tarea</h3><button onclick="closeNewTaskModal()"
+                    class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="h-5 w-5"></i></button>
+            </div>
+            <form id="new-task-form" class="space-y-4">
+                <!-- Title -->
+                <div><input type="text" id="task-title"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
+                        placeholder="¿Qué necesitas hacer?" required></div>
+                <!-- Description -->
+                <div><textarea id="task-desc" rows="3"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 focus:outline-none transition-all text-sm text-gray-900 placeholder-gray-400 resize-none"
+                        placeholder="Descripción (opcional)"></textarea></div>
+                <!-- Priority & Date Row -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1">Prioridad</label>
+                        <div class="flex gap-2">
+                            <input type="hidden" id="task-priority" value="medium">
+                            <button type="button" onclick="setPriority('medium')" id="btn-priority-medium"
+                                class="flex-1 py-2 rounded-lg text-sm font-medium border transition-all bg-orange-100 text-orange-700 border-orange-200 ring-1 ring-orange-300">Media</button>
+                            <button type="button" onclick="setPriority('high')" id="btn-priority-high"
+                                class="flex-1 py-2 rounded-lg text-sm font-medium border transition-all bg-white text-gray-500 border-gray-200 hover:bg-gray-50">Alta</button>
+                        </div>
+                    </div>
+                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Fecha</label><input type="date"
+                            id="task-date"
+                            class="w-full rounded-lg border-gray-200 border p-2 text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none text-gray-500">
+                    </div>
+                </div>
+                <!-- Time & Quick Dates -->
+                <div><label class="block text-xs font-medium text-gray-500 mb-1">Hora
+                        (opcional)</label><input type="time" id="task-time"
+                        class="w-full rounded-lg border-gray-200 border p-2 text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none text-gray-500 mb-3">
+
+                </div>
+                <!-- Recurring Toggle -->
+                <div class="flex items-center justify-between pt-2">
+                    <div class="flex items-center gap-2 text-sm text-gray-600"><i data-lucide="repeat"
+                            class="h-4 w-4 text-purple-500"></i>Tarea
+                        recurrente </div><label class="relative inline-flex items-center cursor-pointer"><input
+                            type="checkbox" id="task-recurring" class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-rose-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-500">
+                        </div>
+                    </label>
+                </div>
+                <!-- Buttons -->
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-2">
+                    <button type="button" onclick="closeNewTaskModal()"
+                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors text-sm">Cancelar
+                    </button><button type="submit"
+                        class="px-6 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 font-medium shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 text-sm">Crear
+                        tarea </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Date Range Modal -->
+    <div id="date-range-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Seleccionar Rango</h3>
+                <button onclick="closeDateRangeModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+
+            <form onsubmit="applyCustomRange(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Inicio</label>
+                    <input type="date" id="range-start" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-amber-500 focus:outline-none text-gray-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Fin</label>
+                    <input type="date" id="range-end" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-amber-500 focus:outline-none text-gray-900">
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3 bg-amber-500 text-white rounded-xl font-bold hover:bg-amber-600 shadow-lg transition-all transform hover:-translate-y-0.5">
+                    Aplicar Filtro
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/finance-core.js"></script>
+    <script src="/static/js/finance-core.js"></script>
+    <script src="/static/js/finance-voice-forms.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            FinanceCore.init();
+            lucide.createIcons();
+            // Subscribe & Init
+            FinanceCore.subscribe(updateTodosUI);
+            setTimeout(() => updateTodosUI(FinanceCore.data), 100);
+
+            // Init Voice
+            FinanceVoiceForms.init({
+                onSubmit: () => {
+                    const title = document.getElementById('task-title').value;
+                    const description = document.getElementById('task-desc').value;
+                    const priority = document.getElementById('task-priority').value;
+                    const date = document.getElementById('task-date').value;
+                    const time = document.getElementById('task-time').value;
+                    const recurring = document.getElementById('task-recurring').checked;
+
+                    if (title) {
+                        FinanceCore.addTodo({ title, description, priority, dueDate: date, dueTime: time, recurring });
+                        closeNewTaskModal();
+                    }
+                },
+                onCancel: () => closeNewTaskModal()
+            });
+        });
+
+        let currentPeriodFilter = 'month';
+        let customDateRange = { start: null, end: null };
+        let currentFilter = 'pending'; // Status filter: all, pending, completed
+
+        // --- Period Filter Logic ---
+        function togglePeriodDropdown() {
+            const dropdown = document.getElementById('period-menu-dropdown');
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+                setTimeout(() => {
+                    dropdown.classList.remove('opacity-0', 'scale-95');
+                }, 10);
+            } else {
+                dropdown.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    dropdown.classList.add('hidden');
+                }, 100);
+            }
+        }
+
+        function selectPeriod(period) {
+            if (period === 'range') {
+                togglePeriodDropdown();
+                openDateRangeModal();
+                return;
+            }
+            currentPeriodFilter = period;
+            const label = document.getElementById('period-label');
+
+            if (period === 'week') label.textContent = 'Esta Semana';
+            if (period === 'month') label.textContent = 'Este Mes';
+            if (period === 'year') label.textContent = 'Este Año';
+
+            togglePeriodDropdown();
+            updateTodosUI(FinanceCore.data);
+        }
+
+        function openDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if (!document.getElementById('range-start').value) {
+                const now = new Date();
+                const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+                document.getElementById('range-start').valueAsDate = firstDay;
+                document.getElementById('range-end').valueAsDate = now;
+            }
+        }
+
+        function closeDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function applyCustomRange(e) {
+            e.preventDefault();
+            const start = document.getElementById('range-start').value;
+            const end = document.getElementById('range-end').value;
+
+            if (start && end) {
+                customDateRange = { start: new Date(start), end: new Date(end) };
+                currentPeriodFilter = 'range';
+                document.getElementById('period-label').innerText = `Rango: ${start.substring(5)} / ${end.substring(5)}`;
+                closeDateRangeModal();
+                updateTodosUI(FinanceCore.data);
+            }
+        }
+
+        function updateTodosUI(data) {
+
+
+            let todos = [...data.todos];
+
+
+            // 1. Filter by Status
+            const countBeforeStatus = todos.length;
+            if (currentFilter === 'pending') todos = todos.filter(t => !t.completed);
+            if (currentFilter === 'completed') todos = todos.filter(t => t.completed);
+
+
+            // 2. Filter by Period and sort
+            todos.sort((a, b) => {
+                const dateA = a.dueDate ? new Date(a.dueDate) : new Date(8640000000000000);
+                const dateB = b.dueDate ? new Date(b.dueDate) : new Date(8640000000000000);
+                return dateA - dateB;
+            });
+
+            // KPI Logic: Calculate based on ALL active text-based todos (ignoring period for overall status, or respecting it? usually dashboard KPIs respect period, but "Pending" implies current state. Let's filter by period to be consistent with the view)
+            const kpiTodos = filterTodosByPeriod(data.todos.filter(t => !t.completed), currentPeriodFilter);
+
+            const totalPending = kpiTodos.length;
+            const highPriority = kpiTodos.filter(t => t.priority === 'high').length;
+            const overdue = kpiTodos.filter(t => !t.completed && isTodoOverdue(t)).length;
+
+            document.getElementById('kpi-total-pending').innerText = totalPending;
+            document.getElementById('kpi-high-priority').innerText = highPriority;
+            document.getElementById('kpi-overdue').innerText = overdue;
+
+
+            const countBeforePeriod = todos.length;
+            todos = filterTodosByPeriod(todos, currentPeriodFilter);
+
+
+            // Render
+            if (todos.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-16 bg-white border border-dashed border-gray-200 rounded-xl">
+                        <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="list-todo" class="h-6 w-6 text-gray-300"></i>
+                        </div>
+                        <p class="text-gray-500 text-sm">No tienes tareas pendientes</p>
+                    </div>`;
+            } else {
+                listContainer.innerHTML = todos.map(todo => {
+                    const isLate = !todo.completed && isTodoOverdue(todo);
+                    let priorityColor = 'bg-gray-100 text-gray-600';
+                    if (todo.priority === 'high') priorityColor = 'bg-rose-100 text-rose-700';
+                    if (todo.priority === 'medium') priorityColor = 'bg-orange-100 text-orange-700';
+
+                    return `
+                        <div class="group flex items-center gap-3 p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all ${todo.completed ? 'opacity-60' : ''}">
+                            <button onclick="toggleTodo('${todo.id}')" class="flex-shrink-0 w-6 h-6 rounded-full border-2 ${todo.completed ? 'bg-green-500 border-green-500' : 'border-gray-300 hover:border-rose-500'} flex items-center justify-center transition-colors">
+                                ${todo.completed ? '<i data-lucide="check" class="h-3.5 w-3.5 text-white"></i>' : ''}
+                            </button>
+                            
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <p class="font-medium text-gray-900 truncate ${todo.completed ? 'line-through text-gray-500' : ''}">${todo.title}</p>
+                                    ${isLate ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600">VENCIDA</span>' : ''}
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-medium ${priorityColor}">${todo.priority === 'high' ? 'Alta' : todo.priority === 'medium' ? 'Media' : 'Baja'}</span>
+                                </div>
+                                
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    ${todo.dueDate ? `<span class="flex items-center gap-1 ${isLate ? 'text-red-500 font-medium' : ''}"><i data-lucide="calendar" class="h-3 w-3"></i> ${new Date(todo.dueDate + 'T00:00:00').toLocaleDateString()} ${todo.dueTime ? '• ' + todo.dueTime : ''}</span>` : ''}
+                                    ${todo.recurring ? '<span class="text-purple-500 flex items-center gap-1"><i data-lucide="repeat" class="h-3 w-3"></i> Recurrente</span>' : ''}
+                                </div>
+                            </div>
+
+                            <button onclick="deleteTodo('${todo.id}')" class="opacity-0 group-hover:opacity-100 p-2 text-gray-300 hover:text-rose-500 transition-all">
+                                <i data-lucide="trash-2" class="h-4 w-4"></i>
+                            </button>
+                        </div>`;
+                }).join('');
+            }
+
+            lucide.createIcons();
+        }
+
+        function isTodoOverdue(todo) {
+            if (!todo.dueDate) return false;
+
+            // Parse Local Date
+            const parts = todo.dueDate.split('-');
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]) - 1;
+            const day = parseInt(parts[2]);
+
+            const due = new Date(year, month, day);
+
+            if (todo.dueTime) {
+                const timeParts = todo.dueTime.split(':');
+                due.setHours(parseInt(timeParts[0]), parseInt(timeParts[1]));
+            } else {
+                // If no time, overdue only after today ends
+                due.setHours(23, 59, 59, 999);
+            }
+
+            return due < new Date();
+        }
+
+        function filterTodosByPeriod(todos, period) {
+            const now = new Date();
+            return todos.filter(t => {
+                if (!t.dueDate) return true;
+                const tDate = new Date(t.dueDate + 'T00:00:00');
+
+                if (period === 'week') {
+                    const firstDay = new Date(now);
+                    firstDay.setDate(now.getDate() - now.getDay());
+                    firstDay.setHours(0, 0, 0, 0);
+                    const lastDay = new Date(firstDay);
+                    lastDay.setDate(firstDay.getDate() + 6);
+                    lastDay.setHours(23, 59, 59, 999);
+                    return tDate >= firstDay && tDate <= lastDay;
+                }
+                if (period === 'month') {
+                    return tDate.getMonth() === now.getMonth() && tDate.getFullYear() === now.getFullYear();
+                }
+                if (period === 'year') {
+                    return tDate.getFullYear() === now.getFullYear();
+                }
+                if (period === 'range' && customDateRange.start && customDateRange.end) {
+                    return tDate >= customDateRange.start && tDate <= customDateRange.end;
+                }
+                return true;
+            });
+        }
+
+        // --- Actions ---
+        function toggleTodo(id) { FinanceCore.toggleTodo(id); }
+        function deleteTodo(id) { if (confirm("¿Eliminar tarea?")) FinanceCore.deleteTodo(id); }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn px-3 py-1.5 rounded-md text-xs font-medium text-gray-500 hover:text-gray-900 transition-all";
+                if (btn.dataset.filter === filter) btn.className = "filter-btn px-3 py-1.5 rounded-md text-xs font-medium bg-white text-gray-900 shadow-sm transition-all";
+            });
+            updateTodosUI(FinanceCore.data);
+        }
+
+        // Initialize Filter Buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => setFilter(e.target.dataset.filter));
+        });
+
+        // --- Modals (New Task, Bill to Task) ---
+        const listContainer = document.getElementById('todo-list');
+        const newTaskModal = document.getElementById('new-task-modal');
+        const newTaskForm = document.getElementById('new-task-form');
+
+        function openNewTaskModal() {
+            newTaskModal.classList.remove('hidden');
+            newTaskModal.classList.add('flex');
+            document.getElementById('task-title').focus();
+        }
+        function closeNewTaskModal() {
+            newTaskModal.classList.add('hidden');
+            newTaskModal.classList.remove('flex');
+            newTaskForm.reset();
+        }
+
+        // --- Manual Form Submission ---
+        newTaskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('task-title').value;
+            const description = document.getElementById('task-desc').value;
+            const priority = document.getElementById('task-priority').value;
+            const date = document.getElementById('task-date').value;
+            const time = document.getElementById('task-time').value;
+            const recurring = document.getElementById('task-recurring').checked;
+
+            if (title) {
+                FinanceCore.addTodo({ title, description, priority, dueDate: date, dueTime: time, recurring });
+                closeNewTaskModal();
+            }
+        });
+
+        // Toggle Wrapper
+        function toggleVoiceAssistant() {
+            FinanceVoiceForms.toggle();
+        }
+
+        // Global function for form support
+        function setPriority(level) {
+            const input = document.getElementById('task-priority');
+            const btnMedium = document.getElementById('btn-priority-medium');
+            const btnHigh = document.getElementById('btn-priority-high');
+
+            if (!input || !btnMedium || !btnHigh) return;
+
+            input.value = level;
+
+            // Reset classes
+            const activeClassMedium = "bg-orange-100 text-orange-700 border-orange-200 ring-1 ring-orange-300";
+            const activeClassHigh = "bg-rose-100 text-rose-700 border-rose-200 ring-1 ring-rose-300";
+            const inactiveClass = "bg-white text-gray-500 border-gray-200 hover:bg-gray-50";
+
+            if (level === 'medium') {
+                btnMedium.className = `flex-1 py-2 rounded-lg text-sm font-medium border transition-all ${activeClassMedium}`;
+                btnHigh.className = `flex-1 py-2 rounded-lg text-sm font-medium border transition-all ${inactiveClass}`;
+            } else {
+                btnMedium.className = `flex-1 py-2 rounded-lg text-sm font-medium border transition-all ${inactiveClass}`;
+                btnHigh.className = `flex-1 py-2 rounded-lg text-sm font-medium border transition-all ${activeClassHigh}`;
+            }
+        }
+        window.setPriority = setPriority; // Export for VoiceForms
+        window.openNewTaskModal = openNewTaskModal; // Export for VoiceForms
+    </script>
+</body>
+
+</html>

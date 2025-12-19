@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos y Gastos - Mis Finanzas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-display {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+    {% include 'sidebar.html' %}
+
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <!-- Main Dashboard View -->
+        <main id="main-dashboard" class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+                    <div class="w-full md:w-auto flex flex-col gap-4">
+                        <div>
+                            <h1 class="font-display text-3xl font-bold text-gray-900 leading-none">Pagos y Gastos</h1>
+                            <p class="text-gray-500 font-medium mt-1">Registra y controla tus salidas de dinero</p>
+                        </div>
+
+                        <!-- Period Selector Dropdown -->
+                        <div class="flex items-center gap-4">
+                            <div class="relative inline-block text-left w-fit">
+                                <div>
+                                    <button type="button" onclick="togglePeriodDropdown()"
+                                        class="inline-flex items-center gap-x-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all min-w-[140px] justify-between"
+                                        id="period-menu-button" aria-expanded="true" aria-haspopup="true">
+                                        <span id="period-label">Este Mes</span>
+                                        <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                                    </button>
+                                </div>
+
+                                <div class="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-xl bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden transform transition-all opacity-0 scale-95"
+                                    role="menu" aria-orientation="vertical" aria-labelledby="period-menu-button"
+                                    tabindex="-1" id="period-menu-dropdown">
+                                    <div class="p-1 space-y-0.5" role="none">
+                                        <button onclick="selectPeriod('week')"
+                                            class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                            role="menuitem">
+                                            <i data-lucide="calendar-days" class="w-4 h-4 mr-2 text-gray-400"></i>Esta
+                                            Semana
+                                        </button>
+                                        <button onclick="selectPeriod('month')"
+                                            class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                            role="menuitem">
+                                            <i data-lucide="calendar" class="w-4 h-4 mr-2 text-gray-400"></i>Este Mes
+                                        </button>
+                                        <button onclick="selectPeriod('year')"
+                                            class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                            role="menuitem">
+                                            <i data-lucide="calendar-range" class="w-4 h-4 mr-2 text-gray-400"></i>Este
+                                            Año
+                                        </button>
+                                        <div class="border-t border-gray-100 my-1"></div>
+                                        <button onclick="selectPeriod('range')"
+                                            class="flex items-center w-full px-3 py-2 text-sm text-red-600 font-medium rounded-lg hover:bg-red-50 transition-colors"
+                                            role="menuitem">
+                                            <i data-lucide="sliders-horizontal"
+                                                class="w-4 h-4 mr-2 text-red-500"></i>Rango
+                                            Personalizado...
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="btn-new-expense" onclick="openAddMovementModal(null, 'expense')"
+                                class="inline-flex items-center justify-center rounded-xl text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-red-600 text-white hover:bg-red-700 h-10 px-4 shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+                                <i data-lucide="minus-circle" class="h-4 w-4 mr-2"></i>Registrar Gasto
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Voice Interaction Card -->
+                    <div
+                        class="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-col items-center justify-center text-center w-full md:w-64 transition-transform hover:scale-[1.02] flex-shrink-0">
+                        <button id="voice-assistant-btn" onclick="toggleVoiceAssistant()"
+                            class="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-600 text-white shadow-lg shadow-red-200 flex items-center justify-center mb-3 hover:shadow-xl hover:scale-110 active:scale-95 transition-all group">
+                            <i data-lucide="mic" class="h-8 w-8 group-hover:animate-pulse"></i>
+                        </button>
+                        <h3 class="font-serif text-gray-900 font-medium">Toca para hablar</h3>
+                        <p class="text-xs text-gray-400">Registra un nuevo gasto</p>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <!-- Saldo Total -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <i data-lucide="wallet" class="h-5 w-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Saldo Disponible</p>
+                                <p class="text-xl font-bold text-gray-900" id="total-balance">$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Total Gastos -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                                <i data-lucide="trending-down" class="h-5 w-5 text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Total Gastos (Mes)</p>
+                                <p class="text-xl font-bold text-red-600" id="total-expenses">-$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Recent Activity -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                                <i data-lucide="activity" class="h-5 w-5 text-gray-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Movimientos Hoy</p>
+                                <p class="text-xl font-bold text-gray-900" id="today-count">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Expenses List -->
+                <div class="space-y-3" id="expenses-list">
+                    <h2 class="font-semibold text-gray-900">Últimos Gastos</h2>
+                    <!-- Content injected via JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Movement Modal -->
+    <div id="add-movement-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-900">Registrar Gasto</h3>
+                <button onclick="closeAddMovementModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+            <form id="add-movement-form" class="space-y-4">
+                <input type="hidden" id="movement-type" value="expense">
+
+                <!-- Account -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Cuenta de origen</label>
+                    <select id="movement-account"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-red-500 focus:outline-none text-gray-900"
+                        required>
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+
+                <!-- Category (Dynamic) -->
+                <div id="category-container">
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Categoría</label>
+                    <select id="movement-category"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-red-500 focus:outline-none text-gray-900">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+
+                <!-- Amount -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Monto</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-gray-400">$</span>
+                        <input type="number" id="movement-amount" step="0.01" min="0.01"
+                            class="w-full rounded-xl border-gray-200 border p-3 pl-7 focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
+                            placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Descripción</label>
+                    <input type="text" id="movement-desc"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
+                        placeholder="Ej: Supermercado, Gasolina..." required>
+                </div>
+
+                <!-- Date -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha</label>
+                    <input type="date" id="movement-date"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-red-500 focus:outline-none text-gray-900">
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-2">
+                    <button type="button" onclick="closeAddMovementModal()"
+                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors text-sm">Cancelar</button>
+                    <button type="submit"
+                        class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 text-sm">Guardar
+                        Gasto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Date Range Modal -->
+    <div id="date-range-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Seleccionar Rango</h3>
+                <button onclick="closeDateRangeModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+
+            <form onsubmit="applyCustomRange(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Inicio</label>
+                    <input type="date" id="range-start" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-red-500 focus:outline-none text-gray-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Fin</label>
+                    <input type="date" id="range-end" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-red-500 focus:outline-none text-gray-900">
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 shadow-lg transition-all transform hover:-translate-y-0.5">
+                    Aplicar Filtro
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/finance-core.js"></script>
+    <script src="/static/js/finance-ai.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            // Subscribe & Init
+            FinanceCore.subscribe(updatePaymentsUI);
+            setTimeout(() => updatePaymentsUI(FinanceCore.data), 100);
+        });
+
+        let currentPeriodFilter = 'month';
+        let customDateRange = { start: null, end: null };
+
+        // --- Period Filter Logic ---
+        function togglePeriodDropdown() {
+            const dropdown = document.getElementById('period-menu-dropdown');
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+                setTimeout(() => {
+                    dropdown.classList.remove('opacity-0', 'scale-95');
+                }, 10);
+            } else {
+                dropdown.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    dropdown.classList.add('hidden');
+                }, 100);
+            }
+        }
+
+        function selectPeriod(period) {
+            if (period === 'range') {
+                togglePeriodDropdown();
+                openDateRangeModal();
+                return;
+            }
+            currentPeriodFilter = period;
+            const label = document.getElementById('period-label');
+
+            if (period === 'week') label.textContent = 'Esta Semana';
+            if (period === 'month') label.textContent = 'Este Mes';
+            if (period === 'year') label.textContent = 'Este Año';
+
+            togglePeriodDropdown();
+            updatePaymentsUI(FinanceCore.data); // Refresh
+        }
+
+        function openDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if (!document.getElementById('range-start').value) {
+                const now = new Date();
+                const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+                document.getElementById('range-start').valueAsDate = firstDay;
+                document.getElementById('range-end').valueAsDate = now;
+            }
+        }
+
+        function closeDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function applyCustomRange(e) {
+            e.preventDefault();
+            const start = document.getElementById('range-start').value;
+            const end = document.getElementById('range-end').value;
+
+            if (start && end) {
+                customDateRange = { start: new Date(start), end: new Date(end) };
+                currentPeriodFilter = 'range';
+                document.getElementById('period-label').innerText = `Rango: ${start.substring(5)} / ${end.substring(5)}`;
+                closeDateRangeModal();
+                updatePaymentsUI(FinanceCore.data);
+            }
+        }
+
+        // --- Voice Assistant Toggle ---
+        // --- Voice Assistant Logic ---
+        function toggleVoiceAssistant() {
+            const btn = document.getElementById('voice-assistant-btn');
+            const icon = btn.querySelector('i');
+
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Tu navegador no soporta reconocimiento de voz.");
+                return;
+            }
+
+            const recognition = new webkitSpeechRecognition();
+            recognition.lang = 'es-ES';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = function () {
+                btn.classList.add('animate-pulse', 'ring-4', 'ring-red-300');
+                icon.classList.remove('lucide-mic');
+                icon.classList.add('lucide-mic-off'); // Visual cue for "listening"
+            };
+
+            recognition.onend = function () {
+                btn.classList.remove('animate-pulse', 'ring-4', 'ring-red-300');
+                icon.classList.add('lucide-mic');
+                icon.classList.remove('lucide-mic-off');
+            };
+
+            recognition.onresult = function (event) {
+                const transcript = event.results[0][0].transcript;
+                console.log("Voice Command:", transcript);
+
+                // Use FinanceAI to parse
+                const result = FinanceAI.parse(transcript);
+
+                if (result.type === 'success') {
+                    // Show feedback
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<i data-lucide="check" class="h-8 w-8"></i>';
+                    lucide.createIcons();
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        lucide.createIcons();
+                    }, 2000);
+
+                    // Refresh UI
+                    updatePaymentsUI(FinanceCore.data);
+                } else {
+                    alert(result.message);
+                }
+            };
+
+            recognition.start();
+        }
+
+        function updatePaymentsUI(data) {
+            const filteredTransactions = filterTransactionsByPeriod(data.transactions, currentPeriodFilter);
+
+            // 1. Totals
+            const totalBalance = FinanceCore.getTotalBalance();
+            const totalExpenses = filteredTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+
+            // Count today's movements
+            const today = new Date().toISOString().split('T')[0];
+            const todayCount = data.transactions.filter(t => t.date === today && t.type === 'expense').length;
+
+            document.getElementById('total-balance').textContent = FinanceCore.formatCurrency(totalBalance);
+            document.getElementById('total-expenses').textContent = '-' + FinanceCore.formatCurrency(totalExpenses);
+            document.getElementById('today-count').textContent = todayCount;
+
+            // 2. Recent Expenses List
+            const listContainer = document.getElementById('expenses-list');
+            const recentExpenses = filteredTransactions
+                .filter(t => t.type === 'expense')
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 50);
+
+            if (recentExpenses.length === 0) {
+                listContainer.innerHTML = `
+                    <h2 class="font-semibold text-gray-900">Historial de Gastos</h2>
+                    <div class="text-center py-12 bg-white border border-gray-200 rounded-xl">
+                        <i data-lucide="shopping-bag" class="h-12 w-12 mx-auto text-gray-400 mb-3"></i>
+                        <p class="text-gray-500 mb-4">No hay gastos en este periodo</p>
+                    </div>`;
+            } else {
+                const entriesHtml = recentExpenses.map(t => {
+                    const accountName = FinanceCore.getAccounts().find(a => a.id === t.accountId)?.name || 'Desconocido';
+                    return `
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                                <i data-lucide="trending-down" class="h-5 w-5 text-red-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">${t.description}</h4>
+                                <p class="text-xs text-gray-500">${new Date(t.date).toLocaleDateString()} • ${t.category} • <span class="font-semibold text-gray-700">${accountName}</span></p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-red-600">-${FinanceCore.formatCurrency(t.amount)}</p>
+                            <button onclick="deleteMovement('${t.id}')" class="text-xs text-gray-400 hover:text-red-500 flex items-center gap-1 justify-end ml-auto mt-1">
+                                <i data-lucide="trash-2" class="h-3 w-3"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                listContainer.innerHTML = `<h2 class="font-semibold text-gray-900">Historial de Gastos</h2>` + entriesHtml;
+            }
+
+            lucide.createIcons();
+        }
+
+        // Shared Filter Function
+        function filterTransactionsByPeriod(transactions, period) {
+            const now = new Date();
+            return transactions.filter(t => {
+                const tDate = new Date(t.date + 'T00:00:00');
+
+                if (period === 'week') {
+                    const firstDay = new Date(now.setDate(now.getDate() - now.getDay()));
+                    const lastDay = new Date(now.setDate(now.getDate() - now.getDay() + 6));
+                    return tDate >= firstDay && tDate <= lastDay;
+                }
+                if (period === 'month') {
+                    return tDate.getMonth() === new Date().getMonth() && tDate.getFullYear() === new Date().getFullYear();
+                }
+                if (period === 'year') {
+                    return tDate.getFullYear() === new Date().getFullYear();
+                }
+                if (period === 'range' && customDateRange.start && customDateRange.end) {
+                    return tDate >= customDateRange.start && tDate <= customDateRange.end;
+                }
+                return true;
+            });
+        }
+
+        // --- Add Movement Logic ---
+        const movementModal = document.getElementById('add-movement-modal');
+        const movementForm = document.getElementById('add-movement-form');
+
+        function openAddMovementModal(preSelectedAccountId = null, type = 'expense') {
+            document.getElementById('movement-date').valueAsDate = new Date();
+            const accountSelect = document.getElementById('movement-account');
+            let accounts = FinanceCore.getAccounts();
+
+            if (!accounts || accounts.length === 0) {
+                console.log("No accounts found. Seeding default data...");
+                FinanceCore.seedData();
+                accounts = FinanceCore.getAccounts();
+            }
+
+            if (!accounts || accounts.length === 0) {
+                alert("Para registrar gastos, primero debes tener una cuenta (puedes crearla en la sección Bancos).");
+                return;
+            }
+
+            accountSelect.innerHTML = accounts.map(acc => {
+                const name = acc.name || 'Cuenta';
+                const bal = FinanceCore.formatCurrency(acc.balance || 0);
+                const isSelected = acc.id === preSelectedAccountId ? 'selected' : '';
+                return `<option value="${acc.id}" ${isSelected}>${name} (${bal})</option>`;
+            }).join('');
+
+            updateCategorySelect();
+            movementModal.classList.remove('hidden');
+            movementModal.classList.add('flex');
+            document.getElementById('movement-amount').focus();
+        }
+
+        function closeAddMovementModal() {
+            movementModal.classList.add('hidden');
+            movementModal.classList.remove('flex');
+            movementForm.reset();
+        }
+
+        function updateCategorySelect() {
+            const categorySelect = document.getElementById('movement-category');
+            categorySelect.innerHTML = FinanceCore.data.categories.map(cat =>
+                `< option value = "${cat.name}" > ${cat.name}</option >`
+            ).join('');
+        }
+
+        movementForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const type = 'expense';
+            const accountId = document.getElementById('movement-account').value;
+            const amount = document.getElementById('movement-amount').value;
+            const description = document.getElementById('movement-desc').value;
+            const date = document.getElementById('movement-date').value;
+            const category = document.getElementById('movement-category').value;
+
+            if (accountId && amount && description) {
+                FinanceCore.addTransaction(type, amount, category, description, accountId, date);
+                closeAddMovementModal();
+            }
+        });
+
+        function deleteMovement(id) {
+            if (confirm("¿Estás seguro de eliminar este gasto?")) {
+                FinanceCore.deleteTransaction(id);
+            }
+        }
+    </script>
+</body>
+
+</html>

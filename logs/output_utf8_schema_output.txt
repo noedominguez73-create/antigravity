@@ -1,0 +1,38 @@
+python : 
+[2025-11-27 
+20:58:10,616] INFO 
+in logging_config: 
+=== Logging System 
+Initialized ===
+En línea: 1 
+Carácter: 1
++ python 
+check_schema.py > 
+schema_output.txt 
+2>&1
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: ([202   
+ 5-11-27 20:...I    
+nitialized ===:    
+String) [], Rem    
+oteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+APP.MODELS LOADED FULLY
+Columns in professional_urls:
+- id (INTEGER)
+- professional_id (INTEGER)
+- url (VARCHAR(500))
+- specialty (VARCHAR(100))
+- description (TEXT)
+- is_active (BOOLEAN)
+- last_scraped_at (DATETIME)
+- cached_content (TEXT)
+- created_at (DATETIME)
+- updated_at (DATETIME)

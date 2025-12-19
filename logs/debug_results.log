@@ -1,0 +1,44 @@
+=== RAG DEBUGGER ===
+
+1. Checking RAG Service Initialization...
+   [OK] Encoder loaded
+   [OK] FAISS Index loaded. Total vectors: 56
+
+2. Checking Database Content...
+   Total Documents: 1
+   - Doc ID: 1, Prof ID: 3, Filename: LISR.txt, Chunks: 56
+
+3. Testing Retrieval for query: 'que dice el articulo 1 de la ley del isr'
+   Debugging: Raw search top 10...
+   Rank 1: Score 0.5616 - Chunk ID 1
+   Content Preview: === PÁGINA 1 === Nueva Ley publicada en el Diario Oficial de la Federación el 11 de diciembre de 201...
+   *** THIS CHUNK CONTAINS ARTICULO 1 ***
+--------------------
+   Rank 2: Score 0.5598 - Chunk ID 29
+   Content Preview: Nueva Ley publicada en el Diario Oficial de la Federación el 11 de diciembre de 2013 Última reforma ...
+   *** THIS CHUNK CONTAINS ARTICULO 1 ***
+--------------------
+   Rank 3: Score 0.5504 - Chunk ID 55
+   Content Preview:  el impuesto que corresponda a los mismos, aplicando la tasa establecida en el artículo 9 de la pres...
+--------------------
+   Rank 4: Score 0.5463 - Chunk ID 17
+   Content Preview: proporcional del impuesto sobre la renta corporativo pagado en el  extranjero a que se refiere el cu...
+--------------------
+   Rank 5: Score 0.5445 - Chunk ID 56
+   Content Preview: en el impuesto que establece este artículo, podrán acreditar dicho impuesto de acuerdo a lo siguient...
+--------------------
+   Rank 6: Score 0.5228 - Chunk ID 22
+   Content Preview: o índice correspondiente al  mes más antiguo de dicho periodo.   II. Para determinar el valor de un ...
+--------------------
+   Rank 7: Score 0.5175 - Chunk ID 19
+   Content Preview: emás casos a que se refiere este artículo, p ara efectos de  determinar el monto del impuesto pagado...
+--------------------
+   Rank 8: Score 0.5112 - Chunk ID 18
+   Content Preview:  del extranjero la tarifa establecida en el artículo 152 de esta Ley. Para  estos efectos, las deduc...
+--------------------
+   Rank 9: Score 0.5012 - Chunk ID 28
+   Content Preview: se calculará en los términos de  dicho precepto.   Tratándose de la distribución de dividendos o uti...
+--------------------
+   Rank 10: Score 0.4998 - Chunk ID 46
+   Content Preview: uentre dentro de los límites a que se refieren los párrafos que anteceden y no pueda acreditarse tot...
+--------------------

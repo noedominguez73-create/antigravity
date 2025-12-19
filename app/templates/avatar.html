@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Hub - AsesoriaIMSS.io</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+            --accent: #ff00ff;
+            --dark-bg: #050505;
+            --card-bg: rgba(20, 20, 20, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+            /* Full screen immersive */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Background Animation */
+        .bg-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image:
+                linear-gradient(var(--card-bg) 1px, transparent 1px),
+                linear-gradient(90deg, var(--card-bg) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center center;
+            opacity: 0.1;
+            transform: perspective(500px) rotateX(60deg);
+            animation: gridMove 20s linear infinite;
+            z-index: -2;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: perspective(500px) rotateX(60deg) translateY(0);
+            }
+
+            100% {
+                transform: perspective(500px) rotateX(60deg) translateY(50px);
+            }
+        }
+
+        .ambient-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 255, 136, 0.05), transparent 70%);
+            z-index: -1;
+        }
+
+        /* Central Avatar Stage */
+        .avatar-stage {
+            position: relative;
+            width: 300px;
+            height: 500px;
+            /* Full body proportion */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .avatar-projection {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: url('https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff&size=256');
+            /* Placeholder */
+            background-size: cover;
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.3);
+            border: 2px solid var(--primary);
+            position: relative;
+            z-index: 2;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Rings */
+        .ring {
+            position: absolute;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .ring-1 {
+            width: 300px;
+            height: 300px;
+            border-style: dashed;
+            animation: spin 20s linear infinite;
+        }
+
+        .ring-2 {
+            width: 450px;
+            height: 450px;
+            border-color: rgba(0, 204, 255, 0.1);
+            animation: spinReverse 30s linear infinite;
+        }
+
+        .ring-3 {
+            width: 600px;
+            height: 600px;
+            border: 1px dotted rgba(255, 0, 255, 0.1);
+            animation: spin 40s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes spinReverse {
+            from {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+        }
+
+        /* Floating Links (Planetary system) */
+        .nav-node {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+
+        .nav-node i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        .nav-node span {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        /* Positioning Nodes around the circle */
+        /* Top */
+        .node-mirror {
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -150px);
+            color: var(--primary);
+        }
+
+        /* Right */
+        .node-imagina {
+            top: 50%;
+            right: 0;
+            transform: translate(150px, -50%);
+            color: var(--accent);
+        }
+
+        /* Bottom */
+        .node-profile {
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 150px);
+            color: var(--secondary);
+        }
+
+        /* Left */
+        .node-finance {
+            top: 50%;
+            left: 0;
+            transform: translate(-150px, -50%);
+            color: #FFD700;
+        }
+
+        .nav-node:hover {
+            transform: scale(1.2) !important;
+            /* Override translate with scale, need to handle complex transform */
+            z-index: 10;
+        }
+
+        /* Adjustment for hover to keep position */
+        .node-mirror:hover {
+            transform: translate(-50%, -150px) scale(1.2);
+        }
+
+        .node-imagina:hover {
+            transform: translate(150px, -50%) scale(1.2);
+        }
+
+        .node-profile:hover {
+            transform: translate(-50%, 150px) scale(1.2);
+        }
+
+        .node-finance:hover {
+            transform: translate(-150px, -50%) scale(1.2);
+        }
+
+        /* Header / Stats */
+        .hud-header {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .hud-header h1 {
+            margin: 0;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .hud-header p {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .hud-credits {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            text-align: right;
+        }
+
+        .credits-val {
+            font-size: 1.5rem;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            color: #666;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-grid"></div>
+    <div class="ambient-glow"></div>
+
+    <div class="hud-header">
+        <h1>IDENTITY HUB</h1>
+        <p>SISTEMA CENTRAL</p>
+    </div>
+
+    <div class="hud-credits">
+        <div>CRÉDITOS</div>
+        <div class="credits-val">∞</div> <!-- Placeholder until integrated -->
+    </div>
+
+    <!-- Central Stage -->
+    <div class="avatar-stage">
+
+        <!-- Rings -->
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+
+        <!-- Central Display -->
+        <div class="avatar-projection">
+            <!-- Could be user image if available -->
+        </div>
+
+        <!-- Navigation Nodes -->
+
+        <!-- Top: Mirror -->
+        <a href="/mirror" class="nav-node node-mirror" title="Generador de Imagen">
+            <i class="fas fa-magic"></i>
+            <span>MIRROR IA</span>
+        </a>
+
+        <!-- Right: Imagina (Interview) -->
+        <a href="/api/mirror/imagina-ia" class="nav-node node-imagina" title="Entrevista IA">
+            <i class="fas fa-brain"></i>
+            <span>IMAGINA IA</span>
+        </a>
+
+        <!-- Bottom: Profile -->
+        <a href="/perfil-usuario" class="nav-node node-profile" title="Mi Perfil">
+            <i class="fas fa-user-circle"></i>
+            <span>PERFIL</span>
+        </a>
+
+        <!-- Left: Finance/Credits -->
+        <a href="/mis-finanzas/ingresos" class="nav-node node-finance" title="Créditos y Pagos">
+            <i class="fas fa-coins"></i>
+            <span>FINANZAS</span>
+        </a>
+
+    </div>
+
+    <a href="/" class="back-btn">
+        <i class="fas fa-power-off"></i> DESCONECTAR
+    </a>
+
+    <script>
+        // Optional: Interactive parallax or sound effects
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth - e.pageX) / 50;
+            const y = (window.innerHeight - e.pageY) / 50;
+            document.querySelector('.avatar-projection').style.transform = `translate(${x}px, ${y}px)`;
+        });
+    </script>
+</body>
+
+</html>

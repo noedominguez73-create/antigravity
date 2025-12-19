@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentas por Cobrar - Mis Finanzas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+    {% include 'sidebar.html' %}
+
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-6xl mx-auto">
+
+                <!-- HEADER & TABS -->
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Cuentas por Cobrar</h1>
+                        <p class="text-gray-500 font-medium mt-1">Gestión de Clientes y Facturación</p>
+                    </div>
+
+                    <!-- Voice / Access Icon -->
+                    <!-- Voice / Access Icon -->
+                    <div
+                        class="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-col items-center justify-center text-center w-full md:w-64 transition-transform hover:scale-[1.02] flex-shrink-0">
+                        <button onclick="toggleVoice()"
+                            class="w-16 h-16 rounded-full bg-gradient-to-br from-rose-400 to-rose-500 text-white shadow-lg shadow-rose-200 flex items-center justify-center mb-3 hover:shadow-xl hover:scale-110 active:scale-95 transition-all group">
+                            <i data-lucide="mic" class="h-8 w-8 group-hover:animate-pulse"></i>
+                        </button>
+                        <h3 class="font-serif text-gray-900 font-medium">Toca para hablar</h3>
+                        <p class="text-xs text-gray-400">Registra cobros o clientes</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <div
+                    class="bg-white rounded-xl shadow-sm border border-gray-200 p-1 flex gap-1 mb-8 w-fit mx-auto md:mx-0">
+                    <button onclick="switchTab('dashboard')" id="tab-btn-dashboard"
+                        class="px-6 py-2 rounded-lg text-sm font-medium transition-all bg-gray-900 text-white shadow-sm">
+                        Dashboard
+                    </button>
+                    <button onclick="switchTab('invoice')" id="tab-btn-invoice"
+                        class="px-6 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 transition-all">
+                        Nueva Factura
+                    </button>
+                    <button onclick="switchTab('clients')" id="tab-btn-clients"
+                        class="px-6 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 transition-all">
+                        Clientes
+                    </button>
+                </div>
+
+                <!-- CONTENT SECTIONS -->
+
+                <!-- 1. DASHBOARD TAB -->
+                <div id="view-dashboard" class="space-y-6">
+                    <!-- Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                            <h3 class="text-gray-500 text-sm font-medium">Por Cobrar Total</h3>
+                            <p class="text-2xl font-bold text-gray-900 mt-2" id="kpi-total-receivable">$0.00</p>
+                        </div>
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                            <h3 class="text-gray-500 text-sm font-medium">Facturas Pagadas</h3>
+                            <p class="text-2xl font-bold text-green-600 mt-2" id="kpi-paid-amount">$0.00</p>
+                        </div>
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                            <h3 class="text-gray-500 text-sm font-medium">Pendientes</h3>
+                            <p class="text-2xl font-bold text-orange-600 mt-2" id="kpi-pending-count">0</p>
+                        </div>
+                    </div>
+
+                    <!-- Filters & List -->
+                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                            <h2 class="font-bold text-gray-800">Facturas Emitidas</h2>
+                            <div class="flex gap-2">
+                                <select id="filter-status" onchange="renderInvoices()"
+                                    class="text-sm border-gray-200 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
+                                    <option value="all">Todas</option>
+                                    <option value="pending">Pendientes</option>
+                                    <option value="paid">Cobradas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="invoices-list" class="divide-y divide-gray-100">
+                            <!-- Inserted JS -->
+                            <div class="p-8 text-center text-gray-400">Cargando...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. INVOICE GENERATOR TAB -->
+                <div id="view-invoice" class="hidden space-y-6">
+                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 max-w-4xl mx-auto">
+                        <!-- Invoice Header -->
+                        <div class="flex flex-col md:flex-row justify-between mb-8 pb-8 border-b border-gray-100">
+                            <div class="mb-4 md:mb-0">
+                                <label
+                                    class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Logotipo</label>
+                                <div
+                                    class="w-32 h-32 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors relative overflow-hidden group">
+                                    <input type="file" id="invoice-logo" accept="image/*"
+                                        class="absolute inset-0 opacity-0 cursor-pointer"
+                                        onchange="handleLogoUpload(this)">
+                                    <img id="logo-preview" class="hidden w-full h-full object-contain p-2">
+                                    <div id="logo-placeholder" class="text-center p-2">
+                                        <i data-lucide="image-plus" class="h-6 w-6 text-gray-400 mx-auto mb-1"></i>
+                                        <span class="text-xs text-gray-400">Subir Logo</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <h2 class="text-4xl font-bold text-gray-900 mb-2">FACTURA</h2>
+                                <div class="flex items-center justify-end gap-2 mb-2">
+                                    <span class="text-gray-500 font-medium">#</span>
+                                    <input type="text" id="invoice-number"
+                                        class="w-24 text-right font-bold border-b border-gray-200 focus:outline-none focus:border-blue-500"
+                                        value="A-0001">
+                                </div>
+                                <div class="flex items-center justify-end gap-2">
+                                    <span class="text-gray-500 font-medium text-sm">Fecha:</span>
+                                    <input type="date" id="invoice-date"
+                                        class="bg-transparent text-right text-sm border-b border-gray-200 focus:outline-none focus:border-blue-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client Selection -->
+                        <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Facturar a:</label>
+                                <div class="flex gap-2">
+                                    <select id="invoice-client-select" onchange="fillClientData()"
+                                        class="flex-1 rounded-lg border-gray-200 border p-2.5 focus:ring-2 focus:ring-blue-500 text-sm">
+                                        <option value="">Seleccionar Cliente...</option>
+                                    </select>
+                                    <button onclick="openClientModal()"
+                                        class="p-2.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
+                                        title="Nuevo Cliente">
+                                        <i data-lucide="plus" class="h-5 w-5"></i>
+                                    </button>
+                                </div>
+                                <div id="invoice-client-details"
+                                    class="mt-4 p-4 bg-gray-50 rounded-lg text-sm text-gray-600 hidden">
+                                    <p class="font-bold text-gray-900" id="disp-client-name"></p>
+                                    <p id="disp-client-rfc"></p>
+                                    <p id="disp-client-address"></p>
+                                </div>
+                            </div>
+                            <div class="text-right space-y-1">
+                                <!-- Company Info (Editable & Persistent) -->
+                                <input type="text" id="issuer-name"
+                                    class="font-bold text-gray-900 text-right w-full border-b border-transparent hover:border-gray-200 focus:border-blue-500 focus:outline-none"
+                                    placeholder="Nombre de tu Empresa" value="Mi Empresa S.A. de C.V."
+                                    onchange="persistIssuerInfo()">
+                                <input type="text" id="issuer-rfc"
+                                    class="text-sm text-gray-500 text-right w-full border-b border-transparent hover:border-gray-200 focus:border-blue-500 focus:outline-none"
+                                    placeholder="RFC" value="RFC: EMO000000ABC" onchange="persistIssuerInfo()">
+                                <input type="text" id="issuer-address"
+                                    class="text-sm text-gray-500 text-right w-full border-b border-transparent hover:border-gray-200 focus:border-blue-500 focus:outline-none"
+                                    placeholder="Dirección" value="Calle Principal 123, Centro"
+                                    onchange="persistIssuerInfo()">
+                                <input type="text" id="issuer-city"
+                                    class="text-sm text-gray-500 text-right w-full border-b border-transparent hover:border-gray-200 focus:border-blue-500 focus:outline-none"
+                                    placeholder="Ciudad, CP" value="Ciudad de México, CP 00000"
+                                    onchange="persistIssuerInfo()">
+                            </div>
+                        </div>
+
+                        <!-- Concepts Table -->
+                        <div class="mb-8 overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
+                                        <th class="py-3 w-16">Cant.</th>
+                                        <th class="py-3">Descripción</th>
+                                        <th class="py-3 w-32 text-right">Precio Unit.</th>
+                                        <th class="py-3 w-32 text-right">Importe</th>
+                                        <th class="py-3 w-10"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoice-items-body">
+                                    <!-- Rows injected via JS -->
+                                </tbody>
+                            </table>
+                            <button onclick="addInvoiceRow()"
+                                class="mt-4 text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                                <i data-lucide="plus-circle" class="h-4 w-4"></i> Agregar Concepto
+                            </button>
+                        </div>
+
+                        <!-- Totals & Actions -->
+                        <div
+                            class="flex flex-col md:flex-row justify-between items-start pt-6 border-t border-gray-200">
+                            <div class="w-full md:w-1/2 mb-4 md:mb-0">
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Notas / Condiciones</label>
+                                <textarea id="invoice-notes" rows="3"
+                                    class="w-full rounded-lg border-gray-200 border p-3 text-sm focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Ej: Pago en una sola exhibición..."></textarea>
+                            </div>
+                            <div class="w-full md:w-1/3 bg-gray-50 p-6 rounded-xl">
+                                <div class="flex justify-between mb-2 text-sm">
+                                    <span class="text-gray-600">Subtotal</span>
+                                    <span class="font-bold text-gray-900" id="invoice-subtotal">$0.00</span>
+                                </div>
+                                <div class="flex justify-between mb-2 text-sm items-center">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-gray-600">IVA</span>
+                                        <input type="number" id="invoice-tax-rate" value="16" min="0" max="100"
+                                            class="w-12 border border-gray-200 rounded p-1 text-center text-xs"
+                                            onchange="calculateInvoiceTotals()">
+                                        <span class="text-gray-400 text-xs">%</span>
+                                    </div>
+                                    <span class="font-bold text-gray-900" id="invoice-tax">$0.00</span>
+                                </div>
+                                <div class="border-t border-gray-200 my-2 pt-2 flex justify-between text-lg">
+                                    <span class="font-bold text-gray-900">Total</span>
+                                    <span class="font-bold text-blue-600" id="invoice-total">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="mt-8 flex justify-end gap-4">
+                            <button
+                                class="px-6 py-3 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
+                                <i data-lucide="printer" class="h-5 w-5"></i> Vista Previa
+                            </button>
+                            <button onclick="saveInvoice()"
+                                class="px-8 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                                <i data-lucide="check-circle" class="h-5 w-5"></i> Autorizar Factura
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. CLIENT MANAGEMENT TAB -->
+                <div id="view-clients" class="hidden space-y-6">
+                    <div
+                        class="flex justify-between items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <h2 class="font-bold text-gray-800 text-lg">Directorio de Clientes</h2>
+                        <button onclick="openClientModal()"
+                            class="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center gap-2">
+                            <i data-lucide="user-plus" class="h-4 w-4"></i> Nuevo Cliente
+                        </button>
+                    </div>
+
+                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50 text-xs uppercase text-gray-500 font-bold">
+                                <tr>
+                                    <th class="p-4">Cliente / Razón Social</th>
+                                    <th class="p-4">RFC</th>
+                                    <th class="p-4">Contacto</th>
+                                    <th class="p-4 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clients-list" class="divide-y divide-gray-100">
+                                <!-- Injected JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- Client Modal -->
+    <div id="client-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
+            <h3 class="text-xl font-bold text-gray-900 mb-4" id="client-modal-title">Nuevo Cliente</h3>
+            <form id="client-form" class="space-y-4">
+                <input type="hidden" id="client-id">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Nombre / Razón Social <span
+                            class="text-red-500">*</span></label>
+                    <input type="text" id="client-name"
+                        class="w-full border-b border-gray-200 p-2 focus:border-blue-500 focus:outline-none" required>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">RFC</label>
+                    <input type="text" id="client-rfc"
+                        class="w-full border-b border-gray-200 p-2 focus:border-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Dirección</label>
+                    <input type="text" id="client-address"
+                        class="w-full border-b border-gray-200 p-2 focus:border-blue-500 focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase">Teléfono</label>
+                        <input type="tel" id="client-phone"
+                            class="w-full border-b border-gray-200 p-2 focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase">Email</label>
+                        <input type="email" id="client-email"
+                            class="w-full border-b border-gray-200 p-2 focus:border-blue-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Nombre de Contacto</label>
+                    <input type="text" id="client-contact"
+                        class="w-full border-b border-gray-200 p-2 focus:border-blue-500 focus:outline-none">
+                </div>
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" onclick="closeClientModal()"
+                        class="px-4 py-2 text-gray-500 hover:text-gray-700 font-medium">Cancelar</button>
+                    <button type="submit"
+                        class="px-6 py-2 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal (Cobranza) -->
+    <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl p-6 w-full max-w-sm shadow-2xl">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Registrar Cobro</h3>
+            <p class="text-sm text-gray-500 mb-4" id="pay-modal-desc">Factura A-0001</p>
+
+            <form id="payment-form" class="space-y-4">
+                <input type="hidden" id="pay-invoice-id">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Monto Recibido</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-2 text-gray-400">$</span>
+                        <input type="number" id="pay-amount" step="0.01"
+                            class="w-full border rounded-lg p-2 pl-7 focus:ring-2 focus:ring-green-500 focus:outline-none font-bold text-lg"
+                            required>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Depositar en</label>
+                    <select id="pay-account"
+                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none bg-white">
+                        <!-- Loaded via JS -->
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" onclick="document.getElementById('payment-modal').classList.add('hidden')"
+                        class="px-4 py-2 text-gray-500 text-sm">Cancelar</button>
+                    <button type="submit"
+                        class="px-6 py-2 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 shadow-md">Confirmar
+                        Cobro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="/static/js/finance-core.js"></script>
+    <script>
+        // --- STATE ---
+        let currentTab = 'dashboard';
+        let invoiceItems = [];
+        let invoiceLogoBase64 = null;
+        let invoiceClient = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initCxC();
+            lucide.createIcons();
+        });
+
+        function initCxC() {
+            renderDashboard();
+            renderClients();
+            initInvoiceForm();
+            loadIssuerInfo();
+        }
+
+        // --- TABS ---
+        function switchTab(tab) {
+            currentTab = tab;
+
+            // Hide all views
+            ['dashboard', 'invoice', 'clients'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${t}`).classList.remove('bg-gray-900', 'text-white', 'shadow-sm');
+                document.getElementById(`tab-btn-${t}`).classList.add('text-gray-500', 'hover:bg-gray-50');
+            });
+
+            // Show active
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tab}`).classList.add('bg-gray-900', 'text-white', 'shadow-sm');
+            document.getElementById(`tab-btn-${tab}`).classList.remove('text-gray-500', 'hover:bg-gray-50');
+
+            if (tab === 'dashboard') renderDashboard();
+            if (tab === 'clients') renderClients();
+        }
+
+
+        // --- DASHBOARD & INVOICES LIST ---
+        function renderDashboard() {
+            const receivables = FinanceCore.data.receivables || [];
+
+            // KPIs
+            const total = receivables.reduce((sum, r) => sum + r.total, 0);
+            const paid = receivables.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+            const pendingCount = receivables.filter(r => r.status !== 'paid').length;
+
+            document.getElementById('kpi-total-receivable').innerText = FinanceCore.formatCurrency(total);
+            document.getElementById('kpi-paid-amount').innerText = FinanceCore.formatCurrency(paid);
+            document.getElementById('kpi-pending-count').innerText = pendingCount;
+
+            renderInvoices();
+        }
+
+        function renderInvoices() {
+            const filter = document.getElementById('filter-status').value;
+            let list = FinanceCore.data.receivables || [];
+
+            if (filter === 'pending') list = list.filter(r => r.status !== 'paid');
+            if (filter === 'paid') list = list.filter(r => r.status === 'paid');
+
+            // Sort by date desc
+            list.sort((a, b) => new Date(b.issuedDate) - new Date(a.issuedDate));
+
+            const container = document.getElementById('invoices-list');
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-12 text-center text-gray-400">No hay facturas en esta vista.</div>`;
+                return;
+            }
+
+            container.innerHTML = list.map(inv => {
+                const isPaid = inv.status === 'paid';
+                const statusColor = isPaid ? 'text-green-600 bg-green-50 border-green-200' : 'text-orange-600 bg-orange-50 border-orange-200';
+                const statusIcon = isPaid ? 'check-circle' : 'clock';
+                const statusLabel = isPaid ? 'COBRADA' : 'PENDIENTE';
+
+                const balance = inv.total - (inv.paidAmount || 0);
+
+                return `
+                <div class="p-4 hover:bg-gray-50 transition-colors flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-4 w-full md:w-auto">
+                        <div class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center font-bold text-gray-500 text-xs">
+                             <img src="${inv.logo || ''}" class="w-full h-full object-contain p-1 rounded-lg" onerror="this.style.display='none'">
+                             <span class="${inv.logo ? 'hidden' : ''}">LOGO</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">${inv.clientName}</h4>
+                            <div class="text-xs text-gray-500 flex items-center gap-2">
+                                <span class="font-medium text-gray-700">${inv.number}</span>
+                                <span>•</span>
+                                <span>${inv.issuedDate}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
+                        <div class="text-right">
+                            <p class="font-bold text-gray-900">${FinanceCore.formatCurrency(inv.total)}</p>
+                            ${!isPaid ? `<p class="text-xs text-orange-600 font-medium">Faltan: ${FinanceCore.formatCurrency(balance)}</p>` : ''}
+                        </div>
+                        
+                        <div class="px-3 py-1 rounded-full border ${statusColor} text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="${statusIcon}" class="h-3 w-3"></i> ${statusLabel}
+                        </div>
+
+                        ${!isPaid ? `
+                        <button onclick="openPaymentModal('${inv.id}')" class="p-2 text-green-600 hover:bg-green-50 rounded-lg" title="Registrar Cobro">
+                            <i data-lucide="dollar-sign" class="h-5 w-5"></i>
+                        </button>` : ''}
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+
+        // --- INVOICE GENERATOR ---
+        function initInvoiceForm() {
+            document.getElementById('invoice-date').valueAsDate = new Date();
+            loadClientOptions();
+            addInvoiceRow(); // Start with 1 row
+        }
+
+        function loadClientOptions() {
+            const select = document.getElementById('invoice-client-select');
+            const clients = FinanceCore.getClients();
+
+            select.innerHTML = '<option value="">Seleccionar Cliente...</option>' +
+                clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        }
+
+        function fillClientData() {
+            const id = document.getElementById('invoice-client-select').value;
+            const detailsDiv = document.getElementById('invoice-client-details');
+
+            if (!id) {
+                detailsDiv.classList.add('hidden');
+                invoiceClient = null;
+                return;
+            }
+
+            const client = FinanceCore.getClients().find(c => c.id === id);
+            if (client) {
+                invoiceClient = client;
+                document.getElementById('disp-client-name').innerText = client.name;
+                document.getElementById('disp-client-rfc').innerText = client.rfc;
+                document.getElementById('disp-client-address').innerText = client.address;
+                detailsDiv.classList.remove('hidden');
+            }
+        }
+
+        function addInvoiceRow() {
+            const tbody = document.getElementById('invoice-items-body');
+            const rowId = 'row-' + Date.now();
+
+            const tr = document.createElement('tr');
+            tr.className = "border-b border-gray-100 hover:bg-gray-50";
+            tr.id = rowId;
+            tr.innerHTML = `
+                <td class="py-2 pr-2">
+                    <input type="number" onchange="calculateInvoiceTotals()" class="qty-input w-full p-2 border border-gray-200 rounded-lg text-center" value="1" min="1">
+                </td>
+                <td class="py-2 pr-2">
+                    <input type="text" class="desc-input w-full p-2 border border-gray-200 rounded-lg" placeholder="Descripción...">
+                </td>
+                <td class="py-2 pr-2">
+                    <input type="number" onchange="calculateInvoiceTotals()" class="price-input w-full p-2 border border-gray-200 rounded-lg text-right" placeholder="0.00" min="0">
+                </td>
+                <td class="py-2 pr-2">
+                    <div class="row-total text-right font-medium text-gray-700 py-2">$0.00</div>
+                </td>
+                <td class="py-2 text-center">
+                    <button onclick="removeInvoiceRow('${rowId}')" class="text-gray-400 hover:text-red-500">
+                        <i data-lucide="trash-2" class="h-4 w-4"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+            lucide.createIcons();
+        }
+
+        function removeInvoiceRow(id) {
+            const row = document.getElementById(id);
+            if (row) row.remove();
+            calculateInvoiceTotals();
+        }
+
+        function calculateInvoiceTotals() {
+            let subtotal = 0;
+            const rows = document.querySelectorAll('#invoice-items-body tr');
+
+            invoiceItems = [];
+
+            rows.forEach(row => {
+                const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
+                const price = parseFloat(row.querySelector('.price-input').value) || 0;
+                const desc = row.querySelector('.desc-input').value;
+                const total = qty * price;
+
+                row.querySelector('.row-total').innerText = FinanceCore.formatCurrency(total);
+                subtotal += total;
+
+                if (desc) {
+                    invoiceItems.push({
+                        description: desc,
+                        quantity: qty,
+                        unitPrice: price,
+                        total: total
+                    });
+                }
+            });
+
+            const taxRate = parseFloat(document.getElementById('invoice-tax-rate').value) || 0;
+            const tax = subtotal * (taxRate / 100);
+            const total = subtotal + tax;
+
+            document.getElementById('invoice-subtotal').innerText = FinanceCore.formatCurrency(subtotal);
+            document.getElementById('invoice-tax').innerText = FinanceCore.formatCurrency(tax);
+            document.getElementById('invoice-total').innerText = FinanceCore.formatCurrency(total);
+
+            // Auto-persist tax rate change
+            persistIssuerInfo();
+
+            return { subtotal, tax, total };
+        }
+
+        function handleLogoUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    invoiceLogoBase64 = e.target.result;
+                    document.getElementById('logo-preview').src = invoiceLogoBase64;
+                    document.getElementById('logo-preview').classList.remove('hidden');
+                    document.getElementById('logo-placeholder').classList.add('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveInvoice() {
+            if (!invoiceClient) {
+                alert("Selecciona un cliente");
+                return;
+            }
+            if (invoiceItems.length === 0) {
+                alert("Agrega al menos un concepto");
+                return;
+            }
+
+            if (!confirm("¿Autorizar y generar esta factura?")) return;
+
+            const totals = calculateInvoiceTotals();
+
+            const invoiceData = {
+                number: document.getElementById('invoice-number').value,
+                clientId: invoiceClient.id,
+                clientName: invoiceClient.name,
+                clientRfc: invoiceClient.rfc,
+                dueDate: document.getElementById('invoice-date').value, // Used as issued too
+                items: invoiceItems,
+                subtotal: totals.subtotal,
+                tax: totals.tax,
+                total: totals.total,
+                logo: invoiceLogoBase64,
+                notes: document.getElementById('invoice-notes').value
+            };
+
+            FinanceCore.addReceivable(invoiceData);
+            alert("Factura generada exitosamente. Enviada a Cuentas por Cobrar.");
+
+            // Reset form
+            document.getElementById('invoice-items-body').innerHTML = '';
+            addInvoiceRow();
+            document.getElementById('invoice-client-select').value = '';
+            fillClientData();
+            switchTab('dashboard');
+        }
+
+
+        // --- CLIENTS MGMT ---
+        function renderClients() {
+            const list = FinanceCore.getClients();
+            const container = document.getElementById('clients-list');
+
+            if (list.length === 0) {
+                container.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-400">No hay clientes registrados.</td></tr>`;
+                return;
+            }
+
+            container.innerHTML = list.map(c => `
+                <tr class="hover:bg-gray-50 border-b border-gray-100 last:border-0">
+                    <td class="p-4">
+                        <p class="font-bold text-gray-900 text-sm">${c.name}</p>
+                        <p class="text-xs text-gray-500">${c.email || ''}</p>
+                    </td>
+                    <td class="p-4 text-sm text-gray-600">${c.rfc}</td>
+                    <td class="p-4 text-sm text-gray-600">${c.contact || '-'}</td>
+                    <td class="p-4 text-right">
+                        <button onclick="editClient('${c.id}')" class="text-blue-600 hover:text-blue-800 mr-2"><i data-lucide="pencil" class="h-4 w-4"></i></button>
+                        <button onclick="deleteClientWrapper('${c.id}')" class="text-red-500 hover:text-red-700"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openClientModal(id = null) {
+            document.getElementById('client-form').reset();
+            const modal = document.getElementById('client-modal');
+            const title = document.getElementById('client-modal-title');
+
+            if (id) {
+                // Edit Mode
+                const client = FinanceCore.getClients().find(c => c.id === id);
+                if (client) {
+                    document.getElementById('client-id').value = client.id;
+                    document.getElementById('client-name').value = client.name;
+                    document.getElementById('client-rfc').value = client.rfc;
+                    document.getElementById('client-address').value = client.address;
+                    document.getElementById('client-phone').value = client.phone;
+                    document.getElementById('client-email').value = client.email;
+                    document.getElementById('client-contact').value = client.contact;
+                    title.innerText = "Editar Cliente";
+                }
+            } else {
+                document.getElementById('client-id').value = '';
+                title.innerText = "Nuevo Cliente";
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeClientModal() {
+            document.getElementById('client-modal').classList.add('hidden');
+            document.getElementById('client-modal').classList.remove('flex');
+        }
+
+        document.getElementById('client-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('client-id').value;
+            const data = {
+                name: document.getElementById('client-name').value,
+                rfc: document.getElementById('client-rfc').value,
+                address: document.getElementById('client-address').value,
+                phone: document.getElementById('client-phone').value,
+                email: document.getElementById('client-email').value,
+                contact: document.getElementById('client-contact').value
+            };
+
+            if (id) {
+                FinanceCore.updateClient(id, data);
+            } else {
+                FinanceCore.addClient(data);
+            }
+            closeClientModal();
+            renderClients();
+            loadClientOptions(); // Refresh dropdown
+        });
+
+        function deleteClientWrapper(id) {
+            if (confirm("¿Estás seguro de eliminar este cliente? Se perderá su historial.")) {
+                FinanceCore.deleteClient(id);
+                renderClients();
+                loadClientOptions();
+            }
+        }
+
+
+        // --- PAYMENTS ---
+        function openPaymentModal(invoiceId) {
+            const inv = FinanceCore.data.receivables.find(r => r.id === invoiceId);
+            if (!inv) return;
+
+            document.getElementById('pay-invoice-id').value = invoiceId;
+            document.getElementById('pay-modal-desc').innerText = `Factura ${inv.number} - ${inv.clientName}`;
+
+            const balance = inv.total - (inv.paidAmount || 0);
+            document.getElementById('pay-amount').value = balance.toFixed(2);
+
+            // Load Accounts
+            const accounts = FinanceCore.getAccounts();
+            const select = document.getElementById('pay-account');
+            select.innerHTML = accounts.map(a => `<option value="${a.id}">${a.name} (${FinanceCore.formatCurrency(a.balance)})</option>`).join('');
+
+            document.getElementById('payment-modal').classList.remove('hidden');
+            document.getElementById('payment-modal').classList.add('flex');
+        }
+
+        document.getElementById('payment-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const invId = document.getElementById('pay-invoice-id').value;
+            const amount = document.getElementById('pay-amount').value;
+            const accId = document.getElementById('pay-account').value;
+
+            if (FinanceCore.payReceivable(invId, amount, accId)) {
+                document.getElementById('payment-modal').classList.add('hidden');
+                renderDashboard(); // Refresh
+                alert("Cobro registrado exitosamente.");
+            }
+        });
+
+        // Toggle Voice (Placeholder for future hook)
+        function toggleVoice() {
+            alert("Versión con voz en proceso. Usa el botón de Nueva Factura para crear una manualmente.");
+        }
+
+        // --- PERSISTENCE ---
+        function persistIssuerInfo() {
+            const info = {
+                name: document.getElementById('issuer-name').value,
+                rfc: document.getElementById('issuer-rfc').value,
+                address: document.getElementById('issuer-address').value,
+                city: document.getElementById('issuer-city').value,
+                taxRate: document.getElementById('invoice-tax-rate').value // New
+            };
+            localStorage.setItem('cxc_issuer_info', JSON.stringify(info));
+        }
+
+        function loadIssuerInfo() {
+            const stored = localStorage.getItem('cxc_issuer_info');
+            if (stored) {
+                const info = JSON.parse(stored);
+                if (info.name) document.getElementById('issuer-name').value = info.name;
+                if (info.rfc) document.getElementById('issuer-rfc').value = info.rfc;
+                if (info.address) document.getElementById('issuer-address').value = info.address;
+                if (info.city) document.getElementById('issuer-city').value = info.city;
+                if (info.taxRate) {
+                    document.getElementById('invoice-tax-rate').value = info.taxRate;
+                    calculateInvoiceTotals(); // Recalculate with loaded rate
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+.venv\Scripts\python
+.exe : [2025-11-27 
+14:18:43,530] INFO 
+in logging_config: 
+=== Logging System 
+Initialized ===
+En línea: 1 
+Carácter: 1
++ .venv\Scripts\pyth
+on.exe 
+create_prof_user.py 
+> output_create_user
+_6.t ...
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: ([202   
+ 5-11-27 14:...I    
+nitialized ===:    
+String) [], Rem    
+oteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+APP.MODELS LOADED FULLY
+User created.
+Professional profile created.

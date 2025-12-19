@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100">
+    <!-- Sidebar -->
+    {% include 'sidebar.html' %}
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-900">Configuración del Chatbot</h1>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm text-gray-500">ID: ...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Scrollable Area -->
+        <main class="flex-1 overflow-y-auto p-6">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Left Column: Configuration -->
+                <div class="space-y-6">
+
+                    <!-- General Settings -->
+                    {% include 'components/chatbot_config_form.html' %}
+
+                    <!-- Documents Upload -->
+                    {% include 'components/chatbot_documents.html' %}
+
+                    <!-- URLs Indexing -->
+                    {% include 'components/chatbot_urls.html' %}
+
+                </div>
+
+                <!-- Right Column: Test Chatbot -->
+                {% include 'components/chatbot_test.html' %}
+            </div>
+        </main>
+    </div>
+</div>
+
+<style>
+    /* Custom Scrollbar for lists */
+    #documentsList::-webkit-scrollbar,
+    #urlsList::-webkit-scrollbar,
+    #testChatMessages::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #documentsList::-webkit-scrollbar-track,
+    #urlsList::-webkit-scrollbar-track,
+    #testChatMessages::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    #documentsList::-webkit-scrollbar-thumb,
+    #urlsList::-webkit-scrollbar-thumb,
+    #testChatMessages::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+    }
+
+    #documentsList::-webkit-scrollbar-thumb:hover,
+    #urlsList::-webkit-scrollbar-thumb:hover,
+    #testChatMessages::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+
+    .drag-over {
+        border-color: #2563eb !important;
+        background-color: #eff6ff !important;
+    }
+</style>
+
+<script src="{{ url_for('static', filename='js/chatbot-config.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,46 @@
+Logging in as prof@test.com...
+Login successful
+python : Traceback 
+(most recent call 
+last):
+En línea: 1 
+Carácter: 29
++ ... prof_user.py; 
+python 
+test_deep_audit.py 
+> test_results_final
+.txt 2>&1
++                   
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: (Trac   
+ eback (most rec    
+ent call last):    
+:String) [], Re    
+moteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+  File "C:\asesoriai
+mss.io\test_deep_aud
+it.py", line 98, in 
+<module>
+    token, user_id 
+= login()
+                    
+ ^^^^^^^
+  File "C:\asesoriai
+mss.io\test_deep_aud
+it.py", line 17, in 
+login
+    return data['acc
+ess_token'], 
+data['user']['id']
+           
+~~~~^^^^^^^^^^^^^^^^
+KeyError: 
+'access_token'

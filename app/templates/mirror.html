@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador AI de Peinados - Diseño Neón Oscuro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Import Sci-Fi Font 'Orbitron' and Neon Font 'Monoton' -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Monoton&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ff88;
+            /* ... existing ... */
+            --secondary-color: #00ccff;
+            --bg-color: #0a0a0a;
+            --card-bg: #111111;
+            --text-color: #ffffff;
+            --border-color: #333;
+        }
+
+        /* ... existing ... */
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 10vh;
+        }
+
+        /* ... existing ... */
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            margin: 0;
+
+            /* OUTLINE ONLY EFFECT (Hollow Tube) */
+            color: transparent;
+            -webkit-text-stroke: 3px #fffacd;
+            /* The "Tube" */
+
+            /* GLOW from the outline */
+            text-shadow:
+                0 0 10px #FFD700,
+                0 0 20px #FFD700,
+                0 0 40px #DAA520,
+                0 0 80px #FF8C00;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        /* --- Layout System --- */
+        .responsive-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .layout-row {
+            display: flex;
+            width: 100%;
+            gap: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Top Row: Camera & Result (Side by Side) */
+        .top-row .card {
+            flex: 1;
+            /* 50% width roughly */
+        }
+
+        /* Middle Row: Styles & Colors (Full Width Stacked) */
+        .middle-row {
+            flex-direction: column;
+        }
+
+        .middle-row .card {
+            width: 100%;
+        }
+
+        /* Bottom Row: Full width */
+        .layout-row.bottom-row .card {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .layout-row {
+                flex-direction: column;
+            }
+
+            .top-row .card,
+            .middle-row .card {
+                width: 100%;
+            }
+        }
+
+        /* --- Card Components --- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 0;
+            /* Handled by layout gap */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.1);
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin: 0 0 1.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 1rem;
+        }
+
+        /* --- Camera Area --- */
+        .camera-upload-area {
+            border: 2px dashed #333;
+            border-radius: 15px;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            /* Square */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: border-color 0.3s, background 0.3s;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .camera-upload-area:hover {
+            border-color: var(--secondary-color);
+            background-color: rgba(0, 204, 255, 0.05);
+        }
+
+        .camera-icon-circle {
+            background: #222;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #555;
+            transition: all 0.3s;
+            z-index: 2;
+        }
+
+        .camera-upload-area:hover .camera-icon-circle {
+            background: var(--secondary-color);
+            color: #000;
+            box-shadow: 0 0 20px var(--secondary-color);
+        }
+
+        /* --- Selection Grids --- */
+        .options-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding: 1rem 0.5rem;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        .options-grid::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .options-grid::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .options-grid::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        /* --- Carousel Nav --- */
+        .carousel-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-arrow {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
+            color: #fff;
+            width: 100px;
+            height: 100px;
+            font-size: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .carousel-wrapper:hover .nav-arrow {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .nav-arrow:hover {
+            background: var(--primary-color);
+            color: black;
+            transform: scale(1.1);
+        }
+
+        .nav-prev {
+            left: -40px;
+        }
+
+        .nav-next {
+            right: -40px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-arrow {
+                opacity: 1;
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+                background: rgba(0, 0, 0, 0.6);
+            }
+
+            .nav-prev {
+                left: -20px;
+            }
+
+            .nav-next {
+                right: -20px;
+            }
+        }
+
+        /* --- Option Item --- */
+        .option {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid transparent;
+            text-align: center;
+            padding-bottom: 0.5rem;
+            transition: all 0.3s;
+            flex: 0 0 250px;
+            /* Fixed width */
+            width: 250px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .option img,
+        .option .color-block {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            background: #000;
+            margin-bottom: 0.5rem;
+        }
+
+        .option p {
+            margin: 0;
+            padding: 0 0.5rem;
+            font-size: 0.9rem;
+            color: #ccc;
+            height: 40px;
+            /* Fixed text height area */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option:hover {
+            border-color: var(--secondary-color);
+        }
+
+        :root {
+            --primary-color: #00ff88;
+            --secondary-color: #00ccff;
+            --bg-color: #0a0a0a;
+            --text-color: #fff;
+            --card-bg: #111;
+
+            /* Dynamic Config */
+            --selection-width: 4px;
+            --selection-glow: 10px;
+        }
+
+        /* ... */
+
+        .option.selected {
+            border: var(--selection-width) solid var(--primary-color);
+            box-shadow: 0 0 var(--selection-glow) rgba(var(--primary-rgb), 0.4);
+            transform: scale(1.05);
+        }
+
+        /* ... */
+
+
+
+        .option.selected p {
+            color: var(--primary-color) !important;
+            font-weight: bold;
+            text-shadow: 0 0 var(--selection-glow) var(--primary-color);
+        }
+
+        /* --- Result Area --- */
+        .result-area {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #000;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            border: 1px solid #222;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .result-area.empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Inputs & Buttons --- */
+        textarea {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            resize: none;
+            height: 100px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #333;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            background: #444;
+        }
+
+        .btn-generate {
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            color: #000;
+            font-size: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.4);
+            max-width: 600px;
+            margin: 2rem auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-generate:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 50px rgba(var(--primary-rgb), 0.6);
+        }
+
+        .btn-generate:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* --- Navigation Links --- */
+        .nav-link {
+            position: absolute;
+            top: 2rem;
+            color: #555;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .nav-back {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            z-index: 20;
+        }
+
+        .nav-admin {
+            position: absolute;
+            top: 2rem;
+            /* Default styles for all admin-like buttons */
+            border: 2px solid var(--primary-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.6);
+            color: white !important;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .nav-pos-control {
+            right: 16rem;
+            /* Control is now Inner (Left) */
+        }
+
+        .nav-pos-admin {
+            right: 2rem;
+        }
+
+        .nav-pos-asesora {
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            right: auto;
+
+            /* Circular Style */
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            text-align: center;
+
+            border-color: var(--secondary-color);
+            color: var(--secondary-color) !important;
+        }
+
+        .nav-pos-asesora i {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            margin-right: 0;
+        }
+
+        .nav-pos-asesora:hover {
+            transform: translateY(-50%) scale(1.1) !important;
+            background: var(--secondary-color) !important;
+            box-shadow: 0 0 40px var(--secondary-color) !important;
+        }
+
+        .nav-admin:hover {
+            background: var(--primary-color);
+            color: #000 !important;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--primary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-network"></div>
+
+    <a href="/mis-finanzas" class="nav-link nav-back">
+        <i class="fas fa-arrow-left"></i> Volver
+    </a>
+
+    <!-- Removed floating Asesora IA link -->
+
+    <a href="/api/mirror/control-pantalla" class="nav-link nav-admin nav-pos-control">
+        <i class="fas fa-sliders-h"></i> CONTROL
+    </a>
+
+    <a href="/api/mirror/admin" class="nav-link nav-admin nav-pos-admin">
+        <i class="fas fa-user-shield"></i> ADMIN
+    </a>
+
+    <div class="container">
+        <header>
+            <h1 class="title">MIRROR IA</h1>
+            <p class="subtitle">Transforma tu look con inteligencia artificial</p>
+        </header>
+
+        <main class="responsive-layout">
+            <!-- Row 1: Camera & Result -->
+            <div class="layout-row top-row" style="display: flex; align-items: center;">
+
+                <!-- LEFT COLUMN: Asesora IA (Symmetric to Right Column) -->
+                <div
+                    style="flex: 0 0 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0; gap: 2rem;">
+
+                    <a href="/api/mirror/imagina-ia" class="animate-pulse" style="
+                            text-decoration: none;
+                            display: flex; 
+                            flex-direction: column; 
+                            align-items: center; 
+                            justify-content: center;
+                            width: 220px; 
+                            height: 220px; 
+                            border-radius: 50%; 
+                            /* Cyan/Blue Theme for Asesora */
+                            border: 4px solid rgba(0, 204, 255, 0.5); 
+                            box-shadow: 0 0 50px rgba(0, 204, 255, 0.2);
+                            background: radial-gradient(circle, rgba(0,204,255,0.1) 0%, rgba(0,0,0,1) 100%);
+                            color: #00ccff;
+                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        "
+                        onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 70px rgba(0, 204, 255, 0.6)'; this.style.background='#00ccff'; this.style.color='#000';"
+                        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 0 50px rgba(0, 204, 255, 0.2)'; this.style.background='radial-gradient(circle, rgba(0,204,255,0.1) 0%, rgba(0,0,0,1) 100%)'; this.style.color='#00ccff';">
+                        <i class="fas fa-brain" style="font-size: 4rem; margin-bottom: 0.5rem;"></i>
+                        <span
+                            style="font-size: 1.2rem; letter-spacing: 2px; font-weight: bold; font-family:'Orbitron';">ASESORA
+                            IA</span>
+                    </a>
+
+                </div>
+
+                <!-- MIDDLE COLUMN: Camera/Result -->
+                <section class="card step-1"
+                    style="position: relative; overflow: hidden; min-height: 500px; flex: 2; border: 1px solid #333; display: flex; flex-direction: column;">
+                    <h2 class="step-title">1. Tu Nuevo Look</h2>
+
+                    <!-- MODE: UPLOAD (Default/Standby) -->
+                    <div id="uploadModeUI" style="flex-grow: 1; display: flex; flex-direction: column;">
+                        <input type="file" id="fileInput" hidden accept="image/*" onchange="handleFileUpload(this)">
+
+                        <!-- MODE: STANDBY (LOGO) -->
+                        <div id="standbyUI"
+                            style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;">
+
+                            <!-- Logo Container -->
+                            <div class="w-full max-w-[350px] aspect-square relative flex items-center justify-center">
+                                <img id="salonLogoImg" src="/static/uploads/mirror/salon_logo.png"
+                                    onerror="this.src='https://placehold.co/400x400/1a1b26/FFF?text=Tu+Logo+Aquí'"
+                                    alt="Logo Salón"
+                                    style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,215,0,0.3));">
+                            </div>
+
+                            <!-- Instructions text (optional) -->
+                            <p style="text-align:center; color:#666; font-size: 0.9rem;">
+                                <i class="fas fa-info-circle"></i> Presiona el botón principal a la derecha para activar
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- MODE: CAMERA & RESULT -->
+                    <div id="cameraModeUI"
+                        style="display: none; flex-grow: 1; width: 100%; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+
+                        <!-- VIEWPORT: Holds Video, Canvas, Result Image, Loading Overlay -->
+                        <div
+                            style="position: relative; width: 100%; height: 100%; min-height: 0; background: black; border-radius: 12px; overflow: hidden;">
+
+                            <!-- 1. Live Camera -->
+                            <video id="cameraFeed" autoplay playsinline
+                                style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></video>
+
+                            <!-- 2. Captured Photo (Canvas) -->
+                            <canvas id="cameraCanvas"
+                                style="display: none; width: 100%; height: 100%; object-fit: cover;"></canvas>
+
+                            <!-- 3. Result Image (Injected here) -->
+                            <div id="resultLayer" style="position: absolute; inset: 0; display: none; z-index: 5;">
+                                <!-- Image goes here -->
+                            </div>
+
+                            <!-- 4. Loading/Generating Overlay -->
+                            <div id="generationVideoOverlay"
+                                style="position: absolute; inset: 0; z-index: 20; opacity: 0; pointer-events: none; transition: all 0.5s ease-in-out; background: black;">
+                                <video id="loadingVideo" loop muted playsinline
+                                    style="width:100%; height:100%; object-fit: contain;">
+                                    <source src="/static/uploads/mirror/tutorial.mp4" type="video/mp4"
+                                        onerror="this.src='https://www.w3schools.com/html/mov_bbb.mp4'">
+                                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                                </video>
+                                <div
+                                    style="position:absolute; bottom:20px; left:0; right:0; text-align:center; z-index:21;">
+                                    <span
+                                        style="background:rgba(0,0,0,0.7); padding:5px 15px; border-radius:20px; color:#00ff00; font-family:'Orbitron'; font-size:0.8rem; border:1px solid #00ff00;">
+                                        GENERANDO...
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Countdown Overlay -->
+                            <div id="countdownOverlay"
+                                style="position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 30;">
+                                <span id="countdownText"
+                                    style="font-size: 8rem; font-weight: bold; color: white; text-shadow: 0 0 20px rgba(var(--primary-rgb), 0.8);">5</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RIGHT COLUMN: Actions (Matches Left Column) -->
+                <div
+                    style="flex: 0 0 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0; gap: 2rem;">
+
+                    <!-- MAIN BIG BUTTON -->
+                    <button id="btnMainAction" class="btn btn-generate animate-pulse" onclick="handleMainAction()"
+                        style="
+                            margin: 0; width: 220px; height: 220px; border-radius: 50%; font-size: 1.2rem; text-align: center; flex-direction:column; padding:0; flex-shrink:0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                            /* Default handled by JS, but inline for safety */
+                            border: 4px solid rgba(0,255,136,0.5); 
+                            box-shadow: 0 0 50px rgba(0,255,136,0.2);
+                            background: radial-gradient(circle, rgba(0,255,136,0.1) 0%, rgba(0,0,0,1) 100%);
+                            color: #00ff88;
+                        " onmouseover="
+                            if(!this.disabled){
+                                this.style.transform='scale(1.05)'; 
+                                this.style.boxShadow='0 0 70px rgba(0, 255, 136, 0.6)';
+                                this.style.background='#00ff88';
+                                this.style.color='#000';
+                            }
+                        " onmouseout="
+                            if(!this.disabled){
+                                this.style.transform='scale(1)'; 
+                                this.style.boxShadow='0 0 50px rgba(0, 255, 136, 0.2)';
+                                this.style.background='radial-gradient(circle, rgba(0,255,136,0.1) 0%, rgba(0,0,0,1) 100%)';
+                                this.style.color='#00ff88';
+                            }
+                        ">
+                        <i id="btnMainIcon" class="fas fa-camera" style="font-size:4rem; margin-bottom:1rem;"></i>
+                        <span id="btnMainText" style="font-size: 1.2rem; letter-spacing: 2px;">ACTIVAR</span>
+                    </button>
+
+                    <!-- SECONDARY ACTIONS -->
+                    <div class="flex gap-4">
+                        <button id="btnSecondary" onclick="handleSecondaryAction()"
+                            style="display: none; background: transparent; border: 1px solid #666; color: #aaa; border-radius: 20px; padding: 0.8rem 2rem; cursor: pointer; transition: all 0.2s; font-size: 1.1rem;">
+                            <i class="fas fa-times"></i> <span id="btnSecondaryText">Cancelar</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Row 2: Hairstyles & Colors -->
+            <div class="layout-row middle-row">
+                <section class="card step-2">
+                    <h2 class="step-title">2. Estilo de Peinado</h2>
+                    <div class="carousel-wrapper">
+                        <div class="nav-arrow nav-prev" onclick="scrollCarousel('hairstylesGrid', -300)">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="options-grid hairstyles-grid" id="hairstylesGrid">
+                            <!-- Items injected by JS -->
+                            <div class="option">
+                                <div class="color-block"
+                                    style="display:flex;align-items:center;justify-content:center;">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                                <p>Cargando...</p>
+                            </div>
+                        </div>
+                        <div class="nav-arrow nav-next" onclick="scrollCarousel('hairstylesGrid', 300)">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card step-3">
+                    <h2 class="step-title">3. Tono (Opcional)</h2>
+                    <div class="carousel-wrapper">
+                        <div class="nav-arrow nav-prev" onclick="scrollCarousel('colorsGrid', -300)">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="options-grid colors-grid" id="colorsGrid">
+                            <!-- Items injected by JS -->
+                            <div class="option">
+                                <div class="color-block"
+                                    style="display:flex;align-items:center;justify-content:center;">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                                <p>Cargando...</p>
+                            </div>
+                        </div>
+                        <div class="nav-arrow nav-next" onclick="scrollCarousel('colorsGrid', 300)">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Row 3: Instructions & Clothing -->
+            <div class="layout-row bottom-row">
+                <section class="card step-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="step-title" style="margin:0;">4. Personalización: Ropa y Estilo</h2>
+                        <span class="text-xs bg-green-900 text-green-300 px-2 py-1 rounded border border-green-700">
+                            <i class="fas fa-lock"></i> Identidad Preservada
+                        </span>
+                    </div>
+                    <textarea id="instructionsInput"
+                        placeholder="Escribe aquí detalles de Ropa o Estilo (Ej: Traje azul marino, camisa blanca, collar de perlas...).\n\nNOTA: Tu cara se mantendrá 100% igual."></textarea>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <button class="btn btn-generate" onclick="generateHairstyle()">
+                ✨ Generar Nuevo Look
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        // --- Carousel Logic ---
+        function scrollCarousel(gridId, offset) {
+            const grid = document.getElementById(gridId);
+            if (grid) {
+                grid.scrollBy({ left: offset, behavior: 'smooth' });
+            }
+        }
+
+        // --- State Management ---
+        let state = {
+            step: 0, // 0: Standby, 1: Camera, 2: Review, 3: Result
+            selectedHairstyle: null,
+            selectedColor: null,
+            isGenerating: false,
+            lastResultUrl: null,
+            stream: null
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMirrorItems();
+            updateMainButton(); // Initial State
+
+            // Cache bust logo
+            const logoImg = document.getElementById('salonLogoImg');
+            if (logoImg) {
+                logoImg.src = `/static/uploads/mirror/salon_logo.png?t=${new Date().getTime()}`;
+            }
+
+            // CHECK FOR AI PROMPT
+            const aiPrompt = localStorage.getItem('approvedPrompt');
+            if (aiPrompt) {
+                const instructionBox = document.getElementById('instructionsInput');
+                if (instructionBox) {
+                    instructionBox.value = aiPrompt;
+                    instructionBox.style.borderColor = 'var(--primary-color)';
+                    // Clear it so it doesn't persist forever
+                    localStorage.removeItem('approvedPrompt');
+                    // Optional: Scroll to it or flash it
+                    instructionBox.scrollIntoView({ behavior: 'smooth' });
+                    alert("✨ ¡Tu diseño personalizado ha sido cargado!");
+                }
+            }
+        });
+
+        // --- Unified Button Logic ---
+        function updateMainButton() {
+            const btn = document.getElementById('btnMainAction');
+            const icon = document.getElementById('btnMainIcon');
+            const text = document.getElementById('btnMainText');
+            const secBtn = document.getElementById('btnSecondary');
+            const secText = document.getElementById('btnSecondaryText');
+
+            // Defaults
+            secBtn.style.display = 'none';
+            btn.disabled = false;
+            btn.classList.add('animate-pulse');
+
+            // DYNAMIC STYLING
+            // Default Style (Matches Asesora: Dark/Transparent + Pulse)
+            btn.style.background = 'radial-gradient(circle, rgba(0,255,136,0.1) 0%, rgba(0,0,0,1) 100%)';
+            btn.style.color = 'var(--primary-color)'; // Green text
+            btn.style.border = '4px solid rgba(0, 255, 136, 0.5)';
+            btn.style.boxShadow = '0 0 50px rgba(0, 255, 136, 0.2)';
+
+            if (state.isGenerating) {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3rem; margin-bottom:0.5rem;"></i><span style="font-size:1rem;">GENERANDO...</span>';
+                btn.disabled = true;
+                btn.classList.remove('animate-pulse');
+                secBtn.style.display = 'none';
+                return;
+            }
+
+            // Restore structure if clobbered by loading state
+            if (!document.getElementById('btnMainIcon')) {
+                btn.innerHTML = '<i id="btnMainIcon" class="fas fa-camera" style="font-size:3rem; margin-bottom:0.5rem;"></i><span id="btnMainText" style="font-size: 1rem; letter-spacing: 1px;">ACTIVAR</span>';
+                // Re-fetch references
+                return updateMainButton();
+            }
+
+            switch (state.step) {
+                case 0: // STANDBY -> ACTIVATE
+                    icon.className = 'fas fa-camera';
+                    text.innerText = 'ACTIVAR';
+                    // secBtn hidden
+                    break;
+
+                case 1: // CAMERA -> TAKE PHOTO
+                    icon.className = 'fas fa-circle';
+                    text.innerText = 'TOMAR FOTO';
+                    // We remove overrides so it uses the dynamic theme styles
+
+                    secBtn.style.display = 'block';
+                    secText.innerText = 'Cancelar'; // Go back to Standby
+                    break;
+
+                case 2: // REVIEW -> START GENERATION
+                    icon.className = 'fas fa-play';
+                    text.innerText = 'INICIAR';
+
+                    secBtn.style.display = 'block';
+                    secText.innerText = 'Repetir'; // Retake photo
+                    break;
+
+                case 3: // RESULT -> SHARE
+                    icon.className = 'fas fa-share-alt';
+                    text.innerText = 'COMPARTIR';
+
+                    secBtn.style.display = 'block';
+                    secText.innerText = 'Reintentar'; // Reset all
+                    break;
+            }
+        }
+
+        function handleMainAction() {
+            if (state.isGenerating) return;
+
+            switch (state.step) {
+                case 0: // Activate
+                    enableCameraMode();
+                    break;
+                case 1: // Take Photo
+                    startCountdown();
+                    break;
+                case 2: // Start Generation
+                    generateHairstyle();
+                    break;
+                case 3: // Share
+                    goToSharePage();
+                    break;
+            }
+        }
+
+        function handleSecondaryAction() {
+            switch (state.step) {
+                case 1: // Cancel Camera -> Go Standby
+                    disableCameraMode();
+                    break;
+                case 2: // Retake Photo -> Go Camera
+                    state.step = 1;
+                    document.getElementById('cameraCanvas').style.display = 'none';
+                    document.getElementById('cameraFeed').style.display = 'block';
+                    updateMainButton();
+                    break;
+                case 3: // Retry All -> Reset
+                    resetMirror();
+                    break;
+            }
+        }
+
+        // --- Core Functions ---
+
+        async function loadMirrorItems() {
+            const hGrid = document.getElementById('hairstylesGrid');
+            const cGrid = document.getElementById('colorsGrid');
+
+            try {
+                const response = await fetch('/api/mirror/items');
+                if (!response.ok) throw new Error('Failed loading items');
+                const items = await response.json();
+
+                hGrid.innerHTML = '';
+                cGrid.innerHTML = '';
+
+                if (items.length === 0) {
+                    hGrid.innerHTML = '<p style="padding:1rem; color:#555;">No hay estilos disponibles.</p>';
+                }
+
+                items.forEach(item => {
+                    const el = createOptionElement(item);
+                    if (item.category === 'hairstyle') {
+                        hGrid.appendChild(el);
+                    } else if (item.category === 'color') {
+                        cGrid.appendChild(el);
+                    }
+                });
+
+            } catch (err) {
+                console.error(err);
+                hGrid.innerHTML = '<p style="color:red; padding:1rem;">Error de conexión.</p>';
+                cGrid.innerHTML = '<p style="color:red; padding:1rem;">Error de conexión.</p>';
+            }
+        }
+
+        function createOptionElement(item) {
+            const div = document.createElement('div');
+            div.className = 'option';
+            div.onclick = () => selectItem(div, item);
+
+            let visualContent = `<div class="color-block" style="background:#222; display:flex; align-items:center; justify-content:center;"><span>?</span></div>`;
+
+            if (item.image_url) {
+                visualContent = `<img src="${item.image_url}" alt="${item.name}" loading="lazy">`;
+            } else if (item.color_code) {
+                visualContent = `<div class="color-block" style="background-color: ${item.color_code};" title="${item.name}"></div>`;
+            }
+
+            div.innerHTML = `${visualContent}<p>${item.name}</p>`;
+            return div;
+        }
+
+        function selectItem(element, item) {
+            // Determine category
+            if (item.category === 'hairstyle') {
+                // Toggle Logic
+                if (state.selectedHairstyle && state.selectedHairstyle.name === item.name) {
+                    state.selectedHairstyle = null; // Deselect
+                    element.classList.remove('selected');
+                } else {
+                    state.selectedHairstyle = item;
+                    updateSelectionUI(element, 'hairstylesGrid');
+                }
+            } else {
+                // Toggle Logic
+                if (state.selectedColor && state.selectedColor.name === item.name) {
+                    state.selectedColor = null; // Deselect
+                    element.classList.remove('selected');
+                } else {
+                    state.selectedColor = item;
+                    updateSelectionUI(element, 'colorsGrid');
+                }
+            }
+        }
+
+        function updateSelectionUI(element, gridId) {
+            const grid = document.getElementById(gridId);
+            grid.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        // --- Camera Logic ---
+
+        async function enableCameraMode() {
+            const video = document.getElementById('cameraFeed');
+            const standbyUI = document.getElementById('standbyUI');
+            const cameraUI = document.getElementById('cameraModeUI');
+
+            try {
+                // Hide Logo immediately
+                standbyUI.style.display = 'none';
+                cameraUI.style.display = 'flex';
+
+                state.stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = state.stream;
+
+                state.step = 1; // Camera Mode
+                updateMainButton();
+
+            } catch (err) {
+                console.error("Error accessing camera:", err);
+                alert("No se pudo acceder a la cámara. Por favor verifica los permisos.");
+                // Revert
+                standbyUI.style.display = 'flex';
+                cameraUI.style.display = 'none';
+            }
+        }
+
+        function disableCameraMode() {
+            const standbyUI = document.getElementById('standbyUI');
+            const cameraUI = document.getElementById('cameraModeUI');
+
+            if (state.stream) {
+                state.stream.getTracks().forEach(track => track.stop());
+                state.stream = null;
+            }
+
+            cameraUI.style.display = 'none';
+            standbyUI.style.display = 'flex';
+
+            state.step = 0; // Standby
+            updateMainButton();
+        }
+
+        function startCountdown() {
+            const overlay = document.getElementById('countdownOverlay');
+            const countText = document.getElementById('countdownText');
+            let count = 5;
+
+            overlay.style.display = 'flex';
+            countText.innerText = count;
+
+            // Hide buttons during countdown? No, let them see it
+
+            const timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countText.innerText = count;
+                } else {
+                    clearInterval(timer);
+                    overlay.style.display = 'none';
+                    capturePhoto();
+                }
+            }, 1000);
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('cameraFeed');
+            const canvas = document.getElementById('cameraCanvas');
+            const context = canvas.getContext('2d');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.translate(canvas.width, 0);
+            context.scale(-1, 1);
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Hide video, show canvas
+            video.style.display = 'none';
+            canvas.style.display = 'block';
+
+            state.step = 2; // REVIEW (Ready to Start)
+            updateMainButton();
+        }
+
+        // --- Generation Logic ---
+
+        async function generateHairstyle() {
+            if (state.step !== 2) return; // Safety
+
+            const canvas = document.getElementById('cameraCanvas');
+            const instructions = document.getElementById('instructionsInput').value;
+
+            state.isGenerating = true;
+            updateMainButton();
+
+            // Overlay setup
+            const resultLayer = document.getElementById('resultLayer');
+            const videoOverlay = document.getElementById('generationVideoOverlay');
+            const loadingVideo = document.getElementById('loadingVideo');
+
+            if (loadingVideo) loadingVideo.play().catch(e => console.log("Auto-play prevented"));
+            videoOverlay.style.opacity = '1';
+            videoOverlay.style.pointerEvents = 'all';
+
+            try {
+                // Convert canvas to blob
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
+                const formData = new FormData();
+                formData.append('image', blob, 'capture.png');
+                if (state.selectedHairstyle) formData.append('hairstyle', state.selectedHairstyle.prompt || state.selectedHairstyle.name);
+                if (state.selectedColor) formData.append('color', state.selectedColor.prompt || state.selectedColor.name);
+                formData.append('instructions', instructions);
+
+                const response = await fetch('/api/mirror/generate', {
+                    method: 'POST', body: formData
+                });
+
+                if (!response.ok) throw new Error('Server error');
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    // Show result image
+                    const resultImg = document.createElement('img');
+                    resultImg.src = data.result_url;
+                    resultImg.style.width = '100%';
+                    resultImg.style.height = '100%';
+                    resultImg.style.objectFit = 'contain';
+
+                    // Clear old
+                    resultLayer.innerHTML = '';
+                    resultLayer.appendChild(resultImg);
+                    resultLayer.style.display = 'block';
+
+                    setTimeout(() => {
+                        videoOverlay.style.opacity = '0';
+                        videoOverlay.style.pointerEvents = 'none';
+                        if (loadingVideo) loadingVideo.pause();
+                    }, 500);
+
+                    state.lastResultUrl = data.result_url;
+                    state.step = 3; // RESULT
+                } else {
+                    throw new Error(data.error);
+                }
+
+            } catch (error) {
+                console.error('Generation Failed:', error);
+                alert('Error: ' + error.message);
+                videoOverlay.style.opacity = '0'; videoOverlay.style.pointerEvents = 'none';
+                state.step = 2; // Back to Review
+            } finally {
+                state.isGenerating = false;
+                updateMainButton();
+            }
+        }
+
+        function goToSharePage() {
+            if (state.lastResultUrl) {
+                window.location.href = `/fotografia?img=${encodeURIComponent(state.lastResultUrl)}`;
+            }
+        }
+
+        function resetMirror() {
+            // Soft reset without reload
+            state.step = 0;
+            state.selectedHairstyle = null;
+            state.selectedColor = null;
+            state.lastResultUrl = null;
+
+            const resultLayer = document.getElementById('resultLayer');
+            resultLayer.style.display = 'none';
+            resultLayer.innerHTML = ''; // Clear image
+
+            document.getElementById('cameraCanvas').style.display = 'none';
+            document.getElementById('cameraFeed').style.display = 'block';
+
+            disableCameraMode(); // Go back to standby
+            updateMainButton();
+        }
+
+
+        // --- Config Polling ---
+        function hexToRgb(hex) {
+            // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+            var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+                return r + r + g + g + b + b;
+            });
+
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16) : null;
+        }
+
+        function pollConfig() {
+            fetch('/api/mirror/config?t=' + new Date().getTime())
+                .then(res => res.json())
+                .then(config => {
+                    const root = document.documentElement;
+                    if (config.selection_thickness) {
+                        root.style.setProperty('--selection-width', config.selection_thickness + 'px');
+                    }
+                    if (config.selection_glow) {
+                        root.style.setProperty('--selection-glow', config.selection_glow + 'px');
+                    }
+                    if (config.primary_color) {
+                        root.style.setProperty('--primary-color', config.primary_color);
+                        const rgb = hexToRgb(config.primary_color);
+                        if (rgb) root.style.setProperty('--primary-rgb', rgb);
+                    }
+                    if (config.secondary_color) {
+                        root.style.setProperty('--secondary-color', config.secondary_color);
+                    }
+                })
+                .catch(err => console.error("Poll error", err));
+        }
+
+        // Poll every 2 seconds
+        setInterval(pollConfig, 2000);
+        pollConfig(); // Initial fetch
+    </script>
+</body>
+
+</html>

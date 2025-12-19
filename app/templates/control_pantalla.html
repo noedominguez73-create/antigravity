@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Pantalla V3 - Mirror IA</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ff88;
+            --secondary-color: #00ccff;
+            --bg-color: #0a0a0a;
+            --card-bg: #111;
+            --text-color: #fff;
+            --border-color: #333;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background: var(--primary-color);
+            color: black;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-secondary {
+            border-color: #666;
+            color: #aaa;
+        }
+
+        .btn-secondary:hover {
+            background: #333;
+            color: #fff;
+            box-shadow: none;
+            border-color: #fff;
+        }
+
+        .placeholder-icon {
+            font-size: 5rem;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position: absolute; top: 2rem; right: 2rem; display: flex; gap: 10px; z-index: 100;">
+        <a href="/mirror" class="btn btn-secondary" style="margin: 0;">
+            <i class="fas fa-arrow-left"></i> Volver al Espejo
+        </a>
+        <a href="/api/mirror/admin" class="btn btn-secondary" style="margin: 0;">
+            <i class="fas fa-shield-alt"></i> Ir al Admin
+        </a>
+    </div>
+    <div class="container">
+        <header>
+            <h1 class="title">CONTROL DE PANTALLA</h1>
+            <p style="color: #666;">Panel de Control Remoto</p>
+        </header>
+
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; width: 100%;">
+
+            <!-- VIDEO PROMO -->
+            <section class="card">
+                <i class="fas fa-video placeholder-icon" style="font-size: 3rem; color: var(--secondary-color);"></i>
+                <h2 style="margin-bottom: 1rem; color: var(--secondary-color);">Video Promocional</h2>
+                <p style="color: #888; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Reemplaza el video tutorial que se muestra durante la generación.
+                </p>
+
+                <input type="file" id="promoVideoFile" hidden accept="video/mp4"
+                    onchange="updateFileName(this, 'videoDisplay')">
+
+                <div style="margin-bottom: 1rem;">
+                    <button onclick="document.getElementById('promoVideoFile').click()" class="btn btn-secondary"
+                        style="font-size: 0.9rem; padding: 0.5rem 1.5rem;">
+                        <i class="fas fa-folder-open"></i> Seleccionar MP4
+                    </button>
+                    <div id="videoDisplay" style="color: #666; font-size: 0.8rem; margin-top: 0.5rem;">Ningún archivo
+                    </div>
+                </div>
+
+                <button onclick="uploadPromoVideo()" id="uploadVideoBtn" class="btn"
+                    style="width: 100%; justify-content: center;">
+                    <i class="fas fa-cloud-upload-alt"></i> Subir Video
+                </button>
+            </section>
+
+            <!-- LOGO SALON -->
+            <section class="card">
+                <i class="fas fa-image placeholder-icon" style="font-size: 3rem; color: var(--primary-color);"></i>
+                <!-- TITLE -->
+                <h1
+                    style="color: white; font-size: 2.5rem; margin-bottom: 0.5rem; text-shadow: 0 0 20px var(--primary-color);">
+                    <i class="fas fa-sliders-h"></i> CONTROL DE PANTALLA V3
+                </h1>
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 2rem;">
+                    Configuración en tiempo real del Espejo Inteligente.
+                </p>
+                <h2 style="margin-bottom: 1rem; color: var(--primary-color);">Logo del Salón</h2>
+                <p style="color: #888; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Actualiza el logo que aparece en la pantalla de espera.
+                </p>
+
+                <input type="file" id="salonLogoFile" hidden accept="image/*"
+                    onchange="updateFileName(this, 'logoDisplay')">
+
+                <div style="margin-bottom: 1rem;">
+                    <button onclick="document.getElementById('salonLogoFile').click()" class="btn btn-secondary"
+                        style="font-size: 0.9rem; padding: 0.5rem 1.5rem;">
+                        <i class="fas fa-folder-open"></i> Seleccionar Imagen
+                    </button>
+                    <div id="logoDisplay" style="color: #666; font-size: 0.8rem; margin-top: 0.5rem;">Ningún archivo
+                    </div>
+                </div>
+
+                <button onclick="uploadSalonLogo()" id="uploadLogoBtn" class="btn active"
+                    style="width: 100%; justify-content: center; border-color: var(--primary-color);">
+                    <i class="fas fa-cloud-upload-alt"></i> Subir Logo
+                </button>
+            </section>
+        </div>
+
+        <!-- THICKNESS CONTROL -->
+        <section class="card">
+            <i class="fas fa-border-style placeholder-icon" style="font-size: 3rem; color: #fff;"></i>
+            <h2 style="margin-bottom: 1rem; color: #fff;">Grosor de Selección</h2>
+            <p style="color: #888; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                Ajusta el grosor del borde verde al seleccionar un estilo.
+            </p>
+
+            <div style="display: flex; align-items: center; gap: 1rem; width: 100%; margin-bottom: 1rem;">
+                <span style="color: #666; font-size: 0.8rem;">1px</span>
+                <input type="range" id="thicknessSlider" min="1" max="15" value="4"
+                    oninput="updateThicknessValue(this.value)"
+                    style="flex-grow: 1; accent-color: var(--primary-color);">
+                <span style="color: #666; font-size: 0.8rem;">15px</span>
+            </div>
+
+            <div style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 1rem;">
+                <span id="thicknessDisplay">4</span>px
+            </div>
+
+            <div style="width: 100px; height: 100px; border: 4px solid var(--primary-color); border-radius: 10px; margin: 0 auto; transition: all 0.2s;"
+                id="previewBox"></div>
+        </section>
+
+        <!-- COLOR CONTROL -->
+        <section class="card">
+            <i class="fas fa-palette placeholder-icon" style="font-size: 3rem; color: #fff;"></i>
+            <h2 style="margin-bottom: 1rem; color: #fff;">Temas de Color</h2>
+            <p style="color: #888; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                Personaliza los colores del espejo.
+            </p>
+
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+                <!-- Primary -->
+                <div style="display:flex; flex-direction:column; align-items:center;">
+                    <label style="color:#aaa; font-size:0.8rem; margin-bottom:0.5rem;">Primario (Brillo)</label>
+                    <input type="color" id="primaryColorInput" value="#00ff88" oninput="updateColors()"
+                        style="width:50px; height:50px; border:none; border-radius:10px; cursor:pointer;">
+                </div>
+                <!-- Secondary -->
+                <div style="display:flex; flex-direction:column; align-items:center;">
+                    <label style="color:#aaa; font-size:0.8rem; margin-bottom:0.5rem;">Secundario (Detalles)</label>
+                    <input type="color" id="secondaryColorInput" value="#00ccff" oninput="updateColors()"
+                        style="width:50px; height:50px; border:none; border-radius:10px; cursor:pointer;">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                <button onclick="setTheme('#00ff88', '#00ccff')" class="btn"
+                    style="padding:0.5rem; width:40px; height:40px; background:#00ff88; border:2px solid #fff;"></button>
+                <button onclick="setTheme('#ff00de', '#00ffff')" class="btn"
+                    style="padding:0.5rem; width:40px; height:40px; background:#ff00de; border:2px solid #fff;"></button>
+                <button onclick="setTheme('#ffae00', '#ff4400')" class="btn"
+                    style="padding:0.5rem; width:40px; height:40px; background:#ffae00; border:2px solid #fff;"></button>
+                <button onclick="setTheme('#0044ff', '#00d5ff')" class="btn"
+                    style="padding:0.5rem; width:40px; height:40px; background:#0044ff; border:2px solid #fff;"></button>
+                <button onclick="setTheme('#ff0000', '#ffaaaa')" class="btn"
+                    style="padding:0.5rem; width:40px; height:40px; background:#ff0000; border:2px solid #fff;"></button>
+                <!-- Gold/Fire Preset -->
+                <button onclick="setTheme('#FFAE00', '#FF4400')" class="btn"
+                    style="padding:0.5rem; width:40px; height:40px; background:#FFAE00; border:2px solid #fff;"></button>
+            </div>
+            <p style="color:#666; font-size:0.8rem; margin-top:0.5rem;">Presets Rápidos</p>
+
+            <button onclick="forceSaveConfig()" class="btn"
+                style="width: 100%; margin: 2rem 0 0 0; justify-content: center; background: var(--primary-color); color: #000; font-weight: bold;">
+                <i class="fas fa-save"></i> GUARDAR Y APLICAR
+            </button>
+        </section>
+
+        <!-- AGENT AVATAR CONTROL -->
+        <section class="card">
+            <i class="fas fa-user-astronaut placeholder-icon" style="font-size: 3rem; color: #fff;"></i>
+            <h2 style="margin-bottom: 1rem; color: #fff;">Avatar del Agente</h2>
+            <p style="color: #888; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                Foto del estilista para la animación de video (Debe ser URL pública para D-ID).
+            </p>
+
+            <div style="margin-bottom: 1.5rem;">
+                <img id="avatarPreview" src="" alt="Avatar"
+                    style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); box-shadow: 0 0 20px rgba(0,255,136,0.3);">
+            </div>
+
+            <div style="width: 100%; margin-bottom: 1rem;">
+                <label style="color:#aaa; font-size:0.8rem; display:block; margin-bottom:0.5rem; text-align:left;">URL
+                    de Imagen (JPG/PNG)</label>
+                <input type="text" id="avatarUrlInput" placeholder="https://ejemplo.com/foto.jpg"
+                    style="width: 100%; padding: 0.8rem; background: #222; border: 1px solid #444; color: white; border-radius: 10px; box-sizing: border-box;"
+                    oninput="document.getElementById('avatarPreview').src = this.value">
+            </div>
+
+            <button onclick="forceSaveConfig()" class="btn"
+                style="width: 100%; justify-content: center; background: var(--secondary-color); color: #000; font-weight: bold;">
+                <i class="fas fa-sync"></i> ACTUALIZAR AVATAR
+            </button>
+        </section>
+
+        <!-- AGENT PERSONALITY & VOICE CONTROL -->
+        <section class="card">
+            <i class="fas fa-brain placeholder-icon" style="font-size: 3rem; color: #fff;"></i>
+            <h2 style="margin-bottom: 1rem; color: #fff;">Personalidad y Voz</h2>
+            <p style="color: #888; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                Define cómo habla tu agente y qué voz utiliza.
+            </p>
+
+            <!-- Persona Prompt -->
+            <div style="width: 100%; margin-bottom: 1.5rem; text-align: left;">
+                <label style="color:var(--primary-color); font-size:0.9rem; margin-bottom:0.5rem; display:block;">Guion
+                    / Personalidad:</label>
+                <textarea id="personaPrompt" rows="6"
+                    placeholder="Eres una estilista experta en bodas. Pregunta siempre si es de día o de noche..."
+                    style="width: 100%; padding: 0.8rem; background: #222; border: 1px solid #444; color: white; border-radius: 10px; box-sizing: border-box; resize: vertical; font-family: inherit; line-height: 1.4;"></textarea>
+                <div style="font-size: 0.7rem; color: #666; margin-top: 5px;">
+                    * Define tus frases clave, estilo y preguntas obligatorias aquí.
+                </div>
+            </div>
+
+            <!-- Voice Name -->
+            <div style="width: 100%; margin-bottom: 1rem; text-align: left;">
+                <label style="color:var(--secondary-color); font-size:0.9rem; margin-bottom:0.5rem; display:block;">Voz
+                    Preferida (V3):</label>
+                <select id="voiceSelectV3"
+                    style="width: 100%; padding: 0.8rem; background: #222; border: 1px solid #444; color: white; border-radius: 10px; box-sizing: border-box; cursor: pointer;">
+                    <option value="">-- Automática (Recomendado) --</option>
+                    <option value="Microsoft Sabina">Microsoft Sabina (México)</option>
+                    <option value="Microsoft Helena">Microsoft Helena (España)</option>
+                    <option value="Google español">Google Español</option>
+                    <option value="Paulina">Paulina (México)</option>
+                    <option value="Monica">Monica (España)</option>
+                    <option value="Jorge">Jorge (España)</option>
+                    <option value="Zephyr">Zephyr (Mujer - Brillo)</option>
+                    <option value="Puck">Puck (Hombre - Optimista)</option>
+                    <option value="Charon">Charon (Hombre - Informativa)</option>
+                    <option value="Achernar">Achernar (Mujer - Suave)</option>
+                    <option value="Alnilam">Alnilam (Hombre - Firme)</option>
+                    <option value="Achird">Achird (Hombre - Amistoso)</option>
+                    <option value="Sadachbia">Sadachbia (Hombre - Animada)</option>
+                    <option value="Sulafat">Sulafat (Mujer - Cálida)</option>
+                    <option value="D-ID">Avatar D-ID (Video)</option>
+                </select>
+                <div style="font-size: 0.7rem; color: #666; margin-top: 5px;">
+                    * Selecciona la voz que mejor se adapte a tu marca.
+                </div>
+            </div>
+
+            <!-- Voice Detection Button -->
+            <button onclick="detectAndPopulateVoices()" class="btn"
+                style="width: 100%; margin-bottom: 2rem; justify-content: center; background: #ff4757; color: white; font-size: 1.1rem; padding: 15px; border: 2px solid white; box-shadow: 0 0 15px rgba(255, 71, 87, 0.5);">
+                <i class="fas fa-sync fa-spin-hover"></i> 🔄 DETECTAR VOCES INSTALADAS
+            </button>
+
+            <button onclick="forceSaveConfig()" class="btn"
+                style="width: 100%; justify-content: center; background: linear-gradient(90deg, #ff00de, #00ffff); color: #fff; font-weight: bold;">
+                <i class="fas fa-save"></i> GUARDAR PERSONALIDAD
+            </button>
+        </section>
+    </div>
+
+
+    </div>
+
+    <script>
+        // Init
+        fetch('/api/mirror/config').then(res => res.json()).then(data => {
+            if (data.selection_thickness) {
+                document.getElementById('thicknessSlider').value = data.selection_thickness;
+                updateThicknessValue(data.selection_thickness, false); // False = No auto save on init
+            }
+            if (data.primary_color) {
+                document.getElementById('primaryColorInput').value = data.primary_color;
+                // Update local preview vars if we want, but for now just input
+                document.documentElement.style.setProperty('--primary-color', data.primary_color);
+            }
+            if (data.secondary_color) {
+                document.getElementById('secondaryColorInput').value = data.secondary_color;
+                document.documentElement.style.setProperty('--secondary-color', data.secondary_color);
+            }
+            if (data.stylist_avatar_url) {
+                document.getElementById('avatarUrlInput').value = data.stylist_avatar_url;
+                document.getElementById('avatarPreview').src = data.stylist_avatar_url;
+            }
+            if (data.stylist_persona_prompt) {
+                document.getElementById('personaPrompt').value = data.stylist_persona_prompt;
+            }
+            if (data.stylist_voice_name) {
+                document.getElementById('voiceSelectV3').value = data.stylist_voice_name;
+            }
+        });
+
+        function setTheme(primary, secondary) {
+            document.getElementById('primaryColorInput').value = primary;
+            document.getElementById('secondaryColorInput').value = secondary;
+
+            // Update visuals immediately
+            document.documentElement.style.setProperty('--primary-color', primary);
+            document.documentElement.style.setProperty('--secondary-color', secondary);
+            document.getElementById('previewBox').style.borderColor = primary;
+        }
+
+        function updateColors() {
+            const primary = document.getElementById('primaryColorInput').value;
+            const secondary = document.getElementById('secondaryColorInput').value;
+
+            // Visual Update Locally
+            document.documentElement.style.setProperty('--primary-color', primary);
+            document.documentElement.style.setProperty('--secondary-color', secondary);
+
+            // Sync Preview Box
+            const preview = document.getElementById('previewBox');
+            preview.style.borderColor = primary;
+        }
+
+        function updateThicknessValue(val, autoSave = true) {
+            document.getElementById('thicknessDisplay').textContent = val;
+            document.getElementById('previewBox').style.borderWidth = val + 'px';
+        }
+
+        async function forceSaveConfig() {
+            // Find the button (assuming the bottom one is the target based on context)
+            // Ideally we'd pass 'this' or use an ID, but for now we'll query the last btn
+            const btns = document.querySelectorAll('.btn');
+            const saveBtn = btns[btns.length - 1];
+            const originalText = saveBtn.innerHTML;
+
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> GUARDANDO...';
+
+            const thickness = document.getElementById('thicknessSlider').value;
+            const primary = document.getElementById('primaryColorInput').value;
+            const secondary = document.getElementById('secondaryColorInput').value;
+            const avatarUrl = document.getElementById('avatarUrlInput').value;
+            const persona = document.getElementById('personaPrompt').value;
+            const voice = document.getElementById('voiceSelectV3').value;
+
+            try {
+                const res = await fetch('/api/mirror/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        selection_thickness: thickness,
+                        selection_glow: thickness * 2.5,
+                        primary_color: primary,
+                        secondary_color: secondary,
+                        stylist_avatar_url: avatarUrl,
+                        stylist_persona_prompt: persona,
+                        stylist_voice_name: voice
+                    })
+                });
+
+                if (res.ok) {
+                    saveBtn.innerHTML = '<i class="fas fa-check"></i> ¡GUARDADO!';
+                    saveBtn.style.background = '#00ff88';
+                    saveBtn.style.color = '#000';
+                    setTimeout(() => {
+                        saveBtn.innerHTML = originalText;
+                        saveBtn.disabled = false;
+                        // Restore style if needed, or leave it green to show success
+                    }, 2000);
+                } else {
+                    const err = await res.json().catch(() => ({ error: res.statusText }));
+                    alert('❌ Error al guardar: ' + (err.error || res.status));
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.disabled = false;
+                }
+            } catch (err) {
+                alert("Error al guardar: " + err);
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
+            }
+        }
+
+        // Initialize voices array
+        let availableVoices = [];
+
+        function loadVoices() {
+            availableVoices = window.speechSynthesis.getVoices();
+            console.log("Voices loaded:", availableVoices.length);
+            // Re-populate if voices changed mid-session
+            populateVoiceList(false);
+        }
+
+        // Trigger load immediately and on change
+        loadVoices();
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function populateVoiceList(showAlert = false) {
+            const select = document.getElementById('voiceSelectV3');
+            const currentSelection = select.value; // Preserve selection if re-populating
+
+            select.innerHTML = '<option value="">-- Automática (Recomendado) --</option>'; // Reset
+
+            // --- 1. PREMIUM GEMINI VOICES (Hardcoded list of available models) ---
+            const geminiVoices = [
+                { name: "Puck", desc: "Masculino - Suave y Optimista (Recomendado)" },
+                { name: "Charon", desc: "Masculino - Profundo y Serio" },
+                { name: "Kore", desc: "Femenino - Relajante" },
+                { name: "Fenrir", desc: "Masculino - Enérgico" },
+                { name: "Aoede", desc: "Femenino - Elegante" }
+            ];
+
+            const groupPremium = document.createElement('optgroup');
+            groupPremium.label = "✨ VOCES PREMIUM (Gemini AI)";
+
+            geminiVoices.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v.name;
+                opt.textContent = `💎 ${v.name} - ${v.desc}`;
+                groupPremium.appendChild(opt);
+            });
+
+            // Check logic to re-select if value matches one of these
+            select.appendChild(groupPremium);
+
+            // --- 2. BROWSER VOICES (Fallback) ---
+            const synth = window.speechSynthesis;
+            if (availableVoices.length === 0 && synth) {
+                availableVoices = synth.getVoices();
+            }
+
+            let localCount = 0;
+            if (availableVoices.length > 0) {
+                const groupBrowser = document.createElement('optgroup');
+                groupBrowser.label = "💻 VOCES NAVEGADOR (Clásicas)";
+
+                availableVoices.forEach(voice => {
+                    // Only show Spanish voices to keep list clean
+                    if (voice.lang.includes('es')) {
+                        const option = document.createElement('option');
+                        option.value = voice.name;
+                        option.textContent = `${voice.name} (${voice.lang})`;
+                        groupBrowser.appendChild(option);
+                        localCount++;
+                    }
+                });
+                select.appendChild(groupBrowser);
+            }
+
+            // Restore selection if passed
+            // The global fetch config might set this later, but if we are re-populating, we try to keep it.
+            // On first load, this function is called BEFORE fetch finishes, so it builds the list, 
+            // then Fetch runs and sets .value safely.
+
+            if (showAlert) {
+                alert(`✅ Lista actualizada.\n\nSe han agregado 5 Voces Premium de Google Gemini y ${localCount} voces locales.`);
+            }
+        }
+
+        function detectAndPopulateVoices() {
+            populateVoiceList(true);
+        }
+
+        // Call immediately to build the Premium list at least
+        populateVoiceList(false);
+
+        function updateFileName(input, displayId) {
+            const display = document.getElementById(displayId);
+            if (input.files && input.files.length > 0) display.textContent = input.files[0].name;
+            else display.textContent = 'Ningún archivo';
+        }
+
+        async function uploadPromoVideo() {
+            const fileInput = document.getElementById('promoVideoFile');
+            const btn = document.getElementById('uploadVideoBtn');
+            if (!fileInput.files[0]) return alert("Selecciona un video MP4");
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo...';
+
+            try {
+                const res = await fetch('/api/mirror/upload_video', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (res.ok) {
+                    alert('Video actualizado correctamente.');
+                    fileInput.value = '';
+                    document.getElementById('videoDisplay').textContent = 'Ningún archivo';
+                } else throw new Error(data.error);
+            } catch (e) { alert('Error: ' + e.message); }
+            finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Subir Video'; }
+        }
+
+        async function uploadSalonLogo() {
+            const fileInput = document.getElementById('salonLogoFile');
+            const btn = document.getElementById('uploadLogoBtn');
+            if (!fileInput.files[0]) return alert("Selecciona una imagen");
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo...';
+
+            try {
+                const res = await fetch('/api/mirror/upload_logo', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (res.ok) {
+                    alert('Logo actualizado correctamente.');
+                    fileInput.value = '';
+                    document.getElementById('logoDisplay').textContent = 'Ningún archivo';
+                } else throw new Error(data.error);
+            } catch (e) { alert('Error: ' + e.message); }
+            finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Subir Logo'; }
+        }
+    </script>
+    </div>
+</body>
+
+</html>

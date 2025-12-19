@@ -1,0 +1,82 @@
+Logging in as prof@test.com...
+Login successful
+Getting professional ID...
+
+Testing URL endpoints for Professional ID: 1
+
+1. Adding Valid URL (https://www.imss.gob.mx)...
+Status: 201
+Response: {
+  "data": {
+    "url": {
+      "created_at": "2025-11-28T03:58:41.275088",
+      "description": "Sitio oficial IMSS",
+      "id": 1,
+      "is_active": true,
+      "last_scraped_at": "2025-11-28T03:58:41.275088",
+      "specialty": "General",
+      "url": "https://www.imss.gob.mx"
+    }
+  },
+  "message": "URL agregada y procesada correctamente",
+  "success": true
+}
+
+URL Added. ID: 1
+
+2. Adding Invalid URL (https://www.google.com)...
+Status: 400
+Response: {
+  "error": "Dominio no permitido. Solo sitios oficiales (.gob.mx)",
+  "success": false
+}
+
+
+3. Listing URLs...
+Status: 200
+Response: {
+  "data": {
+    "total": 1,
+    "urls": [
+      {
+        "created_at": "2025-11-28T03:58:41.275088",
+        "description": "Sitio oficial IMSS",
+        "id": 1,
+        "is_active": true,
+        "last_scraped_at": "2025-11-28T03:58:41.275088",
+        "specialty": "General",
+        "url": "https://www.imss.gob.mx"
+      }
+    ]
+  },
+  "success": true
+}
+
+Found 1 URLs
+
+4. Refreshing URL 1...
+Status: 200
+Response: {
+  "data": {
+    "url": {
+      "created_at": "2025-11-28T03:58:41.275088",
+      "description": "Sitio oficial IMSS",
+      "id": 1,
+      "is_active": true,
+      "last_scraped_at": "2025-11-28T03:58:47.966264",
+      "specialty": "General",
+      "url": "https://www.imss.gob.mx"
+    }
+  },
+  "message": "Contenido actualizado correctamente",
+  "success": true
+}
+
+
+5. Deleting URL 1...
+Status: 200
+Response: {
+  "message": "URL eliminada correctamente",
+  "success": true
+}
+

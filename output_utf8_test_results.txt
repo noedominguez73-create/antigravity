@@ -1,0 +1,305 @@
+Logging in as prof@test.com...
+python : Traceback 
+(most recent call 
+last):
+En línea: 1 
+Carácter: 1
++ python 
+test_deep_audit.py 
+> test_results.txt 
+2>&1
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: (Trac   
+ eback (most rec    
+ent call last):    
+:String) [], Re    
+moteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\connection.py", 
+line 198, in 
+_new_conn
+    sock = connectio
+n.create_connection(
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\util\connection.p
+y", line 85, in 
+create_connection
+    raise err
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\util\connection.p
+y", line 73, in 
+create_connection
+    sock.connect(sa)
+ConnectionRefusedErr
+or: [WinError 
+10061] No se puede 
+establecer una 
+conexi¾n ya que el 
+equipo de destino 
+deneg¾ expresamente 
+dicha conexi¾n
+
+The above exception 
+was the direct 
+cause of the 
+following exception:
+
+Traceback (most 
+recent call last):
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\connectionpool.py
+", line 787, in 
+urlopen
+    response = 
+self._make_request(
+               
+^^^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\connectionpool.py
+", line 493, in 
+_make_request
+    conn.request(
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\connection.py", 
+line 494, in request
+    
+self.endheaders()
+  File "C:\Program F
+iles\Python311\Lib\h
+ttp\client.py", 
+line 1298, in 
+endheaders
+    self._send_outpu
+t(message_body, enco
+de_chunked=encode_ch
+unked)
+  File "C:\Program F
+iles\Python311\Lib\h
+ttp\client.py", 
+line 1058, in 
+_send_output
+    self.send(msg)
+  File "C:\Program F
+iles\Python311\Lib\h
+ttp\client.py", 
+line 996, in send
+    self.connect()
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\connection.py", 
+line 325, in connect
+    self.sock = 
+self._new_conn()
+                
+^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\connection.py", 
+line 213, in 
+_new_conn
+    raise 
+NewConnectionError(
+urllib3.exceptions.N
+ewConnectionError: <
+urllib3.connection.H
+TTPConnection 
+object at 0x00000257
+EB5D2E50>: Failed 
+to establish a new 
+connection: 
+[WinError 10061] No 
+se puede establecer 
+una conexi¾n ya que 
+el equipo de 
+destino deneg¾ 
+expresamente dicha 
+conexi¾n
+
+The above exception 
+was the direct 
+cause of the 
+following exception:
+
+Traceback (most 
+recent call last):
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\reque
+sts\adapters.py", 
+line 486, in send
+    resp = 
+conn.urlopen(
+           
+^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\connectionpool.py
+", line 841, in 
+urlopen
+    retries = 
+retries.increment(
+              
+^^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\urlli
+b3\util\retry.py", 
+line 519, in 
+increment
+    raise MaxRetryEr
+ror(_pool, url, 
+reason) from reason 
+ # type: 
+ignore[arg-type]
+    ^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
+urllib3.exceptions.M
+axRetryError: HTTPCo
+nnectionPool(host='l
+ocalhost', 
+port=5000): Max 
+retries exceeded 
+with url: 
+/api/auth/login 
+(Caused by NewConnec
+tionError('<urllib3.
+connection.HTTPConne
+ction object at 0x00
+000257EB5D2E50>: 
+Failed to establish 
+a new connection: 
+[WinError 10061] No 
+se puede establecer 
+una conexi¾n ya que 
+el equipo de 
+destino deneg¾ 
+expresamente dicha 
+conexi¾n'))
+
+During handling of 
+the above 
+exception, another 
+exception occurred:
+
+Traceback (most 
+recent call last):
+  File "C:\asesoriai
+mss.io\test_deep_aud
+it.py", line 98, in 
+<module>
+    token, user_id 
+= login()
+                    
+ ^^^^^^^
+  File "C:\asesoriai
+mss.io\test_deep_aud
+it.py", line 10, in 
+login
+    response = reque
+sts.post(f'{BASE_URL
+}/api/auth/login', 
+json={
+               ^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\reque
+sts\api.py", line 
+115, in post
+    return 
+request("post", 
+url, data=data, 
+json=json, **kwargs)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\reque
+sts\api.py", line 
+59, in request
+    return session.r
+equest(method=method
+, url=url, **kwargs)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\reque
+sts\sessions.py", 
+line 589, in request
+    resp = 
+self.send(prep, 
+**send_kwargs)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\reque
+sts\sessions.py", 
+line 703, in send
+    r = adapter.send
+(request, **kwargs)
+        ^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\venv_test\Lib
+\site-packages\reque
+sts\adapters.py", 
+line 519, in send
+    raise 
+ConnectionError(e, 
+request=request)
+requests.exceptions.
+ConnectionError: HTT
+PConnectionPool(host
+='localhost', 
+port=5000): Max 
+retries exceeded 
+with url: 
+/api/auth/login 
+(Caused by NewConnec
+tionError('<urllib3.
+connection.HTTPConne
+ction object at 0x00
+000257EB5D2E50>: 
+Failed to establish 
+a new connection: 
+[WinError 10061] No 
+se puede establecer 
+una conexi¾n ya que 
+el equipo de 
+destino deneg¾ 
+expresamente dicha 
+conexi¾n'))

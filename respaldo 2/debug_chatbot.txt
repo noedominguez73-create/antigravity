@@ -1,0 +1,870 @@
+DEBUG: Found 0 URLs for prof 1
+DEBUG: Found 0 URLs for prof 1
+CRITICAL ERROR in send_message: cannot access local variable 'available_credits' where it is not associated with a value
+DEBUG: Found 0 URLs for prof 1
+DEBUG: Found 1 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: Found 1 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: Found 1 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: Found 1 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: Found 1 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: Found 1 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: Found 1 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: Found 1 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: dime el articulo 1 de la ley isr
+RAG Context Length: 9443
+RAG Context Preview: 
+el impuesto que corresponda a los mismos, aplicando la tasa establecida en el artículo 9 de la presente
+Ley. Para estos efectos, los dividendos o utilidades distribuidos se adicionarán con el impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: dime el articulo 1 de la ley isr
+RAG Context Length: 9443
+RAG Context Preview: 
+el impuesto que corresponda a los mismos, aplicando la tasa establecida en el artículo 9 de la presente
+Ley. Para estos efectos, los dividendos o utilidades distribuidos se adicionarán con el impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: que dice el articulo 1 de la ley del isr
+RAG Context Length: 9443
+RAG Context Preview: === PÁGINA 1 ===
+Nueva Ley publicada en el Diario Oficial de la Federación el 11 de diciembre de 2013  
+Última reforma publicada DOF 01-04-2024  
+República.  
+Que el Honorable Congreso de la Unión, se
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: hola
+RAG Context Length: 10028
+RAG Context Preview: emás casos a que se refiere este artículo, p ara efectos de 
+determinar el monto del impuesto pagado en el extranjero que pueda acreditarse, la conversión cambiaria  
+se efectuará considerando el prom
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: que dice el articulo 2 de la ley del isr
+RAG Context Length: 9443
+RAG Context Preview: proporcional del impuesto sobre la renta corporativo pagado en el 
+extranjero a que se refiere el cuarto párrafo de este artículo.  
+T:  Tasa a que se refiere el artículo 9 de esta Ley.  
+ID:  Impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola Me estás escuchando para ver si se escribe
+RAG Context Length: 9443
+RAG Context Preview:  bajo protesta de decir verdad firmada por 
+su representante legal, en la que expresamente señale que los ingresos sujetos a imposición en México y 
+respecto de los cuales se pretendan aplicar los ben
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué dice la ley del impuesto sobre la renta en el artículo tercero
+RAG Context Length: 9443
+RAG Context Preview: proporcional del impuesto sobre la renta corporativo pagado en el 
+extranjero a que se refiere el cuarto párrafo de este artículo.  
+T:  Tasa a que se refiere el artículo 9 de esta Ley.  
+ID:  Impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué dice la ley del impuesto sobre la renta en el artículo 3
+RAG Context Length: 10028
+RAG Context Preview: proporcional del impuesto sobre la renta corporativo pagado en el 
+extranjero a que se refiere el cuarto párrafo de este artículo.  
+T:  Tasa a que se refiere el artículo 9 de esta Ley.  
+ID:  Impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: verifica bien esta en el archivo txt
+RAG Context Length: 10028
+RAG Context Preview:  bajo protesta de decir verdad firmada por 
+su representante legal, en la que expresamente señale que los ingresos sujetos a imposición en México y 
+respecto de los cuales se pretendan aplicar los ben
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola Me estás escuchando
+RAG Context Length: 9443
+RAG Context Preview:  bajo protesta de decir verdad firmada por 
+su representante legal, en la que expresamente señale que los ingresos sujetos a imposición en México y 
+respecto de los cuales se pretendan aplicar los ben
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: que dice el articulo 10 de la ley del isr
+RAG Context Length: 10028
+RAG Context Preview: proporcional del impuesto sobre la renta corporativo pagado en el 
+extranjero a que se refiere el cuarto párrafo de este artículo.  
+T:  Tasa a que se refiere el artículo 9 de esta Ley.  
+ID:  Impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: que dice el articulo 3
+RAG Context Length: 9443
+RAG Context Preview: en el impuesto que establece este artículo, podrán acreditar dicho impuesto de
+acuerdo a lo siguiente:
+I.
+El acreditamiento únicamente podrá efectuarse contra el impuesto sobre la renta del ejercicio
+
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: dime el articulo 3 de la ley
+RAG Context Length: 9443
+RAG Context Preview: Nueva Ley publicada en el Diario Oficial de la Federación el 11 de diciembre de 2013
+Última reforma publicada DOF 01-04-2024
+República.
+Que el Honorable Congreso de la Unión, se ha servido dirigirme e
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: que dice el articulo 3 de la ley del isr
+RAG Context Length: 9443
+RAG Context Preview: Nueva Ley publicada en el Diario Oficial de la Federación el 11 de diciembre de 2013
+Última reforma publicada DOF 01-04-2024
+República.
+Que el Honorable Congreso de la Unión, se ha servido dirigirme e
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: menciona el articulo 1 de la ley del impuesto sobre la renta
+RAG Context Length: 10028
+RAG Context Preview: proporcional del impuesto sobre la renta corporativo pagado en el 
+extranjero a que se refiere el cuarto párrafo de este artículo.  
+T:  Tasa a que se refiere el artículo 9 de esta Ley.  
+ID:  Impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: dime articulo 3
+RAG Context Length: 9443
+RAG Context Preview: 
+el impuesto que corresponda a los mismos, aplicando la tasa establecida en el artículo 9 de la presente
+Ley. Para estos efectos, los dividendos o utilidades distribuidos se adicionarán con el impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué dice el artículo tercero de la ley del impuesto sobre la renta
+RAG Context Length: 10028
+RAG Context Preview: proporcional del impuesto sobre la renta corporativo pagado en el 
+extranjero a que se refiere el cuarto párrafo de este artículo.  
+T:  Tasa a que se refiere el artículo 9 de esta Ley.  
+ID:  Impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué dice el artículo tercero de la ley del impuesto sobre la renta
+RAG Context Length: 10028
+RAG Context Preview: proporcional del impuesto sobre la renta corporativo pagado en el 
+extranjero a que se refiere el cuarto párrafo de este artículo.  
+T:  Tasa a que se refiere el artículo 9 de esta Ley.  
+ID:  Impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: el artículo tercero de la ley del impuesto sobre la renta
+RAG Context Length: 10028
+RAG Context Preview: proporcional del impuesto sobre la renta corporativo pagado en el 
+extranjero a que se refiere el cuarto párrafo de este artículo.  
+T:  Tasa a que se refiere el artículo 9 de esta Ley.  
+ID:  Impuest
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: menciona el articulo 10 de la lay isr
+RAG Context Length: 10028
+RAG Context Preview:  en más del 20% de sus acciones son propiedad del deudor, directa o
+indirectamente, en forma individual o conjuntamente con personas relacionadas.
+Párrafo con numerales reformado DOF 12-11-2021
+En los
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: "¿Qué dice el artículo tercero?"
+RAG Context Length: 9443
+RAG Context Preview:  las deducciones a que se
+refiere el artículo 151 de esta Ley. A la cantidad que se obtenga se le aplicará la siguiente:
+Párrafo reformado DOF 12-11-2021
+No será aplicable lo dispuesto en este artícul
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: "¿Qué dice el artículo tercero?"
+RAG Context Length: 9443
+RAG Context Preview:  las deducciones a que se
+refiere el artículo 151 de esta Ley. A la cantidad que se obtenga se le aplicará la siguiente:
+Párrafo reformado DOF 12-11-2021
+No será aplicable lo dispuesto en este artícul
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: ¿Qué dice el artículo tercero?
+RAG Context Length: 10028
+RAG Context Preview:  las deducciones a que se
+refiere el artículo 151 de esta Ley. A la cantidad que se obtenga se le aplicará la siguiente:
+Párrafo reformado DOF 12-11-2021
+No será aplicable lo dispuesto en este artícul
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué dice el artículo tercero
+RAG Context Length: 10028
+RAG Context Preview: o párrafo, y II, y segundo párrafo
+del artículo; 187, fracciones I y III; 192, fracciones I, III y V; se adicionan los artículos 72, con un segundo
+y tercer párrafos, pasando los actuales segundo a se
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué dice el artículo tercero
+RAG Context Length: 28799
+RAG Context Preview: o párrafo, y II, y segundo párrafo
+del artículo; 187, fracciones I y III; 192, fracciones I, III y V; se adicionan los artículos 72, con un segundo
+y tercer párrafos, pasando los actuales segundo a se
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué dice el artículo tercero
+RAG Context Length: 28799
+RAG Context Preview: o párrafo, y II, y segundo párrafo
+del artículo; 187, fracciones I y III; 192, fracciones I, III y V; se adicionan los artículos 72, con un segundo
+y tercer párrafos, pasando los actuales segundo a se
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: hola
+RAG Context Length: 0
+RAG Context Preview: None
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Dime qué dice el artículo 3 de la ley del ISR
+RAG Context Length: 0
+RAG Context Preview: None
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Dime qué dice el artículo 3 de la ley del ISR
+RAG Context Length: 32105
+RAG Context Preview: s, las sucursales, 
+agencias, ofici nas, fábricas, talleres, instalaciones, minas, canteras o cualquier lugar de exploración, 
+extracción o explotación de recursos naturales.  
+=== PÁGINA 2 ===
+No obs
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: hola
+RAG Context Length: 30098
+RAG Context Preview: ios.
+XXVII. Las sociedades cooperativas de producción que con anterioridad a la fecha de entrada en
+vigor de la Ley del Impuesto sobre la Renta, hayan tributado en términos del Capítulo VII-A del
+Títu
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola estás funcionando
+RAG Context Length: 30098
+RAG Context Preview:  bajo protesta de decir verdad firmada por 
+su representante legal, en la que expresamente señale que los ingresos sujetos a imposición en México y 
+respecto de los cuales se pretendan aplicar los ben
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: hola
+RAG Context Length: 30098
+RAG Context Preview: ios.
+XXVII. Las sociedades cooperativas de producción que con anterioridad a la fecha de entrada en
+vigor de la Ley del Impuesto sobre la Renta, hayan tributado en términos del Capítulo VII-A del
+Títu
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué dice el artículo primero
+RAG Context Length: 32105
+RAG Context Preview: === PÁGINA 1 ===
+Nueva Ley publicada en el Diario Oficial de la Federación el 11 de diciembre de 2013  
+Última reforma publicada DOF 01-04-2024  
+República.  
+Que el Honorable Congreso de la Unión, se
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: hola
+RAG Context Length: 30098
+RAG Context Preview: ios.
+XXVII. Las sociedades cooperativas de producción que con anterioridad a la fecha de entrada en
+vigor de la Ley del Impuesto sobre la Renta, hayan tributado en términos del Capítulo VII-A del
+Títu
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Recibe mensajes
+RAG Context Length: 30098
+RAG Context Preview: enciatura
+de sus descendientes en línea recta, siempre que los estudios cuenten con reconocimiento de validez
+oficial.
+Tampoco se consideran ingresos para efectos de este Título, los ingresos por apoy
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué dice el artículo primero
+RAG Context Length: 32105
+RAG Context Preview: === PÁGINA 1 ===
+Nueva Ley publicada en el Diario Oficial de la Federación el 11 de diciembre de 2013  
+Última reforma publicada DOF 01-04-2024  
+República.  
+Que el Honorable Congreso de la Unión, se
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Qué puedo hacer con ayuda con trámites ante el IMSS
+RAG Context Length: 30098
+RAG Context Preview:  bajo protesta de decir verdad firmada por 
+su representante legal, en la que expresamente señale que los ingresos sujetos a imposición en México y 
+respecto de los cuales se pretendan aplicar los ben
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola Quién eres
+RAG Context Length: 30098
+RAG Context Preview:  acreedor obtenga resolución definitiva emitida por la
+autoridad competente, con la que demuestre haber agotado las gestiones de cobro o, en
+su caso, que fue imposible la ejecución de la resolución fa
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: tente virtual de tripa ley mi objetivo es responder tus preguntas sobre trámites del IMSS basándome en la información proporcionada
+RAG Context Length: 30098
+RAG Context Preview: enación de bienes o la prestación de servicios a través de
+Internet, mediante plataformas tecnológicas, aplicaciones informáticas y similares
+Sección adicionada DOF 09-12-2019
+Artículo 113-A. Están ob
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Lamento no tener esa información específica por favor contacte directamente a
+RAG Context Length: 30098
+RAG Context Preview: enación de bienes o la prestación de servicios a través de
+Internet, mediante plataformas tecnológicas, aplicaciones informáticas y similares
+Sección adicionada DOF 09-12-2019
+Artículo 113-A. Están ob
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Cuál es el horario en el que me puedes atender
+RAG Context Length: 29513
+RAG Context Preview:  bajo protesta de decir verdad firmada por 
+su representante legal, en la que expresamente señale que los ingresos sujetos a imposición en México y 
+respecto de los cuales se pretendan aplicar los ben
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: pretensiones asterisco lunes a viernes 9 de la mañana 6 de la tarde asterisco sábados 9 de la mañana 1 de la tarde estamos disponibles por WhatsApp teléfono email
+RAG Context Length: 30098
+RAG Context Preview: enación de bienes o la prestación de servicios a través de
+Internet, mediante plataformas tecnológicas, aplicaciones informáticas y similares
+Sección adicionada DOF 09-12-2019
+Artículo 113-A. Están ob
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Cuáles son los servicios digitales del IMSS
+RAG Context Length: 30098
+RAG Context Preview: enación de bienes o la prestación de servicios a través de
+Internet, mediante plataformas tecnológicas, aplicaciones informáticas y similares
+Sección adicionada DOF 09-12-2019
+Artículo 113-A. Están ob
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola
+RAG Context Length: 30098
+RAG Context Preview: ios.
+XXVII. Las sociedades cooperativas de producción que con anterioridad a la fecha de entrada en
+vigor de la Ley del Impuesto sobre la Renta, hayan tributado en términos del Capítulo VII-A del
+Títu
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola
+RAG Context Length: 30098
+RAG Context Preview: ios.
+XXVII. Las sociedades cooperativas de producción que con anterioridad a la fecha de entrada en
+vigor de la Ley del Impuesto sobre la Renta, hayan tributado en términos del Capítulo VII-A del
+Títu
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola
+RAG Context Length: 30098
+RAG Context Preview: ios.
+XXVII. Las sociedades cooperativas de producción que con anterioridad a la fecha de entrada en
+vigor de la Ley del Impuesto sobre la Renta, hayan tributado en términos del Capítulo VII-A del
+Títu
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola
+RAG Context Length: 30098
+RAG Context Preview: ios.
+XXVII. Las sociedades cooperativas de producción que con anterioridad a la fecha de entrada en
+vigor de la Ley del Impuesto sobre la Renta, hayan tributado en términos del Capítulo VII-A del
+Títu
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola
+RAG Context Length: 30098
+RAG Context Preview: ios.
+XXVII. Las sociedades cooperativas de producción que con anterioridad a la fecha de entrada en
+vigor de la Ley del Impuesto sobre la Renta, hayan tributado en términos del Capítulo VII-A del
+Títu
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola
+RAG Context Length: 30098
+RAG Context Preview: ios.
+XXVII. Las sociedades cooperativas de producción que con anterioridad a la fecha de entrada en
+vigor de la Ley del Impuesto sobre la Renta, hayan tributado en términos del Capítulo VII-A del
+Títu
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola estás activo
+RAG Context Length: 29513
+RAG Context Preview: rtir del ejercicio siguiente a aquél en que se excedió el monto citado.
+No tributarán conforme a este Capítulo:
+I.
+Las personas morales cuando uno o varios de sus socios, accionistas o integrantes, pa
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: eres una hermosura Muchas gracias
+RAG Context Length: 29513
+RAG Context Preview: a que se refieren los preceptos que, en
+su caso, regulen el subsidio para el empleo, salvo cuando no se esté obligado a ello en los
+términos de las disposiciones citadas.
+Artículo 148. Para los efecto
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola quieres especialista
+RAG Context Length: 30098
+RAG Context Preview: claración en las oficinas autorizadas que correspondan a su domicilio, dentro de los quince
+días siguientes a la fecha en que se firma la escritura. En los casos a que se refiere este párrafo se
+prese
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=True
+Scraping URL: https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola Sí sabes algo del del IMSS
+RAG Context Length: 30098
+RAG Context Preview: uiente a aquél al que corresponda la importación.
+2.
+El valor de los activos fijos será el monto pendiente por deducir, calculado de
+conformidad con lo siguiente:
+i)
+Se considerará como monto original
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola es para configurar la voz
+RAG Context Length: 30098
+RAG Context Preview: a que se refieren los preceptos que, en
+su caso, regulen el subsidio para el empleo, salvo cuando no se esté obligado a ello en los
+términos de las disposiciones citadas.
+Artículo 148. Para los efecto
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: sí estás viendo que puedes coger la voz
+RAG Context Length: 30098
+RAG Context Preview: ículo 5 de esta Ley
+por los citados ingresos que retornen e inviertan en el país.
+c)
+Cuando las inversiones mantenidas en el extranjero de las cuales derivan los ingresos a
+que se refiere esta fracció
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola solo para probar la voz
+RAG Context Length: 30098
+RAG Context Preview: gran dicha sociedad.
+III.
+Por los ingresos que obtenga la sociedad cooperativa no se efectuarán pagos provisionales
+del impuesto sobre la renta.
+IV.
+Los rendimientos y los anticipos que otorguen las s
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Hola Qué dice el artículo primero de la ley del impuesto sobre la renta
+RAG Context Length: 32105
+RAG Context Preview: === PÁGINA 1 ===
+Nueva Ley publicada en el Diario Oficial de la Federación el 11 de diciembre de 2013  
+Última reforma publicada DOF 01-04-2024  
+República.  
+Que el Honorable Congreso de la Unión, se
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False
+
+=== CHAT REQUEST ===
+Prof ID: 3
+Message: Cuál es la raíz cuadrada de 50.55
+RAG Context Length: 28670
+RAG Context Preview: ntegrantes acumularán el remanente que las personas morales mencionadas les
+entreguen en efectivo o en bienes.
+II. La reforma a las fracciones XI, XVII, XIX y XX del artículo 79 de la Ley del Impuesto
+====================
+DEBUG: Found 2 URLs for prof 3
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/calculadora, should_scrape=False
+DEBUG: URL https://www.imss.gob.mx/personas-trabajadoras-independientes/beneficios, should_scrape=False

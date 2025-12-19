@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Chats - AsesoriaIMSS.io</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-blue-600">AsesoriaIMSS.io</a>
+            <div class="flex items-center space-x-4">
+                <a href="/dashboard-profesional" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+                <button onclick="logout()"
+                    class="px-4 py-2 text-red-600 hover:bg-red-50 rounded transition">Salir</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Historial de Conversaciones</h1>
+
+        <!-- Stats -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-gray-500 text-sm">Total Conversaciones</p>
+                <p id="statTotalChats" class="text-3xl font-bold text-blue-600">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-gray-500 text-sm">Mensajes Enviados</p>
+                <p id="statTotalMessages" class="text-3xl font-bold text-green-600">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-gray-500 text-sm">Créditos Usados</p>
+                <p id="statCreditsUsed" class="text-3xl font-bold text-purple-600">0</p>
+            </div>
+        </div>
+
+        <!-- Chat Sessions -->
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold mb-6">Sesiones de Chat</h2>
+            <div id="chatSessionsContainer" class="space-y-4">
+                <p class="text-gray-500">Cargando historial...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Detail Modal -->
+    <div id="chatDetailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-screen overflow-hidden flex flex-col">
+            <div class="px-6 py-4 border-b flex justify-between items-center">
+                <h3 class="text-xl font-semibold">Detalle de Conversación</h3>
+                <button onclick="closeDetailModal()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div id="chatDetailContent" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <!-- Messages will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components.js') }}"></script>
+    <script>
+        let professionalId = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireRole('professional')) return;
+
+            await loadProfessionalData();
+            await loadChatHistory();
+        });
+
+        async function loadProfessionalData() {
+            const user = getCurrentUser();
+            const profResult = await apiGet(`/profesionales?user_id=${user.id}`);
+            if (profResult.success && profResult.data.professionals && profResult.data.professionals.length > 0) {
+                professionalId = profResult.data.professionals[0].id;
+            }
+        }
+
+        async function loadChatHistory() {
+            if (!professionalId) return;
+
+            const result = await getChatHistory(professionalId);
+            const container = document.getElementById('chatSessionsContainer');
+
+            if (result.success && result.data.sessions) {
+                const sessions = result.data.sessions;
+
+                // Update stats
+                document.getElementById('statTotalChats').textContent = sessions.length;
+                const totalMessages = sessions.reduce((sum, s) => sum + (s.message_count || 0), 0);
+                document.getElementById('statTotalMessages').textContent = totalMessages;
+                document.getElementById('statCreditsUsed').textContent = totalMessages; // 1 credit per message
+
+                // Display sessions
+                if (sessions.length > 0) {
+                    container.innerHTML = sessions.map(session => `
+                        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition cursor-pointer"
+                             onclick="viewChatDetail('${session.session_id}')">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-semibold text-lg">Sesión ${session.session_id.substring(0, 8)}...</h4>
+                                    <p class="text-sm text-gray-600">Usuario: ${session.user_name || 'Anónimo'}</p>
+                                    <p class="text-sm text-gray-600">${session.message_count || 0} mensajes</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-500">${formatDate(session.last_message_at)}</p>
+                                    <span class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                                        ${session.message_count || 0} créditos
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p class="text-gray-500">No hay conversaciones aún</p>';
+                }
+            } else {
+                container.innerHTML = '<p class="text-gray-500">Error al cargar historial</p>';
+            }
+        }
+
+        async function viewChatDetail(sessionId) {
+            const result = await getChatHistory(professionalId, sessionId);
+            const modal = document.getElementById('chatDetailModal');
+            const content = document.getElementById('chatDetailContent');
+
+            if (result.success && result.data.messages) {
+                content.innerHTML = result.data.messages.map(msg => `
+                    <div class="flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}">
+                        <div class="max-w-md px-4 py-3 rounded-lg ${msg.role === 'user'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-200 text-gray-800'
+                    }">
+                            <p class="whitespace-pre-wrap">${msg.content}</p>
+                            <p class="text-xs mt-1 opacity-70">${formatDate(msg.created_at)}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                modal.classList.remove('hidden');
+            } else {
+                showToast('Error al cargar mensajes', 'error');
+            }
+        }
+
+        function closeDetailModal() {
+            document.getElementById('chatDetailModal').classList.add('hidden');
+        }
+    </script>
+</body>
+
+</html>

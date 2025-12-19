@@ -1,0 +1,45 @@
+<!-- Documents Upload -->
+<div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Documentos de Referencia</h2>
+
+    <!-- Upload Zone -->
+    <div id="uploadZone"
+        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 hover:bg-blue-50 transition cursor-pointer mb-4">
+        <input type="file" id="fileInput" class="hidden" multiple accept=".pdf,.txt,.doc,.docx,.xlsx">
+        <div class="text-gray-500">
+            <span class="text-4xl block mb-2">📄</span>
+            <p class="text-sm font-medium">Arrastra archivos aquí o haz clic para seleccionar</p>
+            <p class="text-xs mt-1">PDF, TXT, DOCX, XLSX (Max 10MB)</p>
+        </div>
+    </div>
+
+    <!-- Pending Files List -->
+    <div id="pendingFilesContainer" class="hidden mb-4">
+        <h3 class="text-sm font-medium text-gray-700 mb-2">Archivos Pendientes:</h3>
+        <div id="pendingFilesList" class="space-y-2 mb-3">
+            <!-- Pending items injected here -->
+        </div>
+        <button id="btnUploadFiles" onclick="uploadPendingFiles()"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm font-medium transition flex justify-center items-center gap-2">
+            <span>☁️</span> Subir Documentos
+        </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="uploadProgress" class="hidden mb-4">
+        <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div id="progressFill" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
+        <p class="text-xs text-center text-gray-500 mt-1" id="progressText">0%</p>
+    </div>
+
+    <!-- Documents List -->
+    <div>
+        <h3 class="text-sm font-medium text-gray-700 mb-2">Documentos Cargados (<span id="docCount">0</span>)</h3>
+        <div id="documentsList" class="space-y-2 max-h-60 overflow-y-auto pr-2">
+            <!-- Document Items will be injected here -->
+            <div id="noDocuments" class="text-center text-gray-400 py-4 text-sm">No hay documentos
+                cargados</div>
+        </div>
+    </div>
+</div>

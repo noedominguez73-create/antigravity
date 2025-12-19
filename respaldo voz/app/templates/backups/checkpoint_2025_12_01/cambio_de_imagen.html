@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de Imagen IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            font-family: sans-serif;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+    </style>
+</head>
+
+<body class="py-10 px-4">
+
+    <main class="w-full max-w-6xl mx-auto space-y-8">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="/" class="bg-white p-3 rounded-full shadow-md hover:scale-105 transition-transform text-2xl">
+                    ⬅️
+                </a>
+                <div>
+                    <h1 class="text-4xl font-bold text-slate-800">Cambio de Imagen IA</h1>
+                    <p class="text-slate-500">Transforma tu estilo con Inteligencia Artificial</p>
+                </div>
+            </div>
+            <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-bold text-sm">
+                ✨ Beta Preview
+            </div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- Left Panel: Input (Original) -->
+            <div class="bg-white rounded-[30px] p-6 shadow-xl flex flex-col h-full relative overflow-hidden group">
+                <h2 class="text-xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <span>👤</span> Tu Foto Actual
+                </h2>
+
+                <!-- Upload Area -->
+                <div id="uploadArea"
+                    class="flex-1 border-4 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 hover:border-blue-400 transition-all relative overflow-hidden"
+                    onclick="document.getElementById('fileInput').click()">
+
+                    <!-- Placeholder Content -->
+                    <div id="uploadPlaceholder" class="text-center p-8">
+                        <span class="text-6xl mb-4 block opacity-50">📤</span>
+                        <p class="text-slate-500 font-medium">Sube una foto de cuerpo completo</p>
+                        <p class="text-slate-400 text-sm mt-2">o arrastra aquí</p>
+                    </div>
+
+                    <!-- Image Preview -->
+                    <img id="originalPreview" class="hidden absolute inset-0 w-full h-full object-cover">
+
+                    <!-- Change Photo Button (Visible on Hover when image exists) -->
+                    <div id="changePhotoOverlay"
+                        class="hidden absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span class="bg-white text-slate-800 px-6 py-2 rounded-full font-bold shadow-lg">Cambiar
+                            Foto</span>
+                    </div>
+                </div>
+
+                <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="handleImageUpload(event)">
+
+                <!-- Quick Access Gallery -->
+                <div class="mt-6 border-t border-slate-100 pt-4">
+                    <h3 class="text-sm font-bold text-slate-500 mb-3 flex items-center justify-between">
+                        <span>⚡ Acceso Rápido</span>
+                        <span class="text-xs font-normal bg-slate-100 px-2 py-1 rounded-full">Últimas 5</span>
+                    </h3>
+                    <div id="quickAccessGallery" class="grid grid-cols-5 gap-2">
+                        <!-- Gallery items injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Output (Transformation) -->
+            <div class="bg-white rounded-[30px] p-6 shadow-xl flex flex-col h-full relative">
+                <h2 class="text-xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <span>✨</span> Resultado IA
+                </h2>
+
+                <!-- Result Area -->
+                <div id="resultArea"
+                    class="flex-1 bg-slate-100 rounded-2xl flex items-center justify-center relative overflow-hidden">
+
+                    <!-- Empty State -->
+                    <div id="resultPlaceholder" class="text-center p-8 opacity-50">
+                        <span class="text-6xl mb-4 block">🔮</span>
+                        <p class="text-slate-500 font-medium">El resultado aparecerá aquí</p>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="loadingState"
+                        class="hidden absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-20">
+                        <div class="animate-spin text-4xl mb-4">🌀</div>
+                        <p class="text-blue-600 font-bold animate-pulse">Generando nuevo estilo...</p>
+                    </div>
+
+                    <!-- Result Image -->
+                    <img id="resultImage" class="hidden absolute inset-0 w-full h-full object-cover z-10">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="bg-white rounded-[30px] p-8 shadow-xl">
+
+            <!-- Mode Selection -->
+            <div class="flex items-center justify-center gap-6 mb-8 border-b border-slate-100 pb-8">
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <input type="radio" name="mode" value="style" checked onchange="toggleMode('style')"
+                        class="w-6 h-6 text-blue-600 focus:ring-blue-500">
+                    <span class="text-lg font-bold text-slate-700 group-hover:text-blue-600 transition-colors">🎨 Look
+                        Completo IA</span>
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <input type="radio" name="mode" value="tryon" onchange="toggleMode('tryon')"
+                        class="w-6 h-6 text-blue-600 focus:ring-blue-500">
+                    <span class="text-lg font-bold text-slate-700 group-hover:text-blue-600 transition-colors">🛍️
+                        Probador Virtual</span>
+                </label>
+            </div>
+
+            <!-- Section: Style Selection (Default) -->
+            <div id="styleSection">
+                <h3 class="text-xl font-bold text-slate-800 mb-6">Selecciona un Estilo</h3>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <!-- Style Options -->
+                    <button onclick="selectStyle('casual')"
+                        class="style-btn p-4 rounded-2xl border-2 border-slate-100 hover:border-blue-500 hover:bg-blue-50 transition-all flex flex-col items-center gap-2 group selected">
+                        <span class="text-3xl group-hover:scale-110 transition-transform">🧢</span>
+                        <span class="font-bold text-slate-600">Casual Chic</span>
+                    </button>
+
+                    <button onclick="selectStyle('formal')"
+                        class="style-btn p-4 rounded-2xl border-2 border-slate-100 hover:border-blue-500 hover:bg-blue-50 transition-all flex flex-col items-center gap-2 group">
+                        <span class="text-3xl group-hover:scale-110 transition-transform">👔</span>
+                        <span class="font-bold text-slate-600">Business</span>
+                    </button>
+
+                    <button onclick="selectStyle('gala')"
+                        class="style-btn p-4 rounded-2xl border-2 border-slate-100 hover:border-blue-500 hover:bg-blue-50 transition-all flex flex-col items-center gap-2 group">
+                        <span class="text-3xl group-hover:scale-110 transition-transform">👗</span>
+                        <span class="font-bold text-slate-600">Gala Night</span>
+                    </button>
+
+                    <button onclick="selectStyle('vintage')"
+                        class="style-btn p-4 rounded-2xl border-2 border-slate-100 hover:border-blue-500 hover:bg-blue-50 transition-all flex flex-col items-center gap-2 group">
+                        <span class="text-3xl group-hover:scale-110 transition-transform">🎞️</span>
+                        <span class="font-bold text-slate-600">Vintage</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section: Virtual Try-On (Hidden by default) -->
+            <div id="tryonSection" class="hidden">
+                <h3 class="text-xl font-bold text-slate-800 mb-6">🛍️ Personaliza tu Look con el Closet IA</h3>
+
+                <div id="inventorySelectors" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Selectors injected by JS -->
+                    <div
+                        class="col-span-full text-center py-8 text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                        Cargando tu closet...
+                    </div>
+                </div>
+            </div>
+
+            <button id="btnGenerate" onclick="generateTransformation()" disabled
+                class="w-full bg-slate-800 text-white py-4 rounded-2xl font-bold text-xl shadow-lg hover:bg-slate-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3">
+                <span>🪄</span> Generar Transformación
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        let currentImage = null;
+        let selectedStyle = 'casual';
+        let currentMode = 'style'; // 'style' or 'tryon'
+        let selectedItems = {}; // { 'Jeans': {id: 123, img: '...'}, ... }
+        const MAX_HISTORY = 5;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGallery();
+        });
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imageData = e.target.result;
+                    setMainImage(imageData);
+                    saveToGallery(imageData);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function setMainImage(imageData) {
+            currentImage = imageData;
+
+            // Show Preview
+            const img = document.getElementById('originalPreview');
+            img.src = currentImage;
+            img.classList.remove('hidden');
+
+            // Hide Placeholder
+            document.getElementById('uploadPlaceholder').classList.add('hidden');
+            document.getElementById('changePhotoOverlay').classList.remove('hidden');
+
+            // Enable Generate Button
+            document.getElementById('btnGenerate').disabled = false;
+        }
+
+        // --- GALLERY LOGIC ---
+        function saveToGallery(imageData) {
+            let history = JSON.parse(localStorage.getItem('imgHistory') || '[]');
+
+            // Avoid duplicates at the top
+            if (history.length > 0 && history[0] === imageData) return;
+
+            // Add new image to top
+            history.unshift(imageData);
+
+            // Limit to MAX_HISTORY
+            if (history.length > MAX_HISTORY) {
+                history = history.slice(0, MAX_HISTORY);
+            }
+
+            localStorage.setItem('imgHistory', JSON.stringify(history));
+            loadGallery();
+        }
+
+        function loadGallery() {
+            const gallery = document.getElementById('quickAccessGallery');
+            const history = JSON.parse(localStorage.getItem('imgHistory') || '[]');
+
+            gallery.innerHTML = '';
+
+            if (history.length === 0) {
+                gallery.innerHTML = `<p class="col-span-5 text-xs text-slate-400 text-center py-2">Sin historial reciente</p>`;
+                return;
+            }
+
+            history.forEach((imgData, index) => {
+                const div = document.createElement('div');
+                div.className = "relative group aspect-square rounded-lg overflow-hidden cursor-pointer border border-slate-200 hover:border-blue-400 transition-all";
+                div.onclick = () => setMainImage(imgData);
+
+                div.innerHTML = `
+                    <img src="${imgData}" class="w-full h-full object-cover">
+                    <button onclick="deleteFromGallery(event, ${index})" 
+                        class="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 rounded-bl-lg">
+                        ×
+                    </button>
+                `;
+                gallery.appendChild(div);
+            });
+        }
+
+        function deleteFromGallery(event, index) {
+            event.stopPropagation();
+            let history = JSON.parse(localStorage.getItem('imgHistory') || '[]');
+            history.splice(index, 1);
+            localStorage.setItem('imgHistory', JSON.stringify(history));
+            loadGallery();
+        }
+
+        function selectStyle(style) {
+            selectedStyle = style;
+
+            // Visual Feedback
+            document.querySelectorAll('.style-btn').forEach(btn => {
+                btn.classList.remove('border-blue-500', 'bg-blue-50');
+                btn.classList.add('border-slate-100');
+            });
+            event.currentTarget.classList.remove('border-slate-100');
+            event.currentTarget.classList.add('border-blue-500', 'bg-blue-50');
+        }
+
+        // --- TRY-ON LOGIC ---
+        function toggleMode(mode) {
+            currentMode = mode;
+            const styleSec = document.getElementById('styleSection');
+            const tryonSec = document.getElementById('tryonSection');
+            const btn = document.getElementById('btnGenerate');
+
+            if (mode === 'style') {
+                styleSec.classList.remove('hidden');
+                tryonSec.classList.add('hidden');
+                btn.innerHTML = "<span>🪄</span> Generar Transformación";
+            } else {
+                styleSec.classList.add('hidden');
+                tryonSec.classList.remove('hidden');
+                btn.innerHTML = "<span>🛍️</span> Probar Prendas Seleccionadas";
+                loadInventorySelectors();
+            }
+        }
+
+        function loadInventorySelectors() {
+            const container = document.getElementById('inventorySelectors');
+            const inventory = JSON.parse(localStorage.getItem('inventario_ia') || '[]');
+
+            // Group by category
+            const categories = {};
+            inventory.forEach(item => {
+                if (!categories[item.categoria]) categories[item.categoria] = [];
+                categories[item.categoria].push(item);
+            });
+
+            const targetCategories = ["Blusa", "Jeans", "Vestido", "Zapatos", "Abrigo", "Accesorios"];
+
+            container.innerHTML = '';
+
+            targetCategories.forEach(cat => {
+                const items = categories[cat] || [];
+
+                const div = document.createElement('div');
+                div.className = "bg-slate-50 p-4 rounded-xl border border-slate-200";
+
+                let optionsHtml = `<option value="">(Ninguno)</option>`;
+                items.forEach(item => {
+                    optionsHtml += `<option value="${item.id}">ID: ${item.id.toString().slice(-4)}</option>`;
+                });
+
+                div.innerHTML = `
+                    <label class="block text-sm font-bold text-slate-700 mb-2">${cat}</label>
+                    <div class="flex gap-3">
+                        <div id="preview-${cat}" class="w-16 h-16 bg-white rounded-lg border border-slate-200 flex items-center justify-center overflow-hidden">
+                            <span class="text-2xl opacity-20">👕</span>
+                        </div>
+                        <select onchange="selectItem('${cat}', this.value)" class="flex-1 rounded-lg border-slate-300 text-sm">
+                            ${optionsHtml}
+                        </select>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            if (inventory.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8 bg-yellow-50 rounded-2xl border border-yellow-100 text-yellow-700">
+                        <p class="font-bold">⚠️ Tu closet está vacío</p>
+                        <p class="text-sm mt-1">Ve a "Mi Closet" para agregar y clasificar ropa primero.</p>
+                        <a href="/closet" class="inline-block mt-3 text-blue-600 underline text-sm">Ir al Closet</a>
+                    </div>
+                `;
+            }
+        }
+
+        function selectItem(category, id) {
+            const inventory = JSON.parse(localStorage.getItem('inventario_ia') || '[]');
+            const item = inventory.find(i => i.id == id);
+            const preview = document.getElementById(`preview-${category}`);
+
+            if (item) {
+                selectedItems[category] = item;
+                preview.innerHTML = `<img src="${item.imagen_base64}" class="w-full h-full object-cover">`;
+            } else {
+                delete selectedItems[category];
+                preview.innerHTML = `<span class="text-2xl opacity-20">👕</span>`;
+            }
+        }
+
+        function generateTransformation() {
+            if (!currentImage) return;
+
+            const loading = document.getElementById('loadingState');
+            const resultImg = document.getElementById('resultImage');
+            const placeholder = document.getElementById('resultPlaceholder');
+            const btn = document.getElementById('btnGenerate');
+
+            // Start Loading
+            loading.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            resultImg.classList.add('hidden');
+            btn.disabled = true;
+            btn.textContent = "⏳ Procesando...";
+
+            // Simulate AI Processing
+            setTimeout(() => {
+                // For simulation, we'll just use the original image but maybe apply a CSS filter
+                // In a real app, this would be the API response URL
+                resultImg.src = currentImage;
+
+                if (currentMode === 'style') {
+                    // Apply a dummy filter based on style to simulate change
+                    resultImg.style.filter = getFilterForStyle(selectedStyle);
+                    alert(`¡Transformación '${selectedStyle}' completada!`);
+                } else {
+                    // Try-On Simulation
+                    resultImg.style.filter = 'contrast(1.1) brightness(1.05)';
+                    const itemsNames = Object.keys(selectedItems).join(', ');
+                    if (itemsNames) {
+                        alert(`¡Probador Virtual listo!\n\nSe han integrado: ${itemsNames}\n\n(Simulación: En producción esto usaría In-Painting AI)`);
+                    } else {
+                        alert("No seleccionaste ninguna prenda, pero mejoramos la iluminación de tu foto.");
+                    }
+                }
+
+                // Show Result
+                loading.classList.add('hidden');
+                resultImg.classList.remove('hidden');
+
+                btn.disabled = false;
+                btn.innerHTML = "<span>🪄</span> Generar Otra Vez";
+
+            }, 2500);
+        }
+
+        function getFilterForStyle(style) {
+            switch (style) {
+                case 'casual': return 'contrast(1.1) saturate(1.2)';
+                case 'formal': return 'grayscale(0.2) contrast(1.2)';
+                case 'gala': return 'brightness(1.1) saturate(1.3) sepia(0.1)';
+                case 'vintage': return 'sepia(0.4) contrast(0.9)';
+                default: return 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

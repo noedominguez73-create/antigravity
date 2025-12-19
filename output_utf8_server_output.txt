@@ -1,0 +1,203 @@
+python : 
+[2025-11-27 
+20:52:28,995] INFO 
+in logging_config: 
+=== Logging System 
+Initialized ===
+En línea: 1 
+Carácter: 1
++ python run.py > 
+server_output.txt 
+2>&1
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: ([202   
+ 5-11-27 20:...I    
+nitialized ===:    
+String) [], Rem    
+oteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+APP.MODELS LOADED FULLY
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a 
+development server. 
+Do not use it in a 
+production 
+deployment. Use a 
+production WSGI 
+server instead.
+ * Running on http:/
+/127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with 
+stat
+[2025-11-27 
+20:52:29,886] INFO 
+in logging_config: 
+=== Logging System 
+Initialized ===
+ * Debugger is 
+active!
+ * Debugger PIN: 
+317-253-078
+127.0.0.1 - - 
+[27/Nov/2025 
+20:53:13] "POST 
+/api/auth/login 
+HTTP/1.1" 200 -
+ * Detected change 
+in 'C:\\asesoriaimss
+.io\\test_deep_audit
+.py', reloading
+APP.MODELS LOADED FULLY
+ * Restarting with 
+stat
+[2025-11-27 
+20:53:55,351] INFO 
+in logging_config: 
+=== Logging System 
+Initialized ===
+ * Debugger is 
+active!
+ * Debugger PIN: 
+317-253-078
+127.0.0.1 - - 
+[27/Nov/2025 
+20:54:59] "POST 
+/api/auth/login 
+HTTP/1.1" 200 -
+[2025-11-27 
+20:55:01,932] ERROR 
+in error_handler: 
+INTERNAL SERVER 
+ERROR: Error 
+agregando URL: (sqli
+te3.OperationalError
+) table 
+professional_urls 
+has no column named 
+description
+[SQL: INSERT INTO 
+professional_urls 
+(professional_id, 
+url, specialty, 
+description, 
+is_active, 
+last_scraped_at, 
+cached_content, 
+created_at, 
+updated_at) VALUES 
+(?, ?, ?, ?, ?, ?, 
+?, ?, ?)]
+[parameters: (1, 'ht
+tps://www.imss.gob.m
+x', 'General', 
+'Sitio oficial 
+IMSS', 1, 
+'2025-11-28 
+03:55:01.929779', 
+'Title: Sitio Web 
+del IMSS\n\nSitio 
+Web del IMSS\nHeader
+\nInicio\nInformaci¾
+n, trßmites y 
+servicios para:\nDer
+echohabientes, 
+pensionados y 
+p·blico en  ... 
+(2198 characters 
+truncated) ... 
+Unidad de Medicina 
+Familiar en San 
+Juan Nuevo Parangari
+cutiro\nNov 26\nA 
+diez a±os de su 
+implementaci¾n, 
+C¾digo Infarto 
+redujo en 68 por 
+ciento la...', 
+'2025-11-28 
+03:55:01.930844', 
+'2025-11-28 
+03:55:01.931375')]
+(Background on this 
+error at: https://sq
+lalche.me/e/20/e3q8)
+127.0.0.1 - - 
+[27/Nov/2025 
+20:55:01] "POST /api
+/profesionales/1/url
+s HTTP/1.1" 500 -
+127.0.0.1 - - 
+[27/Nov/2025 
+20:56:07] "POST 
+/api/auth/login 
+HTTP/1.1" 200 -
+[2025-11-27 
+20:56:09,757] ERROR 
+in error_handler: 
+INTERNAL SERVER 
+ERROR: Error 
+agregando URL: (sqli
+te3.OperationalError
+) table 
+professional_urls 
+has no column named 
+description
+[SQL: INSERT INTO 
+professional_urls 
+(professional_id, 
+url, specialty, 
+description, 
+is_active, 
+last_scraped_at, 
+cached_content, 
+created_at, 
+updated_at) VALUES 
+(?, ?, ?, ?, ?, ?, 
+?, ?, ?)]
+[parameters: (1, 'ht
+tps://www.imss.gob.m
+x', 'General', 
+'Sitio oficial 
+IMSS', 1, 
+'2025-11-28 
+03:56:09.756425', 
+'Title: Sitio Web 
+del IMSS\n\nSitio 
+Web del IMSS\nHeader
+\nInicio\nInformaci¾
+n, trßmites y 
+servicios para:\nDer
+echohabientes, 
+pensionados y 
+p·blico en  ... 
+(2198 characters 
+truncated) ... 
+Unidad de Medicina 
+Familiar en San 
+Juan Nuevo Parangari
+cutiro\nNov 26\nA 
+diez a±os de su 
+implementaci¾n, 
+C¾digo Infarto 
+redujo en 68 por 
+ciento la...', 
+'2025-11-28 
+03:56:09.757430', 
+'2025-11-28 
+03:56:09.757430')]
+(Background on this 
+error at: https://sq
+lalche.me/e/20/e3q8)
+127.0.0.1 - - 
+[27/Nov/2025 
+20:56:09] "POST /api
+/profesionales/1/url
+s HTTP/1.1" 500 -

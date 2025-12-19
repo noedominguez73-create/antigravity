@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Finanzas - AsesoriaIMSS.io</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-display {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+
+        .shadow-soft {
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar active state */
+        .nav-item.active {
+            background-color: #f3f4f6;
+            color: #111827;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+    {% include 'sidebar.html' %}
+
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <header class="bg-white border-b border-gray-200 py-4 px-8 flex items-center justify-between flex-shrink-0">
+            <div>
+                <p class="text-xs text-gray-500 font-medium uppercase tracking-wider" id="current-date">
+                    <!-- Date injected via JS -->
+                </p>
+                <h1 class="font-display text-2xl font-bold text-gray-900">Mis Finanzas </h1>
+            </div>
+            <div class="flex items-center gap-3"><button class="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                    onclick="openAccountModal()"><i data-lucide="settings" class="h-5 w-5"></i></button>
+                <div
+                    class="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 shadow-sm">
+                    <i data-lucide="sparkles" class="h-5 w-5"></i>
+                </div>
+            </div>
+        </header>
+        <!-- Scrollable Content -->
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-5xl mx-auto space-y-8">
+                <!-- Panel de Control -->
+                <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
+                    <h2 class="font-display text-2xl font-bold text-gray-900 mb-2">Panel de Control</h2>
+                    <p class="text-gray-500 mb-8">Vista general de tu desempeño financiero</p>
+                    <div class="flex justify-center mb-8">
+                        <div class="relative">
+                            <div
+                                class="w-20 h-20 rounded-full bg-gradient-to-tr from-rose-400 to-orange-400 flex items-center justify-center shadow-lg shadow-rose-200 animate-pulse">
+                                <i data-lucide="mic" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                                <span class="bg-gray-900 text-white text-xs px-2 py-1 rounded-full">Toca para
+                                    hablar</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400">Registra gastos o haz preguntas</p>
+                    <!-- Metrics Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-left">
+                        <!-- Ingresos --><a href="/mis-finanzas/ingresos"
+                            class="group block p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:shadow-md transition-all">
+                            <div class="flex justify-between items-start mb-4"><span
+                                    class="text-xs font-bold text-gray-400 uppercase tracking-wider">Ingresos
+                                    Totales</span>
+                                <div
+                                    class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="dollar-sign" class="h-4 w-4"></i>
+                                </div>
+                            </div>
+                            <p class="text-2xl font-bold text-gray-900" id="total-income">$0.00</p>
+                            <p class="text-xs text-gray-400 mt-1">Click para gestionar</p>
+                        </a>
+                        <!-- Gastos -->
+                        <div class="block p-4 rounded-xl border border-gray-100 hover:border-rose-200 transition-all">
+                            <div class="flex justify-between items-start mb-4"><span
+                                    class="text-xs font-bold text-gray-400 uppercase tracking-wider">Gastos
+                                    Totales</span>
+                                <div
+                                    class="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center text-rose-600">
+                                    <i data-lucide="trending-up" class="h-4 w-4"></i>
+                                </div>
+                            </div>
+                            <p class="text-2xl font-bold text-gray-900" id="total-expenses">$0.00
+                            </p>
+                            <p class="text-xs text-gray-400 mt-1">Período actual</p>
+                        </div>
+                        <!-- Facturas --><a href="/mis-finanzas/facturas"
+                            class="group block p-4 rounded-xl border border-gray-100 hover:border-orange-200 hover:shadow-md transition-all">
+                            <div class="flex justify-between items-start mb-4"><span
+                                    class="text-xs font-bold text-gray-400 uppercase tracking-wider">Facturas
+                                    Pendientes</span>
+                                <div
+                                    class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="wallet" class="h-4 w-4"></i>
+                                </div>
+                            </div>
+                            <p class="text-2xl font-bold text-gray-900" id="pending-bills-count">0</p>
+                            <p class="text-xs text-gray-400 mt-1">Click para gestionar</p>
+                        </a>
+                    </div>
+                </section>
+                <!-- Weekly Summary -->
+                <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="font-display text-lg font-bold text-gray-900">Resumen Semanal</h3>
+                            <p class="text-xs text-gray-500" id="week-range">1 dic - 7 dic</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-xl text-rose-600" id="weekly-expenses">$0.00</p>
+                            <p class="text-xs text-gray-400" id="weekly-count">0 gastos</p>
+                        </div>
+                    </div>
+                    <!-- Category List -->
+                    <div id="weekly-categories" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Populated by JS -->
+                        <div class="col-span-3 text-center py-8 text-gray-400 text-sm">No hay gastos
+                            registrados esta semana </div>
+                    </div>
+                </section>
+                <!-- Alerts / Notifications -->
+                <section class="space-y-3">
+                    <div class="bg-rose-50 border border-rose-100 rounded-xl p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center text-rose-600">
+                                <i data-lucide="alert-triangle" class="h-4 w-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-rose-800">2 facturas vencidas</p>
+                                <p class="text-xs text-rose-600">Teléfono,
+                                    Netflix</p>
+                            </div>
+                        </div><i data-lucide="chevron-right" class="h-4 w-4 text-rose-400"></i>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-100 rounded-xl p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
+                                <i data-lucide="clock" class="h-4 w-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-yellow-800">1 factura próxima a vencer
+                                </p>
+                                <p class="text-xs text-yellow-600">Luz (día 5)</p>
+                            </div>
+                        </div><i data-lucide="chevron-right" class="h-4 w-4 text-yellow-400"></i>
+                    </div>
+                </section>
+                <!-- Reminders CTA -->
+                <section class="bg-pink-50 rounded-xl p-6 flex items-center justify-between border border-pink-100">
+                    <div>
+                        <h4 class="font-bold text-pink-900">Activar recordatorios</h4>
+                        <p class="text-xs text-pink-700 mt-1">Recibe notificaciones de tareas
+                            próximas a vencer</p>
+                    </div><button
+                        class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white text-sm font-bold rounded-lg transition-colors shadow-sm shadow-pink-200">Activar
+                    </button>
+                </section>
+            </div>
+        </main>
+    </div>
+    <!-- Account Management Modal -->
+    <div id="account-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div
+            class="bg-white rounded-xl p-6 w-full max-w-2xl mx-4 shadow-2xl transform transition-all h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 font-display">Gestionar Cuentas</h3>
+                    <p class="text-xs text-gray-500 mt-1">Las cuentas de mayor tienen subcuentas para organizar
+                        mejor tus gastos.</p>
+                </div><button onclick="closeAccountModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x"
+                        class="h-6 w-6"></i></button>
+            </div>
+            <!-- List -->
+            <div id="accounts-list-container" class="flex-1 overflow-y-auto space-y-3 pr-2">
+                <!-- Populated by JS -->
+            </div>
+            <!-- Add Button -->
+            <div class="pt-4 mt-4 border-t border-gray-100"><button onclick="openEditAccountModal()"
+                    class="w-full py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-medium hover:border-rose-500 hover:text-rose-500 transition-colors flex items-center justify-center gap-2"><i
+                        data-lucide="plus" class="h-5 w-5"></i>Nueva Cuenta </button></div>
+        </div>
+    </div>
+    <!-- Edit Account Sub-Modal -->
+    <div id="edit-account-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-[60]">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="edit-modal-title" class="text-lg font-bold text-gray-900">Nueva Cuenta</h3><button
+                    onclick="closeEditAccountModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x"
+                        class="h-5 w-5"></i></button>
+            </div>
+            <form id="account-form" class="space-y-4"><input type="hidden" id="edit-account-id">
+                <!-- Name -->
+                <div><label class="block text-xs font-medium text-gray-500 mb-1">Nombre</label><input type="text"
+                        id="edit-account-name" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:outline-none text-gray-900"
+                        placeholder="Ej: Ropa"></div>
+                <!-- Icon Selection -->
+                <div><label class="block text-xs font-medium text-gray-500 mb-2">Icono</label>
+                    <div class="grid grid-cols-6 gap-2" id="icon-selector">
+                        <!-- Icons populated by JS -->
+                    </div><input type="hidden" id="edit-account-icon" value="circle">
+                </div>
+                <!-- Color Selection -->
+                <div><label class="block text-xs font-medium text-gray-500 mb-2">Color</label>
+                    <div class="flex flex-wrap gap-3" id="color-selector">
+                        <!-- Colors populated by JS -->
+                    </div><input type="hidden" id="edit-account-color" value="#6b7280">
+                </div>
+                <!-- Keywords/Subcategories -->
+                <div><label class="block text-xs font-medium text-gray-500 mb-1">Palabras Clave
+                        (separadas por coma)</label><input type="text" id="edit-account-subs"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:outline-none text-gray-900"
+                        placeholder="Ej: ropa, zapatos, accesorios"></div>
+                <div class="flex justify-end gap-3 pt-4"><button type="button" onclick="closeEditAccountModal()"
+                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancelar</button><button
+                        type="submit"
+                        class="px-6 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 font-medium">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="/static/js/finance-core.js"></script>
+    <script src="/static/js/finance-ai.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Lucide Icons
+            lucide.createIcons();
+
+            // Set Current Date
+            const dateOptions = {
+                weekday: 'long', day: 'numeric', month: 'long'
+            }
+
+                ;
+            const dateStr = new Date().toLocaleDateString('es-ES', dateOptions);
+            document.getElementById('current-date').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+
+            // Set Week Range (Mock)
+            const today = new Date();
+            const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1));
+            const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 7));
+
+            document.getElementById('week-range').textContent = `${startOfWeek.getDate()}
+
+                ${startOfWeek.toLocaleString('es-ES', {
+                        month: 'short'})
+            }
+
+            - ${endOfWeek.getDate()}
+
+            ${endOfWeek.toLocaleString('es-ES', {
+                    month: 'short'})
+        }
+
+        `;
+
+            // Initial Render (wait for init)
+            setTimeout(() => {
+                updateDashboard(FinanceCore.data);
+            }
+
+                , 100);
+        });
+
+        // --- Dashboard Logic ---
+        function updateDashboard(data) {
+            // 1. Totals
+            const totalBalance = FinanceCore.getTotalBalance();
+            const totalIncome = data.transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            const totalExpenses = data.transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+            const pendingBillsCount = data.bills.filter(b => !b.isPaid).length;
+
+            // Update DOM
+            document.getElementById('total-income').textContent = FinanceCore.formatCurrency(totalIncome);
+            document.getElementById('total-expenses').textContent = FinanceCore.formatCurrency(totalExpenses);
+            document.getElementById('pending-bills-count').textContent = pendingBillsCount;
+            document.getElementById('weekly-expenses').textContent = FinanceCore.formatCurrency(totalExpenses);
+
+            document.getElementById('weekly-count').textContent = `${data.transactions.filter(t=> t.type==='expense').length}
+
+            gastos`;
+
+            // 2. Weekly Categories (Aggregation)
+            const expenses = data.transactions.filter(t => t.type === 'expense');
+
+            const categoryTotals = {}
+
+                ;
+
+            expenses.forEach(t => {
+                // Try to find category object first to get display name
+                let catName = t.category || 'Otros';
+                // If category is stored as ID or Name, we group by Name
+                const catObj = data.categories.find(c => c.name === t.category || c.id === t.category);
+                if (catObj) catName = catObj.name;
+
+                categoryTotals[catName] = (categoryTotals[catName] || 0) + t.amount;
+            });
+
+            // Sort by amount desc
+            const sortedCategories = Object.entries(categoryTotals).sort(([, a], [, b]) => b - a).slice(0, 3); // Top 3
+
+            const categoriesContainer = document.getElementById('weekly-categories');
+
+            if (sortedCategories.length === 0) {
+                categoriesContainer.innerHTML = ` <div class="col-span-3 text-center py-8 text-gray-400 text-sm">No hay gastos registrados esta semana </div>`;
+            }
+
+            else {
+                categoriesContainer.innerHTML = sortedCategories.map(([catName, amount]) => {
+
+                    // Find category object for icon/color
+                    const cat = data.categories.find(c => c.name === catName) || {
+                        icon: 'package', color: '#9ca3af'
+                    }
+
+                        ;
+
+                    return ` <div class="bg-white border border-gray-100 rounded-xl p-4 flex items-center gap-3 transition-transform hover:scale-105 shadow-sm" > <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm" style="background-color: ${cat.color}20; color: ${cat.color}" > <i data-lucide="${cat.icon}" class="h-5 w-5" ></i> </div> <div> <p class="text-xs font-medium text-gray-500 uppercase" >${catName}
+
+                        </p> <p class="font-bold text-gray-900" >${FinanceCore.formatCurrency(amount)}
+
+                        </p> </div> </div>`;
+                }).join('');
+                lucide.createIcons();
+            }
+        }
+
+        // --- Account Management Logic ---
+
+        function openAccountModal() {
+            renderAccountsList();
+            const modal = document.getElementById('account-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAccountModal() {
+            const modal = document.getElementById('account-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function renderAccountsList() {
+            const container = document.getElementById('accounts-list-container');
+            const sortedCategories = [...FinanceCore.data.categories].sort((a, b) => a.name.localeCompare(b.name));
+
+            container.innerHTML = sortedCategories.map(cat => {
+                const subcount = cat.subcategories ? cat.subcategories.length : 0;
+                const subtext = subcount > 0 ? cat.subcategories.join(', ') : 'Sin palabras clave';
+
+                return ` <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:shadow-sm transition-all group" > <div class="flex items-center gap-4 overflow-hidden" > <div class="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center shadow-sm" style="background-color: ${cat.color}20; color: ${cat.color}" > <i data-lucide="${cat.icon}" class="h-5 w-5" ></i> </div> <div class="min-w-0" > <h4 class="font-bold text-gray-900 text-sm truncate" >${cat.name}
+
+                    </h4> <p class="text-xs text-gray-500 truncate" title="${subtext}" > ${subtext}
+
+                    </p> </div> </div> <div class="flex items-center gap-1 flex-shrink-0" > <button onclick="openEditAccountModal('${cat.id}')" class="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" title="Editar" > <i data-lucide="pencil" class="h-4 w-4" ></i> </button> <button onclick="deleteAccount('${cat.id}')" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Eliminar" > <i data-lucide="trash-2" class="h-4 w-4" ></i> </button> </div> </div> `
+            }).join('');
+            lucide.createIcons();
+        }
+
+        // Edit/Add Sub-Modal
+        const availableIcons = ['shopping-cart',
+            'car',
+            'zap',
+            'film',
+            'heart',
+            'book',
+            'shirt',
+            'home',
+            'box',
+            'coffee',
+            'gift',
+            'smartphone',
+            'wifi',
+            'briefcase',
+            'plane'];
+        const availableColors = ['#ef4444',
+            '#f97316',
+            '#f59e0b',
+            '#84cc16',
+            '#10b981',
+            '#06b6d4',
+            '#3b82f6',
+            '#6366f1',
+            '#8b5cf6',
+            '#d946ef',
+            '#f43f5e',
+            '#6b7280'];
+
+        function renderIconSelector(selectedIcon) {
+            const container = document.getElementById('icon-selector');
+            container.innerHTML = availableIcons.map(icon => ` <button type="button" onclick="selectIcon('${icon}')"
+                class="p-2 rounded-lg flex items-center justify-center transition-all ${icon === selectedIcon ? 'bg-rose-100 text-rose-600 ring-2 ring-rose-500' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}" > <i data-lucide="${icon}" class="h-5 w-5" ></i> </button> `).join('');
+            lucide.createIcons();
+        }
+
+        function renderColorSelector(selectedColor) {
+            const container = document.getElementById('color-selector');
+            container.innerHTML = availableColors.map(color => ` <button type="button" onclick="selectColor('${color}')"
+                class="w-8 h-8 rounded-full transition-all ${color === selectedColor ? 'ring-2 ring-offset-2 ring-gray-900 scale-110' : 'hover:scale-110'}"
+                style="background-color: ${color};" > </button> `).join('');
+        }
+
+        function selectIcon(icon) {
+            document.getElementById('edit-account-icon').value = icon;
+            renderIconSelector(icon);
+        }
+
+        function selectColor(color) {
+            document.getElementById('edit-account-color').value = color;
+            renderColorSelector(color);
+        }
+
+        function openEditAccountModal(id = null) {
+            const modal = document.getElementById('edit-account-modal');
+            const form = document.getElementById('account-form');
+            const title = document.getElementById('edit-modal-title');
+
+            form.reset();
+
+            if (id) {
+                const cat = FinanceCore.data.categories.find(c => c.id === id);
+                if (!cat) return;
+
+                title.textContent = "Editar Cuenta";
+                document.getElementById('edit-account-id').value = cat.id;
+                document.getElementById('edit-account-name').value = cat.name;
+                document.getElementById('edit-account-subs').value = (cat.subcategories || []).join(', ');
+                selectIcon(cat.icon);
+                selectColor(cat.color || '#6b7280');
+            }
+
+            else {
+                title.textContent = "Nueva Cuenta";
+                document.getElementById('edit-account-id').value = "";
+                selectIcon('box'); // Default
+                selectColor('#6b7280'); // Default
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEditAccountModal() {
+            const modal = document.getElementById('edit-account-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.getElementById('account-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-account-id').value;
+            const name = document.getElementById('edit-account-name').value;
+            const icon = document.getElementById('edit-account-icon').value;
+            const color = document.getElementById('edit-account-color').value;
+            const subsStr = document.getElementById('edit-account-subs').value;
+            const subcategories = subsStr.split(',').map(s => s.trim()).filter(s => s);
+
+            const data = {
+                name, icon, color, subcategories
+            }
+
+                ;
+
+            if (id) {
+                FinanceCore.updateCategory(id, data);
+            }
+
+            else {
+                FinanceCore.addCategory(data);
+            }
+
+            closeEditAccountModal();
+            renderAccountsList();
+            updateDashboard(FinanceCore.data); // Refresh dashboard if needed
+        });
+
+        function deleteAccount(id) {
+            if (confirm("¿Estás seguro de eliminar esta cuenta?")) {
+                FinanceCore.deleteCategory(id);
+                renderAccountsList();
+                updateDashboard(FinanceCore.data);
+            }
+        }
+
+        // Subscribe to changes
+        FinanceCore.subscribe(updateDashboard);
+    </script>
+</body>
+
+</html>

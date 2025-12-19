@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - AsesoriaIMSS.io</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-blue-600">AsesoriaIMSS.io - Admin</a>
+            <div class="flex items-center space-x-4">
+                <span id="adminName" class="text-gray-700"></span>
+                <button onclick="logout()"
+                    class="px-4 py-2 text-red-600 hover:bg-red-50 rounded transition">Salir</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Panel de Administración</h1>
+
+        <!-- Stats Dashboard -->
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Total Usuarios</p>
+                        <p id="statUsers" class="text-3xl font-bold text-blue-600">0</p>
+                    </div>
+                    <div class="text-4xl">👥</div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Profesionales</p>
+                        <p id="statProfessionals" class="text-3xl font-bold text-green-600">0</p>
+                    </div>
+                    <div class="text-4xl">⭐</div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Pendientes</p>
+                        <p id="statPending" class="text-3xl font-bold text-yellow-600">0</p>
+                    </div>
+                    <div class="text-4xl">⏳</div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Ingresos</p>
+                        <p id="statRevenue" class="text-3xl font-bold text-purple-600">$0</p>
+                    </div>
+                    <div class="text-4xl">💰</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="border-b border-gray-200">
+                <nav class="flex -mb-px">
+                    <button id="tabComments" onclick="switchTab('comments')"
+                        class="tab-btn px-6 py-3 border-b-2 border-blue-600 text-blue-600 font-semibold">
+                        Comentarios
+                    </button>
+                    <button id="tabCredits" onclick="switchTab('credits')"
+                        class="tab-btn px-6 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800">
+                        Agregar Créditos
+                    </button>
+                    <button id="tabTransactions" onclick="switchTab('transactions')"
+                        class="tab-btn px-6 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800">
+                        Transacciones Pendientes
+                    </button>
+                    <button id="tabSpecialties" onclick="switchTab('specialties')"
+                        class="tab-btn px-6 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800">
+                        Especialidades
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Comments Tab -->
+            <div id="commentsTab" class="p-6">
+                <h2 class="text-2xl font-bold mb-6">Comentarios Pendientes</h2>
+                <div id="commentsContainer" class="space-y-4">
+                    <p class="text-gray-500">Cargando...</p>
+                </div>
+            </div>
+
+            <!-- Credits Tab -->
+            <div id="creditsTab" class="p-6 hidden">
+                <h2 class="text-2xl font-bold mb-6">Agregar Créditos Manualmente</h2>
+
+                <!-- Search Box -->
+                <div class="mb-6 max-w-md">
+                    <label class="block text-gray-700 font-semibold mb-2">Buscar Profesional</label>
+                    <div class="relative">
+                        <input type="text" id="searchProfessional" placeholder="Nombre o email..."
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-600">
+                        <div id="searchResults"
+                            class="absolute z-10 w-full bg-white border rounded-lg shadow-lg mt-1 hidden max-h-60 overflow-y-auto">
+                            <!-- Results injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <form id="creditsForm" class="space-y-4 max-w-md">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">ID del Profesional</label>
+                        <input type="number" id="professionalId" required readonly
+                            class="w-full px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none">
+                        <p id="selectedProfessionalName" class="text-sm text-blue-600 mt-1"></p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Cantidad de Créditos</label>
+                        <input type="number" id="creditAmount" required min="1"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-600">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Razón</label>
+                        <textarea id="creditReason" rows="3"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-600"></textarea>
+                    </div>
+                    <button type="submit"
+                        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">
+                        Agregar Créditos
+                    </button>
+                </form>
+            </div>
+
+            <!-- Transactions Tab -->
+            <div id="transactionsTab" class="p-6 hidden">
+                <h2 class="text-2xl font-bold mb-6">Transacciones Pendientes</h2>
+                <div id="transactionsContainer" class="space-y-4">
+                    <p class="text-gray-500">Cargando...</p>
+                </div>
+            </div>
+
+            <!-- Specialties Tab -->
+            <div id="specialtiesTab" class="p-6 hidden">
+                <h2 class="text-2xl font-bold mb-6">Gestionar Especialidades</h2>
+
+                <!-- Add Form -->
+                <div class="mb-8 max-w-md bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-4">Agregar Nueva</h3>
+                    <form id="addSpecialtyForm" class="flex gap-2">
+                        <input type="text" id="newSpecialtyName" required placeholder="Nombre (ej. Estilista)"
+                            class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-600">
+                        <button type="submit"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                            Agregar
+                        </button>
+                    </form>
+                </div>
+
+                <!-- List -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Especialidades Existentes</h3>
+                    <div id="specialtiesList" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <p class="text-gray-500">Cargando...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components.js') }}"></script>
+    <script>
+        // Check authentication FIRST
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const token = localStorage.getItem('token');
+
+        if (!token || user.role !== 'admin') {
+            window.location.href = '/admin/login';
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireRole('admin')) return;
+
+            const user = getCurrentUser();
+            document.getElementById('adminName').textContent = user.full_name;
+
+            await loadDashboard();
+            await loadPendingComments();
+        });
+
+        async function loadDashboard() {
+            const result = await getAdminDashboard();
+            if (result.success) {
+                document.getElementById('statUsers').textContent = result.data.users?.total || 0;
+                document.getElementById('statProfessionals').textContent = result.data.professionals?.total || 0;
+                const totalPending = (result.data.pending?.comments || 0) +
+                    (result.data.pending?.payments || 0) +
+                    (result.data.pending?.withdrawals || 0);
+                document.getElementById('statPending').textContent = totalPending;
+                document.getElementById('statRevenue').textContent = formatCurrency(result.data.revenue?.total_mxn || 0);
+            }
+        }
+
+        async function loadPendingComments() {
+            const result = await getPendingComments(1);
+            const container = document.getElementById('commentsContainer');
+            if (result.success && result.data.comments && result.data.comments.length > 0) {
+                container.innerHTML = result.data.comments.map(comment => `
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-semibold">${comment.author_name}</h4>
+                                <p class="text-sm text-gray-600">Para: ${comment.professional_name}</p>
+                                <div class="text-yellow-500">${'★'.repeat(comment.rating)}${'☆'.repeat(5 - comment.rating)}</div>
+                            </div>
+                            <span class="text-sm text-gray-500">${formatDate(comment.created_at)}</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">${comment.content}</p>
+                        <div class="flex space-x-2">
+                            <button onclick="approveComment(${comment.id})" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">Aprobar</button>
+                            <button onclick="rejectComment(${comment.id})" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">Rechazar</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<p class="text-gray-500">No hay comentarios pendientes</p>';
+            }
+        }
+
+        async function approveComment(id) {
+            const result = await updateCommentStatus(id, 'approved');
+            if (result.success) {
+                showToast('Comentario aprobado', 'success');
+                await loadPendingComments();
+                await loadDashboard();
+            } else {
+                showToast(result.error, 'error');
+            }
+        }
+
+        async function rejectComment(id) {
+            const result = await updateCommentStatus(id, 'rejected');
+            if (result.success) {
+                showToast('Comentario rechazado', 'success');
+                await loadPendingComments();
+                await loadDashboard();
+            } else {
+                showToast(result.error, 'error');
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('[id$="Tab"]').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-blue-600', 'text-blue-600');
+                btn.classList.add('border-transparent', 'text-gray-600');
+            });
+            document.getElementById(tab + 'Tab').classList.remove('hidden');
+            document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('border-blue-600', 'text-blue-600');
+            document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('border-transparent', 'text-gray-600');
+            if (tab === 'transactions') loadPendingTransactions();
+            if (tab === 'specialties') loadSpecialties();
+        }
+
+        async function loadSpecialties() {
+            const container = document.getElementById('specialtiesList');
+            try {
+                const result = await fetch('/api/admin/especialidades', {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                }).then(r => r.json());
+
+                if (result.success && result.data.specialties) {
+                    container.innerHTML = result.data.specialties.map(s => `
+                        <div class="flex justify-between items-center bg-white border border-gray-200 p-3 rounded-lg shadow-sm">
+                            <span class="font-medium text-gray-800">${s.name}</span>
+                            <button onclick="deleteSpecialty(${s.id})" class="text-red-500 hover:text-red-700 p-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p class="text-gray-500">No se pudieron cargar las especialidades</p>';
+                }
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = '<p class="text-red-500">Error de conexión</p>';
+            }
+        }
+
+        document.getElementById('addSpecialtyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('newSpecialtyName');
+            const name = input.value.trim();
+            if (!name) return;
+
+            try {
+                const result = await fetch('/api/admin/especialidades', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ name })
+                }).then(r => r.json());
+
+                if (result.success) {
+                    showToast('Especialidad agregada', 'success');
+                    input.value = '';
+                    loadSpecialties();
+                } else {
+                    showToast(result.error || 'Error al agregar', 'error');
+                }
+            } catch (e) {
+                showToast('Error de conexión', 'error');
+            }
+        });
+
+        async function deleteSpecialty(id) {
+            if (!confirm('¿Estás seguro de eliminar esta especialidad?')) return;
+
+            try {
+                const result = await fetch(`/api/admin/especialidades/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                }).then(r => r.json());
+
+                if (result.success) {
+                    showToast('Especialidad eliminada', 'success');
+                    loadSpecialties();
+                } else {
+                    showToast(result.error || 'Error al eliminar', 'error');
+                }
+            } catch (e) {
+                showToast('Error de conexión', 'error');
+            }
+        }
+
+        async function loadPendingTransactions() {
+            const container = document.getElementById('transactionsContainer');
+            const result = await fetch('/api/admin/transacciones', {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            }).then(r => r.json());
+
+            if (result.success && result.data.transactions && result.data.transactions.length > 0) {
+                container.innerHTML = result.data.transactions.map(tx => `
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-semibold">${tx.professional_name}</h4>
+                                <p class="text-sm text-gray-600">Créditos: ${tx.amount} | Precio: $${tx.price_mxn} MXN</p>
+                                <p class="text-sm text-gray-600">Método: ${tx.payment_method}</p>
+                            </div>
+                            <span class="text-sm text-gray-500">${new Date(tx.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="approveTransaction(${tx.id})" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">Aprobar</button>
+                            <button onclick="rejectTransaction(${tx.id})" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">Rechazar</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<p class="text-gray-500">No hay transacciones pendientes</p>';
+            }
+        }
+
+        async function approveTransaction(id) {
+            const result = await fetch(`/api/admin/transacciones/${id}/aprobar`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            }).then(r => r.json());
+            if (result.success) {
+                showToast('Transacción aprobada', 'success');
+                await loadPendingTransactions();
+                await loadDashboard();
+            } else {
+                showToast(result.error, 'error');
+            }
+        }
+
+        async function rejectTransaction(id) {
+            const result = await fetch(`/api/admin/transacciones/${id}/rechazar`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            }).then(r => r.json());
+            if (result.success) {
+                showToast('Transacción rechazada', 'success');
+                await loadPendingTransactions();
+                await loadDashboard();
+            } else {
+                showToast(result.error, 'error');
+            }
+        }
+
+        document.getElementById('creditsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const professionalId = document.getElementById('professionalId').value;
+            const amount = document.getElementById('creditAmount').value;
+            const reason = document.getElementById('creditReason').value;
+
+            const result = await fetch(`/api/admin/creditos/${professionalId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ amount, reason })
+            }).then(r => r.json());
+
+            if (result.success) {
+                showToast('Créditos agregados exitosamente', 'success');
+                document.getElementById('creditsForm').reset();
+                document.getElementById('selectedProfessionalName').textContent = '';
+            } else {
+                showToast(result.error, 'error');
+            }
+        });
+
+        // Search functionality
+        let searchTimeout;
+        const searchInput = document.getElementById('searchProfessional');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value;
+
+            if (query.length < 2) {
+                searchResults.classList.add('hidden');
+                return;
+            }
+
+            searchTimeout = setTimeout(async () => {
+                const result = await fetch(`/api/admin/profesionales/buscar?q=${encodeURIComponent(query)}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                }).then(r => r.json());
+
+                if (result.success && result.data.professionals.length > 0) {
+                    searchResults.innerHTML = result.data.professionals.map(p => `
+                        <div class="p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
+                             onclick="selectProfessional(${p.id}, '${p.full_name}')">
+                            <p class="font-semibold">${p.full_name}</p>
+                            <p class="text-sm text-gray-600">${p.email}</p>
+                            <p class="text-xs text-gray-500">${p.specialty}</p>
+                        </div>
+                    `).join('');
+                    searchResults.classList.remove('hidden');
+                } else {
+                    searchResults.innerHTML = '<div class="p-3 text-gray-500">No se encontraron resultados</div>';
+                    searchResults.classList.remove('hidden');
+                }
+            }, 300);
+        });
+
+        function selectProfessional(id, name) {
+            document.getElementById('professionalId').value = id;
+            document.getElementById('selectedProfessionalName').textContent = `Seleccionado: ${name}`;
+            searchResults.classList.add('hidden');
+            searchInput.value = '';
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

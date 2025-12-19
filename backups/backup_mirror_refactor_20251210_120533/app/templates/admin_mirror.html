@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Mirror IA</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f1016;
+            color: white;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1a1b26;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3d4052;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #4e5166;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen p-8 flex justify-center items-start">
+
+    <div class="bg-[#1a1b26] border border-gray-700 rounded-xl w-full max-w-4xl shadow-2xl">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center p-6 border-b border-gray-700">
+            <h2 class="text-[#FFD700] text-xl font-bold tracking-wide">PANEL DE ADMINISTRACIÓN</h2>
+            <a href="/mirror" class="text-gray-400 hover:text-white transition text-sm flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Volver al Espejo
+            </a>
+        </div>
+
+        <div class="p-8 space-y-8">
+
+            <!-- Section 1: Reporte de Uso Mensual -->
+            <div class="bg-[#242636] p-6 rounded-lg border border-gray-700">
+                <div class="flex items-center gap-2 mb-4 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FFD700]" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <h3 class="font-bold">Reporte de Uso Mensual</h3>
+                </div>
+
+                <div id="usageStats" class="text-white mb-4">
+                    <!-- Stats Placeholder -->
+                    <p class="text-3xl font-bold text-[#FFD700]" id="statsCount">--</p>
+                    <p class="text-xs text-gray-400">Imágenes generadas</p>
+                </div>
+
+                <p class="text-gray-400 text-xs mb-4">Genera reportes de las imágenes generadas por mes y año</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-500 text-xs mb-1">Mes</label>
+                        <select id="monthSelect"
+                            class="w-full bg-[#13141f] text-gray-300 border border-gray-600 rounded p-2 text-sm focus:border-[#FFD700] outline-none">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-500 text-xs mb-1">Año</label>
+                        <select id="yearSelect"
+                            class="w-full bg-[#13141f] text-gray-300 border border-gray-600 rounded p-2 text-sm focus:border-[#FFD700] outline-none">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                </div>
+                <button onclick="fetchStats()"
+                    class="w-full bg-[#FFD700] hover:bg-yellow-500 text-black font-bold py-2 rounded transition text-sm">
+                    Actualizar Reporte
+                </button>
+            </div>
+
+            <!-- Section 2: Subir Nuevo Item -->
+            <div class="bg-[#242636] p-6 rounded-lg border border-gray-700">
+                <h3 class="text-[#FFD700] font-bold mb-4 text-sm">Subir Nuevo Item</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <input type="text" id="newItemName" placeholder="Nombre del Item"
+                        class="w-full bg-[#3d4052] text-gray-300 border-none rounded p-2 text-sm placeholder-gray-500">
+                    <select id="newItemCategory" onchange="toggleColorInput()"
+                        class="w-full bg-[#3d4052] text-gray-300 border-none rounded p-2 text-sm">
+                        <option value="hairstyle">Peinado</option>
+                        <option value="color">Color</option>
+                    </select>
+                    <div class="flex gap-2">
+                        <input type="number" id="newItemOrder" placeholder="Orden (ej. 1)" value="0"
+                            class="w-full bg-[#3d4052] text-gray-300 border-none rounded p-2 text-sm placeholder-gray-500">
+                        <input type="color" id="newItemColorCode"
+                            class="h-9 w-full bg-transparent cursor-pointer rounded hidden" title="Selecciona el color">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 mb-4">
+                    <input type="file" id="newItemFile" class="hidden" accept="image/*" onchange="updateFileName(this)">
+                    <button onclick="document.getElementById('newItemFile').click()"
+                        class="bg-[#CC8E35] text-white text-xs px-3 py-2 rounded hover:bg-[#b07b2e] transition">Seleccionar
+                        archivo</button>
+                    <span id="fileNameDisplay" class="text-gray-500 text-xs italic">Ningún archivo seleccionado</span>
+                </div>
+
+                <button onclick="uploadItem()" id="uploadItemBtn"
+                    class="w-full bg-[#2E8B57] hover:bg-[#256e45] text-white font-bold py-2 rounded transition text-sm shadow-lg">
+                    Subir Item
+                </button>
+            </div>
+
+            <!-- Section 3: Lists -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Peinados List -->
+                <div class="bg-[#242636] p-4 rounded-lg border border-gray-700 h-96 overflow-y-auto custom-scrollbar">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-[#CC8E35] text-sm font-bold">Peinados</h4>
+                    </div>
+                    <div id="peinadosList" class="space-y-2">
+                        <p class="text-gray-500 text-xs text-center py-4">Cargando...</p>
+                    </div>
+                </div>
+
+                <!-- Colores List -->
+                <div class="bg-[#242636] p-4 rounded-lg border border-gray-700 h-96 overflow-y-auto custom-scrollbar">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-[#CC8E35] text-sm font-bold">Colores</h4>
+                    </div>
+                    <div id="colorsList" class="space-y-2">
+                        <p class="text-gray-500 text-xs text-center py-4">Cargando...</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="passwordModal"
+        class="hidden fixed inset-0 bg-black/90 flex justify-center items-center z-[2000] backdrop-blur-sm">
+        <div
+            class="bg-[#242636] p-6 rounded-lg border border-[#FFD700] w-80 shadow-2xl transform transition-all scale-100">
+            <h3 class="text-[#FFD700] font-bold text-center mb-4 text-lg">⚠️ Confirmar Borrado</h3>
+            <p class="text-gray-300 text-sm text-center mb-6">Ingresa la contraseña para eliminar permanentemente este
+                item.</p>
+
+            <input type="password" id="deletePasswordInput" placeholder="Contraseña"
+                class="w-full bg-[#13141f] text-white border border-gray-600 rounded p-3 mb-6 text-center focus:border-[#FFD700] outline-none text-lg tracking-widest transition-colors">
+
+            <div class="flex gap-3">
+                <button onclick="closePasswordModal()"
+                    class="flex-1 bg-gray-600 hover:bg-gray-500 text-white py-2 rounded transition-all duration-200 text-sm cursor-pointer hover:scale-105 active:scale-95">
+                    Cancelar
+                </button>
+                <button onclick="confirmDelete()"
+                    class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-2 rounded shadow-lg transition-all duration-200 text-sm font-bold cursor-pointer hover:scale-105 active:scale-95 ring-2 ring-red-500/50 hover:ring-red-400">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN SCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            populateDates();
+            fetchAdminItems();
+            fetchStats();
+        });
+
+        // ... existing helper functions (populateDates, updateFileName, fetchStats) ...
+        function populateDates() {
+            const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            const monthSelect = document.getElementById('monthSelect');
+            const yearSelect = document.getElementById('yearSelect');
+            const currentMonthIndex = new Date().getMonth();
+            months.forEach((m, index) => {
+                const opt = document.createElement('option');
+                opt.value = m; opt.textContent = m;
+                if (index === currentMonthIndex) opt.selected = true;
+                monthSelect.appendChild(opt);
+            });
+            const currentYear = new Date().getFullYear();
+            for (let y = 2024; y <= 2030; y++) {
+                const opt = document.createElement('option');
+                opt.value = y; opt.textContent = y;
+                if (y === currentYear) opt.selected = true;
+                yearSelect.appendChild(opt);
+            }
+        }
+
+        function updateFileName(input) {
+            const display = document.getElementById('fileNameDisplay');
+            if (input.files && input.files.length > 0) display.textContent = input.files[0].name;
+            else display.textContent = 'Ningún archivo seleccionado';
+        }
+
+        async function fetchStats() {
+            try {
+                const res = await fetch('/api/mirror/stats');
+                const data = await res.json();
+                document.getElementById('statsCount').textContent = data.generations;
+            } catch (err) { console.error("Error fetching stats:", err); }
+        }
+
+        let itemToDeleteId = null;
+
+        function deleteItem(id) {
+            itemToDeleteId = id;
+            document.getElementById('passwordModal').classList.remove('hidden');
+            document.getElementById('deletePasswordInput').value = '';
+            document.getElementById('deletePasswordInput').focus();
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').classList.add('hidden');
+            itemToDeleteId = null;
+        }
+
+        async function confirmDelete() {
+            const password = document.getElementById('deletePasswordInput').value;
+
+            if (password !== "1234") {
+                alert("⛔ Contraseña incorrecta");
+                return;
+            }
+
+            if (!itemToDeleteId) return;
+
+            const id = itemToDeleteId; // Capture ID locally
+
+            // Close modal immediately to show responsiveness
+            closePasswordModal();
+
+            try {
+                const res = await fetch(`/api/mirror/items/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    await fetchAdminItems();
+                } else {
+                    const err = await res.json().catch(() => ({}));
+                    alert("❌ Error del servidor: " + (err.message || res.status));
+                }
+            } catch (e) {
+                console.error(e);
+                alert("❌ Error de conexión");
+            }
+        }
+
+        async function fetchAdminItems() {
+            try {
+                // Add timestamp to prevent caching
+                const res = await fetch(`/api/mirror/items?t=${new Date().getTime()}`);
+                const items = await res.json();
+
+                const peinadosList = document.getElementById('peinadosList');
+                const colorsList = document.getElementById('colorsList');
+                peinadosList.innerHTML = '';
+                colorsList.innerHTML = '';
+
+                if (items.length === 0) {
+                    peinadosList.innerHTML = '<p class="text-gray-500 text-xs text-center py-4">No hay items</p>';
+                    colorsList.innerHTML = '<p class="text-gray-500 text-xs text-center py-4">No hay items</p>';
+                    return;
+                }
+
+                items.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'flex items-center justify-between bg-[#1a1b26] p-2 rounded border border-gray-700 hover:border-gray-500 transition-colors';
+
+                    const leftDiv = document.createElement('div');
+                    leftDiv.className = 'flex items-center gap-3';
+                    leftDiv.innerHTML = `
+                        <span class="text-gray-500 font-mono text-xs w-6 text-center" title="Orden">${item.order_index}</span>
+                        <div class="w-10 h-10 rounded bg-gray-600 bg-cover bg-center border border-gray-600"
+                                style="background-image: url('${item.image_url}')">
+                        </div>
+                        <div class="flex flex-col max-w-[200px]">
+                            <span class="text-gray-300 text-xs font-medium truncate">${item.name}</span>
+                            <div class="text-[10px] text-gray-400 my-1 p-1 bg-black/20 rounded border border-white/5 h-12 overflow-y-auto custom-scrollbar" title="${item.prompt || ''}">
+                                ${item.prompt || 'Sin prompt'}
+                            </div>
+                            <input type="number" 
+                                value="${item.order_index}" 
+                                onchange="updateItemOrder(${item.id}, this.value)"
+                                class="bg-[#0f1016] text-gray-400 text-[10px] w-16 p-1 rounded border border-gray-700 focus:border-[#FFD700] outline-none" placeholder="Orden">
+                        </div>
+                    `;
+                    el.appendChild(leftDiv);
+
+                    const rightDiv = document.createElement('div');
+                    rightDiv.className = 'flex items-center gap-2';
+
+                    // Prompt button removed as per request to show text inline
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'text-red-500 hover:text-red-400 p-2 rounded hover:bg-white/5 transition';
+                    deleteBtn.title = 'Borrar';
+                    deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                    deleteBtn.onclick = function () { deleteItem(item.id); };
+                    rightDiv.appendChild(deleteBtn);
+
+                    el.appendChild(rightDiv);
+
+                    if (item.category === 'hairstyle') peinadosList.appendChild(el);
+                    else if (item.category === 'color') colorsList.appendChild(el);
+                });
+
+            } catch (err) { console.error("Error fetching items", err); }
+        }
+
+        function toggleColorInput() {
+            const category = document.getElementById('newItemCategory').value;
+            const colorInput = document.getElementById('newItemColorCode');
+            if (category === 'color') {
+                colorInput.classList.remove('hidden');
+            } else {
+                colorInput.classList.add('hidden');
+            }
+        }
+
+        async function uploadItem() {
+            const nameInput = document.getElementById('newItemName');
+            const catInput = document.getElementById('newItemCategory');
+            const orderInput = document.getElementById('newItemOrder');
+            const fileInput = document.getElementById('newItemFile');
+            const colorInput = document.getElementById('newItemColorCode');
+            // Search result said 'uploadItemBtn' but HTML snippet didn't show it.
+            // Let's rely on the button attribute or add ID if missing in previous view (it wasn't in view, but JS references it).
+            // Actually, line 332 in view says: const btn = document.getElementById('uploadItemBtn');
+            // So that ID MUST exist on the button.
+            const btn = document.getElementById('uploadItemBtn') || document.querySelector('button[onclick="uploadItem()"]');
+
+            if (!nameInput.value || !fileInput.files[0]) {
+                alert("Por favor completa el nombre y selecciona un archivo.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('name', nameInput.value);
+            formData.append('category', catInput.value);
+            formData.append('order', orderInput.value);
+            formData.append('file', fileInput.files[0]);
+
+            if (catInput.value === 'color') {
+                formData.append('color_code', colorInput.value);
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Subiendo...";
+
+            try {
+                const res = await fetch('/api/mirror/items', { method: 'POST', body: formData });
+                if (res.ok) {
+                    const data = await res.json();
+                    nameInput.value = '';
+                    fileInput.value = '';
+                    orderInput.value = '0';
+                    document.getElementById('fileNameDisplay').textContent = 'Ningún archivo seleccionado';
+                    fetchAdminItems();
+                    if (data.prompt) alert("Item subido correctamente!\n\nPrompt AI Generado:\n" + data.prompt);
+                    else alert("Item subido correctamente (Sin prompt)");
+                } else {
+                    const err = await res.json();
+                    alert("Error: " + err.error);
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error de conexión");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Subir Item";
+            }
+        }
+
+        async function updateItemOrder(id, newOrder) {
+            try {
+                const res = await fetch(`/api/mirror/items/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ order_index: newOrder })
+                });
+                if (res.ok) {
+                    // Success
+                } else {
+                    alert("Error al actualizar orden");
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function showPrompt(btn) {
+            const prompt = btn.getAttribute('data-prompt');
+            alert("Prompt AI:\n\n" + prompt);
+        }
+    </script>
+</body>
+
+</html>

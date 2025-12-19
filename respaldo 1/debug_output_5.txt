@@ -1,0 +1,37 @@
+C:\Program Files\Python311\Lib\site-packages\torchvision\io\image.py:13: UserWarning: Failed to load image Python extension: 'Could not load this library: C:\Program Files\Python311\Lib\site-packages\torchvision\image.pyd'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+[2025-12-05 05:16:22,188] INFO in logging_config: === Logging System Initialized ===
+[2025-12-05 05:16:22,450] INFO in rag_service: Loading RAG Model (all-MiniLM-L6-v2)...
+[2025-12-05 05:16:23,712] INFO in rag_service: RAG Index reloaded with 1284 chunks.
+DEBUG: Reloading Cache Index...
+DEBUG: Found 50 cached responses in DB.
+[2025-12-05 05:16:23,717] INFO in cache_service: Semantic Cache Index reloaded with 50 entries.
+DEBUG: Index reloaded. Total entries: 50
+[INFO] Testing Semantic Cache...
+DEBUG: Reloading Cache Index...
+DEBUG: Found 50 cached responses in DB.
+[2025-12-05 05:16:23,719] INFO in cache_service: Semantic Cache Index reloaded with 50 entries.
+DEBUG: Index reloaded. Total entries: 50
+[INFO] Adding to cache: 'requisitos modalidad 40'
+[2025-12-05 05:16:23,753] INFO in cache_service: Added to cache: requisitos modalidad 40
+
+[INFO] Testing Exact Match...
+DEBUG: Similarity score: 0.9999999403953552 for query: 'requisitos modalidad 40'
+[2025-12-05 05:16:23,760] INFO in cache_service: Cache HIT (1.00) for query: requisitos modalidad 40
+[SUCCESS] Exact match found!
+
+[INFO] Testing Semantic Match: 'cuales son los requisitos para la mod 40'
+DEBUG: Similarity score: 0.7318668365478516 for query: 'cuales son los requisitos para la mod 40'
+[FAIL] Semantic match FAILED. Got: None
+
+[INFO] Testing Miss: 'como me doy de alta en la clinica'
+DEBUG: Similarity score: 0.5923399925231934 for query: 'como me doy de alta en la clinica'
+[SUCCESS] Correctly missed!
+
+[INFO] Testing Persistence (Reloading Index)...
+DEBUG: Reloading Cache Index...
+DEBUG: Found 51 cached responses in DB.
+[2025-12-05 05:16:23,785] INFO in cache_service: Semantic Cache Index reloaded with 51 entries.
+DEBUG: Index reloaded. Total entries: 51
+DEBUG: Similarity score: 0.7318668365478516 for query: 'cuales son los requisitos para la mod 40'
+[FAIL] Persistence FAILED. Got: None

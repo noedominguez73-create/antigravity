@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login - AsesoriaIMSS.io</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-500 to-purple-600 min-h-screen flex items-center justify-center">
+<div class="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+<div class="text-center mb-8">
+<h1 class="text-3xl font-bold text-gray-800 mb-2">Panel de Administración</h1>
+<p class="text-gray-600">AsesoriaIMSS.io</p>
+</div>
+
+<form id="adminLoginForm" class="space-y-6">
+<div>
+<label class="block text-gray-700 font-semibold mb-2">Email de Administrador</label>
+<input type="email" id="adminEmail" required
+class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition"
+placeholder="admin@example.com">
+</div>
+
+<div>
+<label class="block text-gray-700 font-semibold mb-2">Contraseña</label>
+<input type="password" id="adminPassword" required
+class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition"
+placeholder="••••••••">
+</div>
+
+<button type="submit"
+class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold text-lg">
+Iniciar Sesión
+</button>
+</form>
+
+<div id="errorMessage" class="mt-4 hidden">
+<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+<span id="errorText"></span>
+</div>
+</div>
+
+<div class="mt-6 text-center">
+<a href="/" class="text-blue-600 hover:text-blue-800 transition">← Volver al sitio</a>
+</div>
+</div>
+
+<script src="{{ url_for('static', filename='js/api.js') }}"></script>
+<script>
+document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+e.preventDefault();
+
+const email = document.getElementById('adminEmail').value;
+const password = document.getElementById('adminPassword').value;
+const errorDiv = document.getElementById('errorMessage');
+const errorText = document.getElementById('errorText');
+
+try {
+const response = await fetch('/api/admin/login', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify({ email, password })
+});
+
+const data = await response.json();
+
+if (data.success) {
+// Save token and user data
+localStorage.setItem('token', data.data.token);
+localStorage.setItem('user', JSON.stringify(data.data.user));
+
+// Redirect to admin dashboard
+window.location.href = '/admin';
+} else {
+errorDiv.classList.remove('hidden');
+errorText.textContent = data.error || 'Error al iniciar sesión';
+}
+} catch (error) {
+errorDiv.classList.remove('hidden');
+errorText.textContent = 'Error de conexión. Intenta nuevamente.';
+}
+});
+
+// Check if already logged in as admin
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+if (user.role === 'admin') {
+window.location.href = '/admin';
+}
+</script>
+</body>
+
+</html>

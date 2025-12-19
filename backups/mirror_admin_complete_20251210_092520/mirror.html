@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador AI de Peinados - Diseño Neón Oscuro</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00ff88;
+            /* Neon Green */
+            --secondary-color: #00ccff;
+            /* Neon Blue */
+            --bg-color: #0a0a0a;
+            --card-bg: #111111;
+            --text-color: #ffffff;
+            --border-color: #333;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .background-network {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
+            opacity: 0.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin: 0;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 1rem;
+        }
+
+        /* Step 1: Camera */
+        .camera-upload-area {
+            border: 2px dashed #333;
+            border-radius: 15px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .camera-upload-area:hover {
+            border-color: var(--secondary-color);
+            background: rgba(0, 204, 255, 0.05);
+        }
+
+        .camera-icon-circle {
+            background: #222;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #555;
+            transition: all 0.3s;
+        }
+
+        .camera-upload-area:hover .camera-icon-circle {
+            background: var(--secondary-color);
+            color: #000;
+            box-shadow: 0 0 20px var(--secondary-color);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #333;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary:hover {
+            background: #444;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #888;
+        }
+
+        /* Grids */
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .hairstyles-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .colors-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .option {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid transparent;
+            text-align: center;
+            padding-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .option img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+            background: #333;
+            /* Placeholder color if img missing */
+        }
+
+        .option p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .option:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .option.selected p {
+            color: var(--primary-color);
+        }
+
+        /* Colors */
+        .color-option {
+            background: #1a1a1a;
+            /* Match .option background */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Center content vertically */
+            cursor: pointer;
+            padding: 1.5rem 1rem;
+            /* Adjust padding to match visual weight */
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .color-swatch {
+            width: 60px;
+            /* Slightly larger */
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            border: 3px solid #333;
+            /* Thicker border */
+        }
+
+        .color-option:hover {
+            border-color: var(--secondary-color);
+            background: #222;
+        }
+
+        .color-option.selected {
+            background: rgba(0, 255, 136, 0.05);
+            /* Slight green tint like sketch implies */
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .color-option p {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            color: #ccc;
+        }
+
+        .color-option.selected p {
+            color: var(--primary-color);
+        }
+
+        /* Result Area */
+        .result-area {
+            min-height: 400px;
+            background: #000;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            border: 1px solid #222;
+        }
+
+        .result-area i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Textarea */
+        textarea {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            resize: none;
+            height: 100px;
+            font-family: inherit;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        /* Footer / Generate Button */
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .btn-generate {
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            color: #000;
+            font-size: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-generate::before {
+            content: '✨';
+        }
+
+        .btn-generate:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.6);
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: #555;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        .admin-link {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: #555;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            border: 1px solid #333;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            z-index: 1000;
+        }
+
+        .admin-link:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-network"></div>
+
+    <a href="/mis-finanzas" class="back-link">
+        <i class="fas fa-arrow-left"></i> Volver
+    </a>
+
+    <a href="/api/mirror/admin" class="admin-link">
+        <i class="fas fa-shield-alt"></i> Admin
+    </a>
+
+    <div class="container">
+        <header>
+            <h1 class="title">GENERADOR AI DE PEINADOS</h1>
+            <p class="subtitle">Transforma tu look con inteligencia artificial</p>
+        </header>
+
+        <main class="grid-layout">
+            <div class="left-column">
+
+                <section class="card step-1">
+                    <h2 class="step-title">1. Tu Foto</h2>
+                    <div class="camera-upload-area" onclick="document.getElementById('fileInput').click()">
+                        <div class="camera-icon-circle">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" hidden accept="image/*">
+                    <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">Tomar o subir
+                        a Galería</button>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="save-gallery">
+                        <label for="save-gallery">Subir solo a mi galería</label>
+                    </div>
+                </section>
+
+                <section class="card step-2">
+                    <h2 class="step-title">2. Selecciona un Peinado</h2>
+                    <div class="options-grid hairstyles-grid">
+                        <div class="option selected" onclick="selectOption(this)"><img
+                                src="https://placehold.co/200x200/1a1a1a/white?text=Bob" alt="French Bob">
+                            <p>french bob</p>
+                        </div>
+                        <div class="option" onclick="selectOption(this)"><img
+                                src="https://placehold.co/200x200/1a1a1a/white?text=Bangs" alt="Curtain Bangs">
+                            <p>curtain bangs</p>
+                        </div>
+                        <div class="option" onclick="selectOption(this)"><img
+                                src="https://placehold.co/200x200/1a1a1a/white?text=Largo" alt="Largo en Capas">
+                            <p>largo en capas</p>
+                        </div>
+                        <div class="option" onclick="selectOption(this)"><img
+                                src="https://placehold.co/200x200/1a1a1a/white?text=Shag" alt="Shag">
+                            <p>shag</p>
+                        </div>
+                        <div class="option" onclick="selectOption(this)"><img
+                                src="https://placehold.co/200x200/1a1a1a/white?text=Pixie" alt="Pixie">
+                            <p>pixie</p>
+                        </div>
+                        <div class="option" onclick="selectOption(this)"><img
+                                src="https://placehold.co/200x200/1a1a1a/white?text=Otro" alt="Otro">
+                            <p>otro peinado</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card step-4">
+                    <h2 class="step-title">4. Instrucciones Adicionales (Opcional)</h2>
+                    <textarea placeholder="Describe detalles adicionales que quieras en tu peinado..."></textarea>
+                </section>
+            </div>
+
+            <div class="right-column">
+
+                <section class="card step-5">
+                    <h2 class="step-title">5. Resultado</h2>
+                    <div class="result-area empty" id="resultArea">
+                        <i class="fas fa-fingerprint"></i>
+                        <p>Tu peinado aparecerá aquí</p>
+                    </div>
+                </section>
+
+                <section class="card step-3">
+                    <h2 class="step-title">3. Elige un Color (Opcional)</h2>
+                    <div class="options-grid colors-grid">
+                        <div class="color-option" onclick="selectColor(this)">
+                            <div class="color-swatch" style="background-color: #F8F4E3;" data-color="rubio"></div>
+                            <p>rubio</p>
+                        </div>
+                        <div class="color-option" onclick="selectColor(this)">
+                            <div class="color-swatch" style="background-color: #5D4037;" data-color="castaño"></div>
+                            <p>castaño</p>
+                        </div>
+                        <div class="color-option selected" onclick="selectColor(this)">
+                            <div class="color-swatch" style="background-color: #C62828;" data-color="rojo"></div>
+                            <p>rojo</p>
+                        </div>
+                        <div class="color-option" onclick="selectColor(this)">
+                            <div class="color-swatch" style="background-color: #1565C0;" data-color="azul"></div>
+                            <p>azul</p>
+                        </div>
+                        <div class="color-option" onclick="selectColor(this)">
+                            <div class="color-swatch" style="background-color: #8E24AA;" data-color="morado"></div>
+                            <p>morado</p>
+                        </div>
+                        <div class="color-option" onclick="selectColor(this)">
+                            <div class="color-swatch" style="background-color: #FF80AB;" data-color="pastel"></div>
+                            <p>pastel</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <button class="btn btn-generate" onclick="generateHairstyle()">Generar Nuevo Look</button>
+        </footer>
+    </div>
+
+    <script>
+        function selectOption(element) {
+            // Remove selected from siblings
+            element.parentElement.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+            // Add to clicked
+            element.classList.add('selected');
+        }
+
+        function selectColor(element) {
+            // Remove selected from siblings
+            element.parentElement.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+            // Add to clicked
+            element.classList.add('selected');
+        }
+
+        function generateHairstyle() {
+            const btn = document.querySelector('.btn-generate');
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+            btn.style.opacity = '0.8';
+
+            // Simulation
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.opacity = '1';
+                alert('¡Funcionalidad en desarrollo! Aquí se conectará la IA.');
+            }, 2000);
+        }
+
+        // Handle file input
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Update camera area with image
+                    const uploadArea = document.querySelector('.camera-upload-area');
+                    uploadArea.style.backgroundImage = `url(${e.target.result})`;
+                    uploadArea.style.backgroundSize = 'cover';
+                    uploadArea.style.backgroundPosition = 'center';
+                    uploadArea.querySelector('.camera-icon-circle').style.opacity = '0';
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

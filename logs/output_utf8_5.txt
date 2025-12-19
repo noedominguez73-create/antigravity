@@ -1,0 +1,76 @@
+.venv\Scripts\python
+.exe : [2025-11-27 
+14:17:22,515] INFO 
+in logging_config: 
+=== Logging System 
+Initialized ===
+En línea: 1 
+Carácter: 1
++ .venv\Scripts\pyth
+on.exe 
+create_prof_user.py 
+> output_create_user
+_5.t ...
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: ([202   
+ 5-11-27 14:...I    
+nitialized ===:    
+String) [], Rem    
+oteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+APP.MODELS LOADED FULLY
+Traceback (most 
+recent call last):
+  File "C:\asesoriai
+mss.io\create_prof_u
+ser.py", line 11, 
+in <module>
+    user = User(
+           ^^^^^
+  File "<string>", 
+line 4, in __init__
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\state.py", 
+line 571, in 
+_initialize_instance
+    with 
+util.safe_reraise():
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\util\langhelpers.p
+y", line 224, in 
+__exit__
+    raise exc_value.
+with_traceback(exc_t
+b)
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\state.py", 
+line 569, in 
+_initialize_instance
+    manager.original
+_init(*mixed[1:], 
+**kwargs)
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\decl_base.py",
+ line 2179, in _decl
+arative_constructor
+    raise TypeError(
+TypeError: 
+'first_name' is an 
+invalid keyword 
+argument for User

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AsesoriaIMSS.io - Tu asesoría fiscal y estilo en un solo lugar">
+    <title>AsesoriaIMSS.io - Fiscal & Estilo</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes blob {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800">
+
+    <!-- ============ HEADER FLOTANTE ============ -->
+    <header class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-[#0D1A3B] tracking-tight">AsesoriaIMSS</a>
+
+            <div class="hidden md:flex space-x-8">
+                <a href="#inicio" class="text-gray-600 hover:text-[#0066CC] font-medium transition">Inicio</a>
+                <a href="#organizador" class="text-gray-600 hover:text-[#0066CC] font-medium transition">Servicios</a>
+                <a href="#profesionales"
+                    class="text-gray-600 hover:text-[#0066CC] font-medium transition">Profesionales</a>
+                <a href="/login?role=tienda"
+                    class="text-gray-600 hover:text-[#0066CC] font-medium transition flex items-center gap-1">
+                    <span>🏪</span> Para Tiendas
+                </a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div id="authButtons" class="flex space-x-2">
+                    <a href="/login"
+                        class="px-5 py-2 text-[#0066CC] font-medium hover:bg-blue-50 rounded-lg transition">Entrar</a>
+                    <a href="/registro"
+                        class="px-5 py-2 bg-[#0066CC] text-white font-medium rounded-lg hover:bg-blue-700 transition shadow-md">Registrarse</a>
+                </div>
+                <!-- User Menu (Hidden by default) -->
+                <div id="userMenu" class="hidden flex items-center space-x-4">
+                    <span id="userName" class="text-gray-700 font-medium">Usuario</span>
+                    <a href="#" onclick="redirectToDashboard(); return false;"
+                        class="text-[#0066CC] font-medium hover:underline">Mi Perfil</a>
+                    <button onclick="logout()" class="text-red-500 hover:text-red-700 font-medium">Salir</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ============ HERO SECTION ============ -->
+    <section id="inicio" class="pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden hero-bg relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <!-- LEFT SIDE: TEXT -->
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0D1A3B] leading-tight mb-6">
+                        Tu asesoría fiscal & <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#0066CC] to-[#D946A6]">estilo
+                            en un lugar</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-lg">
+                        Gestiona tus impuestos e IMSS con expertos y transforma tu imagen personal con nuestra IA de
+                        estilo.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="#profesionales"
+                            class="px-8 py-4 bg-[#0066CC] text-white rounded-xl font-semibold shadow-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center justify-center gap-2">
+                            <span>💼</span> Asesoría Fiscal
+                        </a>
+                        <a href="#organizador"
+                            class="px-8 py-4 bg-white text-[#D946A6] border-2 border-[#D946A6] rounded-xl font-semibold shadow-md hover:bg-pink-50 transition transform hover:scale-105 flex items-center justify-center gap-2">
+                            <span>👗</span> Estilo Inteligente
+                        </a>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE: IMAGE WITH BLOBS -->
+                <div class="md:w-1/2 relative hidden md:block">
+                    <div class="relative w-full max-w-lg mx-auto">
+                        <div
+                            class="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
+                        </div>
+                        <div
+                            class="absolute top-0 -right-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
+                        </div>
+                        <div
+                            class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000">
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Profesional con estilo"
+                            class="relative rounded-2xl shadow-2xl transform rotate-2 hover:rotate-0 transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SECCIÓN: ORGANIZADOR DE ESTILO ============ -->
+    <section id="organizador" class="py-24 bg-[#F5F5F5]">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#0D1A3B] mb-4">Organizador de Estilo</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Tu centro de comando para gestionar tu imagen personal con
+                    Inteligencia Artificial.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- TARJETA 1: Closet IA -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-lg card-hover transition duration-300 border border-gray-100 flex flex-col">
+                    <div class="w-14 h-14 bg-pink-100 rounded-full flex items-center justify-center text-2xl mb-4">👗
+                    </div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-2">Closet IA</h3>
+                    <p class="text-[#D946A6] font-medium text-sm mb-3">Clasificador de vestuario</p>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Organiza tu guardarropa y recibe recomendaciones de
+                        outfits.</p>
+                    <a href="/closet"
+                        class="block w-full py-2 text-center bg-[#D946A6] text-white rounded-lg font-semibold hover:bg-pink-600 transition text-sm">Abrir
+                        Closet</a>
+                </div>
+
+                <!-- TARJETA 2: Cambio de Imagen -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-lg card-hover transition duration-300 border border-gray-100 flex flex-col">
+                    <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center text-2xl mb-4">✨
+                    </div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-2">Cambio de Imagen</h3>
+                    <p class="text-purple-600 font-medium text-sm mb-3">Transformación Virtual</p>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Visualiza nuevos estilos en ti mism@ con IA.</p>
+                    <a href="/cambio_de_imagen"
+                        class="block w-full py-2 text-center bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition text-sm">Transformar</a>
+                </div>
+
+                <!-- TARJETA 3: Personal Shopper (Placeholder) -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 flex flex-col opacity-75">
+                    <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center text-2xl mb-4">🛍️
+                    </div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-2">Personal Shopper</h3>
+                    <p class="text-blue-600 font-medium text-sm mb-3">Compras Inteligentes</p>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Encuentra prendas que combinan con tu estilo y
+                        presupuesto.</p>
+                    <button disabled
+                        class="block w-full py-2 text-center bg-gray-100 text-gray-400 rounded-lg font-semibold cursor-not-allowed text-sm">Próximamente</button>
+                </div>
+
+                <!-- TARJETA 4: Calendario de Outfits (Placeholder) -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 flex flex-col opacity-75">
+                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center text-2xl mb-4">📅
+                    </div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-2">Calendario</h3>
+                    <p class="text-green-600 font-medium text-sm mb-3">Planificador de Looks</p>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Planifica tus outfits para la semana según el clima
+                        y eventos.</p>
+                    <button disabled
+                        class="block w-full py-2 text-center bg-gray-100 text-gray-400 rounded-lg font-semibold cursor-not-allowed text-sm">Próximamente</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SECCIÓN: PROFESIONALES DESTACADOS ============ -->
+    <section id="profesionales" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#0D1A3B] mb-4">Profesionales Destacados</h2>
+                    <p class="text-gray-600">Encuentra al experto ideal para tus trámites fiscales.</p>
+                </div>
+
+                <!-- Search/Filter Controls -->
+                <div class="w-full md:w-auto bg-gray-50 p-4 rounded-xl flex flex-col md:flex-row gap-4">
+                    <select id="searchSpecialty"
+                        class="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#0066CC] bg-white">
+                        <option value="">Especialidad</option>
+                        <option value="Abogado">Abogado</option>
+                        <option value="Contador">Contador</option>
+                    </select>
+                    <select id="searchCity"
+                        class="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#0066CC] bg-white">
+                        <option value="">Ciudad</option>
+                        <option value="Ciudad de México">CDMX</option>
+                        <option value="Guadalajara">GDL</option>
+                        <option value="Monterrey">Monterrey</option>
+                    </select>
+                    <button onclick="searchProfessionals()"
+                        class="px-6 py-2 bg-[#0066CC] text-white rounded-lg hover:bg-blue-700 transition font-medium">Buscar</button>
+                </div>
+            </div>
+
+            <!-- Professionals Grid -->
+            <div id="professionalsGrid" class="grid md:grid-cols-3 gap-8">
+                <!-- Cards will be injected by JS -->
+                <div class="col-span-3 text-center text-gray-500 py-8">
+                    <p>Cargando profesionales...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SECCIÓN: ¿POR QUÉ ELEGIRNOS? ============ -->
+    <section class="py-24 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#0D1A3B] mb-4">¿Por qué elegirnos?</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12 text-center">
+                <div class="p-6">
+                    <div
+                        class="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-[#0066CC] text-4xl mx-auto mb-6">
+                        🔒</div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-3">Seguridad de datos</h3>
+                    <p class="text-gray-600">Tus datos protegidos con los más altos estándares de seguridad en México.
+                    </p>
+                </div>
+                <div class="p-6">
+                    <div
+                        class="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-[#0066CC] text-4xl mx-auto mb-6">
+                        ⚡</div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-3">Rápido & Fácil</h3>
+                    <p class="text-gray-600">Nuestra IA entiende español y agiliza todos tus procesos fiscales y de
+                        estilo.</p>
+                </div>
+                <div class="p-6">
+                    <div
+                        class="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-[#0066CC] text-4xl mx-auto mb-6">
+                        🎨</div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-3">Diseño Limpio</h3>
+                    <p class="text-gray-600">Una interfaz intuitiva y bella diseñada para que disfrutes usándola.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TESTIMONIOS ============ -->
+    <section class="py-24 bg-white border-t border-gray-100">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold text-[#0D1A3B] mb-12">Lo que dicen nuestros usuarios</h2>
+
+            <div class="max-w-3xl mx-auto relative">
+                <!-- Slider Container -->
+                <div id="testimonialContainer"
+                    class="bg-gray-50 rounded-2xl p-10 shadow-sm transition-all duration-500 min-h-[250px] flex flex-col justify-center">
+                    <!-- Content injected by JS -->
+                </div>
+
+                <!-- Controls -->
+                <div class="flex justify-center gap-4 mt-8 items-center">
+                    <button onclick="prevTestimonial()"
+                        class="p-2 rounded-full bg-white border border-gray-200 hover:bg-gray-50 text-[#0066CC] transition">←</button>
+                    <div class="flex gap-2 items-center" id="testimonialDots">
+                        <!-- Dots injected by JS -->
+                    </div>
+                    <button onclick="nextTestimonial()"
+                        class="p-2 rounded-full bg-white border border-gray-200 hover:bg-gray-50 text-[#0066CC] transition">→</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="bg-[#0D1A3B] text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-8">¿Listo para transformar tu negocio?</h2>
+            <a href="/registro"
+                class="inline-block px-8 py-4 bg-white text-[#0D1A3B] rounded-xl font-bold hover:bg-gray-100 transition mb-12">Acceso
+                a Plataforma</a>
+
+            <div class="flex justify-center space-x-8 text-sm text-gray-400 mb-8 flex-wrap">
+                <a href="#" class="hover:text-white transition">Contacto</a>
+                <a href="#" class="hover:text-white transition">Privacidad</a>
+                <a href="#" class="hover:text-white transition">Términos</a>
+            </div>
+            <p class="text-gray-500 text-xs">&copy; 2025 AsesoriaIMSS.io - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <!-- ============ SCRIPTS ============ -->
+    <script>
+        // ===== TESTIMONIALS =====
+        const testimonials = [
+            {
+                text: "Finalmente alguien que entiende mi negocio y me ayuda a lucir profesional al mismo tiempo. La herramienta de Closet IA es una joya.",
+                author: "Ana María López",
+                role: "Psicóloga, CDMX"
+            },
+            {
+                text: "La asesoría fiscal me ahorró horas de estrés, y los consejos de estilo me dieron la confianza para cerrar más tratos con clientes.",
+                author: "Carlos Ruiz",
+                role: "Arquitecto, Guadalajara"
+            },
+            {
+                text: "Increíble cómo combinan la seriedad fiscal con la imagen personal. Un servicio único que todo profesional independiente necesita.",
+                author: "Sofía Herrera",
+                role: "Abogada, Monterrey"
+            }
+        ];
+
+        let currentTestimonial = 0;
+
+        function renderTestimonial() {
+            const container = document.getElementById('testimonialContainer');
+            const dotsContainer = document.getElementById('testimonialDots');
+            if (!container || !dotsContainer) return;
+
+            const t = testimonials[currentTestimonial];
+
+            container.innerHTML = `
+                <div class="text-yellow-400 text-2xl mb-6">⭐⭐⭐⭐⭐</div>
+                <p class="text-xl text-gray-700 italic mb-8">"${t.text}"</p>
+                <div>
+                    <h4 class="font-bold text-[#0D1A3B]">${t.author}</h4>
+                    <p class="text-gray-500 text-sm">${t.role}</p>
+                </div>
+            `;
+
+            dotsContainer.innerHTML = testimonials.map((_, index) => `
+                <button onclick="setTestimonial(${index})" class="w-2 h-2 rounded-full transition ${index === currentTestimonial ? 'bg-[#0066CC] w-4' : 'bg-gray-300'}"></button>
+            `).join('');
+        }
+
+        function nextTestimonial() {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            renderTestimonial();
+        }
+
+        function prevTestimonial() {
+            currentTestimonial = (currentTestimonial - 1 + testimonials.length) % testimonials.length;
+            renderTestimonial();
+        }
+
+        function setTestimonial(index) {
+            currentTestimonial = index;
+            renderTestimonial();
+        }
+
+        // ===== PROFESSIONALS =====
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTestimonial();
+            setInterval(nextTestimonial, 5000);
+            loadProfessionals();
+        });
+
+        async function loadProfessionals(filters = {}) {
+            const grid = document.getElementById('professionalsGrid');
+            grid.innerHTML = '<div class="col-span-3 text-center text-gray-500 py-8"><p>Cargando profesionales...</p></div>';
+
+            try {
+                // Build query string
+                const params = new URLSearchParams();
+                if (filters.specialty) params.append('especialidad', filters.specialty);
+                if (filters.city) params.append('ciudad', filters.city);
+
+                const response = await fetch(`/api/profesionales?${params.toString()}`);
+                const data = await response.json();
+
+                if (data.success && data.data.professionals) {
+                    displayProfessionals(data.data.professionals);
+                } else {
+                    grid.innerHTML = '<div class="col-span-3 text-center text-gray-500 py-8"><p>No se encontraron profesionales.</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading professionals:', error);
+                grid.innerHTML = '<div class="col-span-3 text-center text-red-500 py-8"><p>Error al cargar profesionales.</p></div>';
+            }
+        }
+
+        function displayProfessionals(professionals) {
+            const grid = document.getElementById('professionalsGrid');
+
+            if (professionals.length === 0) {
+                grid.innerHTML = '<div class="col-span-3 text-center text-gray-500 py-8"><p>No se encontraron resultados para tu búsqueda.</p></div>';
+                return;
+            }
+
+            grid.innerHTML = professionals.map(prof => `
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition duration-300 flex flex-col items-center text-center">
+                    <img src="${prof.profile_image || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(prof.full_name) + '&background=random'}" 
+                         alt="${prof.full_name}" 
+                         class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-blue-50">
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-1">${prof.full_name}</h3>
+                    <p class="text-[#0066CC] font-medium text-sm mb-2">${prof.specialty || 'General'}</p>
+                    <p class="text-gray-500 text-sm mb-4 line-clamp-3">${prof.bio || 'Sin biografía disponible'}</p>
+                    <div class="flex items-center gap-1 text-yellow-400 mb-6">
+                        <span>★</span> <span class="text-gray-700 font-bold">${prof.rating ? prof.rating.toFixed(1) : 'N/A'}</span>
+                        <span class="text-gray-400 text-xs ml-1">(${prof.total_reviews || 0})</span>
+                    </div>
+                    <div class="mt-auto w-full flex gap-3">
+                        <a href="/profesional?id=${prof.id}" class="flex-1 py-2 bg-[#0066CC] text-white rounded-lg font-medium hover:bg-blue-700 transition">Ver Perfil</a>
+                        <button class="px-3 py-2 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition">💬</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function searchProfessionals() {
+            const specialty = document.getElementById('searchSpecialty').value;
+            const city = document.getElementById('searchCity').value;
+
+            loadProfessionals({
+                specialty: specialty,
+                city: city
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

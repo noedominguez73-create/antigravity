@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AsesoriaIMSS.io - Tu asesoría fiscal y estilo en un solo lugar">
+    <title>AsesoriaIMSS.io - Fiscal & Estilo</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes blob {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800">
+
+    <!-- ============ HEADER FLOTANTE ============ -->
+    <header class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-[#0D1A3B] tracking-tight">AsesoriaIMSS</a>
+
+            <div class="hidden md:flex space-x-8">
+                <a href="#inicio" class="text-gray-600 hover:text-[#0066CC] font-medium transition">Inicio</a>
+                <a href="/mirror" class="text-gray-600 hover:text-[#0066CC] font-medium transition">Espejo IA</a>
+                <!-- Link 'Profesionales' removed -->
+                <a href="/login?role=tienda"
+                    class="text-gray-600 hover:text-[#0066CC] font-medium transition flex items-center gap-1">
+                    <span>🏪</span> Para Tiendas
+                </a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div id="authButtons" class="flex space-x-2">
+                    <a href="/login"
+                        class="px-5 py-2 text-[#0066CC] font-medium hover:bg-blue-50 rounded-lg transition">Entrar</a>
+                    <a href="/registro"
+                        class="px-5 py-2 bg-[#0066CC] text-white font-medium rounded-lg hover:bg-blue-700 transition shadow-md">Registrarse</a>
+                </div>
+                <!-- User Menu (Hidden by default) -->
+                <div id="userMenu" class="hidden flex items-center space-x-4">
+                    <span id="userName" class="text-gray-700 font-medium">Usuario</span>
+                    <a href="#" onclick="redirectToDashboard(); return false;"
+                        class="text-[#0066CC] font-medium hover:underline">Mi Perfil</a>
+                    <button onclick="logout()" class="text-red-500 hover:text-red-700 font-medium">Salir</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ============ HERO SECTION ============ -->
+    <section id="inicio" class="pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden hero-bg relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <!-- LEFT SIDE: TEXT -->
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0D1A3B] leading-tight mb-6">
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#0066CC] to-[#D946A6]">Estilo
+                            en un lugar</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-lg">
+                        Transforma tu imagen personal con nuestra IA de estilo.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <!-- 'Asesoría Fiscal' button removed -->
+                        <a href="/mirror"
+                            class="px-8 py-4 bg-white text-[#D946A6] border-2 border-[#D946A6] rounded-xl font-semibold shadow-md hover:bg-pink-50 transition transform hover:scale-105 flex items-center justify-center gap-2">
+                            <span>👗</span> Estilo Inteligente ✨
+                        </a>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE: IMAGE WITH BLOBS -->
+                <div class="md:w-1/2 relative hidden md:block">
+                    <div class="relative w-full max-w-lg mx-auto">
+                        <div
+                            class="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
+                        </div>
+                        <div
+                            class="absolute top-0 -right-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
+                        </div>
+                        <div
+                            class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000">
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Profesional con estilo"
+                            class="relative rounded-2xl shadow-2xl transform rotate-2 hover:rotate-0 transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SECCIÓN: ORGANIZADOR DE ESTILO ============ -->
+    <!-- ============ SECCIONES ELIMINADAS (Organizador & Profesionales) para limpieza ============ -->
+
+    <!-- ============ SECCIÓN: ¿POR QUÉ ELEGIRNOS? ============ -->
+    <section class="py-24 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#0D1A3B] mb-4">¿Por qué elegirnos?</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12 text-center">
+                <div class="p-6">
+                    <div
+                        class="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-[#0066CC] text-4xl mx-auto mb-6">
+                        🔒</div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-3">Seguridad de datos</h3>
+                    <p class="text-gray-600">Tus datos protegidos con los más altos estándares de seguridad en México.
+                    </p>
+                </div>
+                <div class="p-6">
+                    <div
+                        class="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-[#0066CC] text-4xl mx-auto mb-6">
+                        ⚡</div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-3">Rápido & Fácil</h3>
+                    <p class="text-gray-600">Nuestra IA entiende español y agiliza todos tus procesos fiscales y de
+                        estilo.</p>
+                </div>
+                <div class="p-6">
+                    <div
+                        class="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-[#0066CC] text-4xl mx-auto mb-6">
+                        🎨</div>
+                    <h3 class="text-xl font-bold text-[#0D1A3B] mb-3">Diseño Limpio</h3>
+                    <p class="text-gray-600">Una interfaz intuitiva y bella diseñada para que disfrutes usándola.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TESTIMONIOS ============ -->
+    <section class="py-24 bg-white border-t border-gray-100">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold text-[#0D1A3B] mb-12">Lo que dicen nuestros usuarios</h2>
+
+            <div class="max-w-3xl mx-auto relative">
+                <!-- Slider Container -->
+                <div id="testimonialContainer"
+                    class="bg-gray-50 rounded-2xl p-10 shadow-sm transition-all duration-500 min-h-[250px] flex flex-col justify-center">
+                    <!-- Content injected by JS -->
+                </div>
+
+                <!-- Controls -->
+                <div class="flex justify-center gap-4 mt-8 items-center">
+                    <button onclick="prevTestimonial()"
+                        class="p-2 rounded-full bg-white border border-gray-200 hover:bg-gray-50 text-[#0066CC] transition">←</button>
+                    <div class="flex gap-2 items-center" id="testimonialDots">
+                        <!-- Dots injected by JS -->
+                    </div>
+                    <button onclick="nextTestimonial()"
+                        class="p-2 rounded-full bg-white border border-gray-200 hover:bg-gray-50 text-[#0066CC] transition">→</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="bg-[#0D1A3B] text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-8">¿Listo para transformar tu negocio?</h2>
+            <a href="/registro"
+                class="inline-block px-8 py-4 bg-white text-[#0D1A3B] rounded-xl font-bold hover:bg-gray-100 transition mb-12">Acceso
+                a Plataforma</a>
+
+            <div class="flex justify-center space-x-8 text-sm text-gray-400 mb-8 flex-wrap">
+                <a href="#" class="hover:text-white transition">Contacto</a>
+                <a href="#" class="hover:text-white transition">Privacidad</a>
+                <a href="#" class="hover:text-white transition">Términos</a>
+            </div>
+            <p class="text-gray-500 text-xs">&copy; 2025 AsesoriaIMSS.io - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <!-- ============ SCRIPTS ============ -->
+    <script>
+        // ===== TESTIMONIALS =====
+        const testimonials = [
+            {
+                text: "¡Quedé maravillosa! Nunca imaginé que un cambio de look virtual pudiera verse tan real. Me ayudó a decidirme por el corte bob.",
+                author: "Laura González",
+                role: "Cliente Satisfecha"
+            },
+            {
+                text: "Excelente servicio. La IA captó exactamente el estilo que buscaba. Me ahorré un desastre en la peluquería.",
+                author: "Sofía Martínez",
+                role: "Amante de la Moda"
+            },
+            {
+                text: "Me encantó verme con el cabello cobrizo antes de teñírmelo. El resultado fue idéntico a la realidad. 10/10.",
+                author: "Carmen Ramírez",
+                role: "Usuario Feliz"
+            },
+            {
+                text: "Una herramienta increíble para quienes tememos a los cambios radicales. Me vi rubia y me enamoré al instante.",
+                author: "Patricia López",
+                role: "Cliente VIP"
+            },
+            {
+                text: "Simplemente espectacular. La calidad de la imagen es impresionante, parece una foto de estudio profesional.",
+                author: "Andrea Benítez",
+                role: "Influencer"
+            },
+            {
+                text: "Gracias a esto me atreví a cortarme el flequillo. ¡Me siento renovada y feliz con mi nueva imagen!",
+                author: "Valeria Sánchez",
+                role: "Estudiante"
+            },
+            {
+                text: "El mejor simulador de estilo que he probado. Rápido, fácil y con resultados super profesionales. ¡Me encanta!",
+                author: "Mónica Jiménez",
+                role: "Ejecutiva"
+            },
+            {
+                text: "Quedé fascinada. Probé 5 colores diferentes en minutos y encontré el tono perfecto para mi piel.",
+                author: "Isabel Díaz",
+                role: "Maquilladora"
+            },
+            {
+                text: "Me siento otra persona. Ver el potencial de mi imagen me dio la confianza que necesitaba para cambiar.",
+                author: "Daniela Castro",
+                role: "Emprendedora"
+            },
+            {
+                text: "Increíble precisión. Mi estilista quedó sorprendido cuando le mostré la foto generada. ¡Quedó igual!",
+                author: "Fernanda Pérez",
+                role: "Diseñadora"
+            },
+            {
+                text: "Maravillosa experiencia. Es como magia, en segundos tienes un look totalmente nuevo y favorecedor.",
+                author: "Lucía Torres",
+                role: "Actriz"
+            },
+            {
+                text: "Lo recomiendo totalmente. Si tienes dudas sobre tu próximo corte, esto es la solución definitiva.",
+                author: "Mariana Vega",
+                role: "Blogger"
+            },
+            {
+                text: "Me vi con el pelo corto y me encantó. Mañana mismo tengo mi cita en la estética. ¡Gracias por la seguridad!",
+                author: "Elena Navarro",
+                role: "Consultora"
+            },
+            {
+                text: "Superó mis expectativas. La textura y el brillo del cabello generado se ven muy naturales. Excelente tecnología.",
+                author: "Gaby Romero",
+                role: "Fotógrafa"
+            },
+            {
+                text: "Excelente, excelente. Una aplicación muy útil y divertida para renovar tu estilo sin riesgos. ¡Felicidades!",
+                author: "Rosa Morales",
+                role: "Madre de familia"
+            }
+        ];
+
+        let currentTestimonial = 0;
+
+        function renderTestimonial() {
+            const container = document.getElementById('testimonialContainer');
+            const dotsContainer = document.getElementById('testimonialDots');
+            if (!container || !dotsContainer) return;
+
+            const t = testimonials[currentTestimonial];
+
+            container.innerHTML = `
+                <div class="text-yellow-400 text-2xl mb-6">⭐⭐⭐⭐⭐</div>
+                <p class="text-xl text-gray-700 italic mb-8">"${t.text}"</p>
+                <div>
+                    <h4 class="font-bold text-[#0D1A3B]">${t.author}</h4>
+                    <p class="text-gray-500 text-sm">${t.role}</p>
+                </div>
+            `;
+
+            dotsContainer.innerHTML = testimonials.map((_, index) => `
+                <button onclick="setTestimonial(${index})" class="w-2 h-2 rounded-full transition ${index === currentTestimonial ? 'bg-[#0066CC] w-4' : 'bg-gray-300'}"></button>
+            `).join('');
+        }
+
+        function nextTestimonial() {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            renderTestimonial();
+        }
+
+        function prevTestimonial() {
+            currentTestimonial = (currentTestimonial - 1 + testimonials.length) % testimonials.length;
+            renderTestimonial();
+        }
+
+        function setTestimonial(index) {
+            currentTestimonial = index;
+            renderTestimonial();
+        }
+
+        // ===== PROFESSIONALS =====
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTestimonial();
+            setInterval(nextTestimonial, 5000);
+            // loadProfessionals(); // Removed
+        });
+
+        // ===== PROFESSIONALS LOGIC REMOVED =====
+
+    </script>
+
+</body>
+
+</html>

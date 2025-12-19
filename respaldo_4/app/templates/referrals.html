@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Referidos - AsesoriaIMSS.io</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-blue-600">AsesoriaIMSS.io</a>
+            <div class="flex items-center space-x-4">
+                <a href="/dashboard-profesional" class="text-gray-600 hover:text-blue-600">Dashboard</a>
+                <span id="userName" class="text-gray-700"></span>
+                <button onclick="logout()"
+                    class="px-4 py-2 text-red-600 hover:bg-red-50 rounded transition">Salir</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Mis Referidos</h1>
+                <p class="text-gray-600">Gana comisiones invitando a nuevos usuarios</p>
+            </div>
+            <a href="/dashboard-profesional" class="text-blue-600 hover:underline">← Volver al Dashboard</a>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-gray-500 text-sm">Total Ganado</p>
+                <p id="totalEarned" class="text-3xl font-bold text-green-600">$0.00</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-gray-500 text-sm">Disponible para Retiro</p>
+                <p id="availableBalance" class="text-3xl font-bold text-blue-600">$0.00</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-gray-500 text-sm">Retiros Pendientes</p>
+                <p id="pendingWithdrawals" class="text-3xl font-bold text-yellow-600">$0.00</p>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Generate Link Section -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4">Tu Link de Referido</h2>
+                <div id="linkContainer" class="hidden">
+                    <p class="text-gray-600 mb-2">Comparte este link para ganar el <span id="commissionRate"
+                            class="font-bold">20%</span> de las compras de tus referidos.</p>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <input type="text" id="referralLink" readonly
+                            class="w-full px-4 py-2 border rounded bg-gray-50 text-gray-700">
+                        <button onclick="copyLink()"
+                            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition">Copiar</button>
+                    </div>
+                </div>
+                <div id="generateContainer">
+                    <p class="text-gray-600 mb-4">Aún no tienes un link de referido activo.</p>
+                    <button onclick="generateLink()"
+                        class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Generar
+                        Link</button>
+                </div>
+            </div>
+
+            <!-- Withdrawal Section -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4">Solicitar Retiro</h2>
+                <form id="withdrawalForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-semibold mb-1">Monto a Retirar (MXN)</label>
+                        <input type="number" id="withdrawAmount" min="100" step="0.01"
+                            class="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-600">
+                        <p class="text-xs text-gray-500 mt-1">Mínimo: $100.00 MXN</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-semibold mb-1">Método de Retiro</label>
+                        <select id="withdrawMethod"
+                            class="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-600">
+                            <option value="clabe">Transferencia Bancaria (CLABE)</option>
+                            <option value="credits">Convertir a Créditos</option>
+                        </select>
+                    </div>
+                    <div id="clabeContainer">
+                        <label class="block text-gray-700 text-sm font-semibold mb-1">CLABE (18 dígitos)</label>
+                        <input type="text" id="clabeAccount" maxlength="18"
+                            class="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-600">
+                    </div>
+                    <button type="submit"
+                        class="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition font-semibold">Solicitar
+                        Retiro</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Referrals List -->
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold mb-4">Tus Referidos Activos</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="border-b p-3 text-gray-600">Usuario</th>
+                            <th class="border-b p-3 text-gray-600">Fecha Registro</th>
+                            <th class="border-b p-3 text-gray-600">Total Generado</th>
+                            <th class="border-b p-3 text-gray-600">Expira</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referralsTableBody">
+                        <tr>
+                            <td colspan="4" class="p-4 text-center text-gray-500">Cargando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components.js') }}"></script>
+    <script>
+        let professionalId = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireRole('professional')) return;
+
+            const user = getCurrentUser();
+            document.getElementById('userName').textContent = user.full_name;
+
+            // Get professional ID
+            const profResult = await apiGet(`/profesionales?user_id=${user.id}`);
+            if (profResult.success && profResult.data.professionals.length > 0) {
+                professionalId = profResult.data.professionals[0].id;
+                await loadReferralData();
+            } else {
+                showToast('Error al cargar perfil profesional', 'error');
+            }
+        });
+
+        async function loadReferralData() {
+            // Load Earnings
+            const earningsResult = await apiGet(`/referrals/${professionalId}/ganancias`);
+            if (earningsResult.success) {
+                const data = earningsResult.data;
+                document.getElementById('totalEarned').textContent = formatCurrency(data.total_earned_mxn);
+                document.getElementById('availableBalance').textContent = formatCurrency(data.available_mxn);
+                document.getElementById('pendingWithdrawals').textContent = formatCurrency(data.pending_withdrawals_mxn);
+
+                // Update withdrawal form max
+                document.getElementById('withdrawAmount').max = data.available_mxn;
+            }
+
+            // Load Active Referrals (and link)
+            const referralsResult = await apiGet(`/referrals/${professionalId}/activos`);
+            if (referralsResult.success) {
+                const refs = referralsResult.data.referrals;
+                const tbody = document.getElementById('referralsTableBody');
+
+                if (refs.length > 0) {
+                    // Assume the first one is the active code for now, or check logic
+                    // The backend returns a list of referrals (codes). 
+                    // If we have one, show the link.
+                    const activeRef = refs[0];
+                    showLink(activeRef.referral_code, activeRef.commission_rate);
+
+                    tbody.innerHTML = refs.map(r => `
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 border-b">${r.referred_user || 'Pendiente'}</td>
+                            <td class="p-3 border-b">${new Date(r.created_at).toLocaleDateString()}</td>
+                            <td class="p-3 border-b font-semibold text-green-600">${formatCurrency(r.total_earned_mxn)}</td>
+                            <td class="p-3 border-b text-gray-500">${new Date(r.expires_at).toLocaleDateString()}</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-gray-500">No tienes referidos activos</td></tr>';
+                    document.getElementById('generateContainer').classList.remove('hidden');
+                    document.getElementById('linkContainer').classList.add('hidden');
+                }
+            }
+        }
+
+        async function generateLink() {
+            const result = await apiPost('/referrals/generar-link', {});
+            if (result.success) {
+                showToast('Link generado exitosamente', 'success');
+                showLink(result.data.referral_code, result.data.commission_rate);
+                await loadReferralData(); // Reload to update table
+            } else {
+                showToast(result.error, 'error');
+            }
+        }
+
+        function showLink(code, rate) {
+            document.getElementById('generateContainer').classList.add('hidden');
+            document.getElementById('linkContainer').classList.remove('hidden');
+            document.getElementById('referralLink').value = `${window.location.origin}/registro?ref=${code}`;
+            document.getElementById('commissionRate').textContent = `${rate}%`;
+        }
+
+        function copyLink() {
+            const copyText = document.getElementById("referralLink");
+            copyText.select();
+            document.execCommand("copy");
+            showToast('Link copiado al portapapeles', 'success');
+        }
+
+        // Toggle CLABE input
+        document.getElementById('withdrawMethod').addEventListener('change', (e) => {
+            const container = document.getElementById('clabeContainer');
+            if (e.target.value === 'clabe') {
+                container.classList.remove('hidden');
+                document.getElementById('clabeAccount').required = true;
+            } else {
+                container.classList.add('hidden');
+                document.getElementById('clabeAccount').required = false;
+            }
+        });
+
+        // Withdrawal Form
+        document.getElementById('withdrawalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const amount = document.getElementById('withdrawAmount').value;
+            const method = document.getElementById('withdrawMethod').value;
+            const clabe = document.getElementById('clabeAccount').value;
+
+            const payload = {
+                amount_mxn: parseFloat(amount),
+                withdrawal_method: method
+            };
+
+            if (method === 'clabe') {
+                payload.clabe_account = clabe;
+            }
+
+            const result = await apiPost('/referrals/solicitar-retiro', payload);
+
+            if (result.success) {
+                showToast('Solicitud de retiro enviada', 'success');
+                document.getElementById('withdrawalForm').reset();
+                await loadReferralData();
+            } else {
+                showToast(result.error, 'error');
+            }
+        });
+    </script>
+</body>
+
+</html>

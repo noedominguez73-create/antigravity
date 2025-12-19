@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Créditos - AsesoriaIMSS.io</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-blue-600">AsesoriaIMSS.io</a>
+            <div class="flex items-center space-x-4">
+                <a href="/dashboard-profesional" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+                <button onclick="logout()"
+                    class="px-4 py-2 text-red-600 hover:bg-red-50 rounded transition">Salir</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Gestión de Créditos</h1>
+
+        <!-- Balance Card -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-semibold mb-2">Saldo Actual</h2>
+            <p id="currentBalance" class="text-5xl font-bold mb-4">0 créditos</p>
+            <p class="text-blue-100">1 crédito = 1 mensaje de chatbot</p>
+            <div id="warningMessage" class="hidden mt-4 bg-yellow-500 text-yellow-900 px-4 py-2 rounded">
+                ⚠️ Créditos bajos. Recarga pronto para continuar usando el chatbot.
+            </div>
+        </div>
+
+        <!-- Purchase Form -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6">Comprar Créditos</h2>
+            <form id="purchaseForm" class="space-y-6">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Cantidad de créditos</label>
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <button type="button" onclick="selectPackage(50)"
+                            class="package-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-600 transition">
+                            <div class="font-bold text-lg">50 créditos</div>
+                            <div class="text-sm text-gray-600">$15 MXN</div>
+                        </button>
+                        <button type="button" onclick="selectPackage(100)"
+                            class="package-btn px-4 py-3 border-2 border-blue-600 bg-blue-50 rounded-lg">
+                            <div class="font-bold text-lg">100 créditos</div>
+                            <div class="text-sm text-gray-600">$30 MXN</div>
+                            <div class="text-xs text-blue-600">Popular</div>
+                        </button>
+                        <button type="button" onclick="selectPackage(200)"
+                            class="package-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:border-blue-600 transition">
+                            <div class="font-bold text-lg">200 créditos</div>
+                            <div class="text-sm text-gray-600">$60 MXN</div>
+                        </button>
+                    </div>
+                    <input type="number" id="customAmount" placeholder="O ingresa cantidad personalizada" min="1"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Método de pago</label>
+                    <div class="space-y-3">
+                        <label
+                            class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 transition">
+                            <input type="radio" name="paymentMethod" value="clabe" class="mr-3">
+                            <div>
+                                <div class="font-semibold">Transferencia CLABE</div>
+                                <div class="text-sm text-gray-600">Transferencia bancaria directa</div>
+                            </div>
+                        </label>
+                        <label
+                            class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 transition">
+                            <input type="radio" name="paymentMethod" value="oxxo" class="mr-3">
+                            <div>
+                                <div class="font-semibold">OXXO Pay</div>
+                                <div class="text-sm text-gray-600">Pago en efectivo en tiendas OXXO</div>
+                            </div>
+                        </label>
+                        <label
+                            class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 transition">
+                            <input type="radio" name="paymentMethod" value="efectivo" class="mr-3">
+                            <div>
+                                <div class="font-semibold">Efectivo Presencial</div>
+                                <div class="text-sm text-gray-600">Contactar al administrador</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-600">Créditos:</span>
+                        <span id="summaryCredits" class="font-semibold">100</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-600">Precio por crédito:</span>
+                        <span class="font-semibold">$0.30 MXN</span>
+                    </div>
+                    <div class="border-t pt-2 flex justify-between">
+                        <span class="text-lg font-bold">Total:</span>
+                        <span id="summaryTotal" class="text-lg font-bold text-blue-600">$30.00 MXN</span>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">
+                    Proceder al Pago
+                </button>
+            </form>
+        </div>
+
+        <!-- Transaction History -->
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold mb-6">Historial de Transacciones</h2>
+            <div id="transactionsContainer" class="space-y-4">
+                <p class="text-gray-500">Cargando historial...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components.js') }}"></script>
+    <script>
+        let professionalId = null;
+        let selectedAmount = 100;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireRole('professional')) return;
+
+            await loadProfessionalData();
+            await loadCreditsData();
+            updateSummary();
+        });
+
+        async function loadProfessionalData() {
+            const user = getCurrentUser();
+            const profResult = await apiGet(`/profesionales?user_id=${user.id}`);
+            if (profResult.success && profResult.data.professionals && profResult.data.professionals.length > 0) {
+                professionalId = profResult.data.professionals[0].id;
+            }
+        }
+
+        async function loadCreditsData() {
+            if (!professionalId) return;
+
+            const result = await getCredits(professionalId);
+            if (result.success) {
+                const available = result.data.available || 0;
+                const total = result.data.total_credits || 0;
+
+                document.getElementById('currentBalance').textContent = `${available} créditos`;
+
+                // Show warning if low
+                if (total > 0 && available <= total * 0.2) {
+                    document.getElementById('warningMessage').classList.remove('hidden');
+                }
+
+                // Display transactions
+                displayTransactions(result.data.recent_transactions || []);
+            }
+        }
+
+        function selectPackage(amount) {
+            selectedAmount = amount;
+            document.getElementById('customAmount').value = '';
+
+            // Update UI
+            document.querySelectorAll('.package-btn').forEach(btn => {
+                btn.classList.remove('border-blue-600', 'bg-blue-50');
+                btn.classList.add('border-gray-300');
+            });
+            event.target.closest('.package-btn').classList.add('border-blue-600', 'bg-blue-50');
+            event.target.closest('.package-btn').classList.remove('border-gray-300');
+
+            updateSummary();
+        }
+
+        document.getElementById('customAmount').addEventListener('input', (e) => {
+            selectedAmount = parseInt(e.target.value) || 0;
+            updateSummary();
+        });
+
+        function updateSummary() {
+            const total = selectedAmount * 0.30;
+            document.getElementById('summaryCredits').textContent = selectedAmount;
+            document.getElementById('summaryTotal').textContent = formatCurrency(total);
+        }
+
+        document.getElementById('purchaseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+
+            if (!paymentMethod) {
+                showToast('Selecciona un método de pago', 'error');
+                return;
+            }
+
+            if (selectedAmount < 1) {
+                showToast('Ingresa una cantidad válida', 'error');
+                return;
+            }
+
+            const result = await purchaseCredits(selectedAmount, paymentMethod.value);
+
+            if (result.success) {
+                showToast('Transacción creada exitosamente', 'success');
+
+                // Show payment instructions
+                const instructions = result.data.instructions || 'Completa el pago según las instrucciones recibidas';
+                alert(`Instrucciones de pago:\n\n${instructions}\n\nID de transacción: ${result.data.transaction_id}`);
+
+                await loadCreditsData();
+            } else {
+                showToast(result.error, 'error');
+            }
+        });
+
+        function displayTransactions(transactions) {
+            const container = document.getElementById('transactionsContainer');
+
+            if (transactions.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">No hay transacciones</p>';
+                return;
+            }
+
+            container.innerHTML = transactions.map(t => `
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                    <div>
+                        <div class="font-semibold">${t.type === 'purchase' ? 'Compra' : 'Uso'} de ${t.amount} créditos</div>
+                        <div class="text-sm text-gray-600">${formatDate(t.created_at)}</div>
+                        <div class="text-sm text-gray-600">Método: ${t.payment_method || 'N/A'}</div>
+                    </div>
+                    <div>
+                        <span class="px-3 py-1 rounded-full text-sm ${t.payment_status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                    t.payment_status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                }">
+                            ${t.payment_status === 'confirmed' ? 'Confirmado' :
+                    t.payment_status === 'pending' ? 'Pendiente' : 'Fallido'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+
+</html>

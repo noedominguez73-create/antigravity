@@ -1,0 +1,245 @@
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Qué dice el artículo tercero'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'dime el articulo 3'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'articulo 3'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Dime qué dice el artículo 3 de la ley del ISR'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Dime qué dice el artículo 3 de la ley del ISR'
+ProfID: 3
+Checking Chunk 2: 's, las sucursales, 
+agencias, ofici nas, fábricas,' vs 'artículo 3'/'articulo 3'
+Checking Chunk 4: ' relacionadas.  
+párrafo adicionado dof 09-12-2019' vs 'artículo 3'/'articulo 3'
+Checking Chunk 5: 'pado en las erogaciones incurridas para 
+su obtenc' vs 'artículo 3'/'articulo 3'
+Checking Chunk 6: 'territorio nacional, o 
+a las que realice en uno o' vs 'artículo 3'/'articulo 3'
+Checking Chunk 30: 'nes, minas, canteras o cualquier lugar de explorac' vs 'artículo 3'/'articulo 3'
+Checking Chunk 32: 'royección, inspección o supervisión relacionadas c' vs 'artículo 3'/'articulo 3'
+Checking Chunk 34: 'idente en el extranjero o una parte relacionada, t' vs 'artículo 3'/'articulo 3'
+Checking Chunk 86: 'nes, minas, canteras o cualquier lugar de explorac' vs 'artículo 3'/'articulo 3'
+Checking Chunk 88: 'royección, inspección o supervisión relacionadas c' vs 'artículo 3'/'articulo 3'
+Checking Chunk 90: 'idente en el extranjero o una parte relacionada, t' vs 'artículo 3'/'articulo 3'
+Checking Chunk 146: 'cará por
+el número de acciones propiedad del contr' vs 'artículo 3'/'articulo 3'
+Checking Chunk 151: 'el porcentaje de la
+participación en el capital so' vs 'artículo 3'/'articulo 3'
+Checking Chunk 152: 'te, la sociedad adquirente de las acciones deberá ' vs 'artículo 3'/'articulo 3'
+Checking Chunk 173: 'n la ley del
+seguro de desempleo.
+tampoco serán de' vs 'artículo 3'/'articulo 3'
+Checking Chunk 176: 'eservas que se creen para indemnizaciones al perso' vs 'artículo 3'/'articulo 3'
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola estás funcionando'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Qué dice el artículo primero'
+ProfID: 3
+Checking Chunk 1: '=== página 1 ===
+nueva ley publicada en el diario ' vs 'artículo 1'/'articulo 1'
+Checking Chunk 10: 'extranjera, o cuando  
+tengan una participación in' vs 'artículo 1'/'articulo 1'
+Checking Chunk 11: 'distribuya efectivamente un dividendo o utilidad, ' vs 'artículo 1'/'articulo 1'
+Checking Chunk 17: 'proporcional del impuesto sobre la renta corporati' vs 'artículo 1'/'articulo 1'
+Checking Chunk 18: ' del extranjero la tarifa establecida en el artícu' vs 'artículo 1'/'articulo 1'
+Checking Chunk 27: 'l ejercicio, las deduc ciones autorizadas por este' vs 'artículo 1'/'articulo 1'
+Checking Chunk 29: 'nueva ley publicada en el diario oficial de la fed' vs 'artículo 1'/'articulo 1'
+Checking Chunk 38: 'ación la entidad extranjera que
+no sea transparent' vs 'artículo 1'/'articulo 1'
+Checking Chunk 39: ' la entidad extranjera transparente
+fiscal o figur' vs 'artículo 1'/'articulo 1'
+Checking Chunk 45: ' con motivo de la
+escisión.
+en el caso de las pers' vs 'artículo 1'/'articulo 1'
+Checking Chunk 54: '2-11-2021
+se dará el tratamiento establecido en es' vs 'artículo 1'/'articulo 1'
+Checking Chunk 85: 'nueva ley publicada en el diario oficial de la fed' vs 'artículo 1'/'articulo 1'
+Checking Chunk 94: 'ación la entidad extranjera que
+no sea transparent' vs 'artículo 1'/'articulo 1'
+Checking Chunk 95: ' la entidad extranjera transparente
+fiscal o figur' vs 'artículo 1'/'articulo 1'
+Checking Chunk 101: ' con motivo de la
+escisión.
+en el caso de las pers' vs 'artículo 1'/'articulo 1'
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Recibe mensajes'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Qué dice el artículo primero'
+ProfID: 3
+Checking Chunk 1: '=== página 1 ===
+nueva ley publicada en el diario ' vs 'artículo 1'/'articulo 1'
+Checking Chunk 10: 'extranjera, o cuando  
+tengan una participación in' vs 'artículo 1'/'articulo 1'
+Checking Chunk 11: 'distribuya efectivamente un dividendo o utilidad, ' vs 'artículo 1'/'articulo 1'
+Checking Chunk 17: 'proporcional del impuesto sobre la renta corporati' vs 'artículo 1'/'articulo 1'
+Checking Chunk 18: ' del extranjero la tarifa establecida en el artícu' vs 'artículo 1'/'articulo 1'
+Checking Chunk 27: 'l ejercicio, las deduc ciones autorizadas por este' vs 'artículo 1'/'articulo 1'
+Checking Chunk 29: 'nueva ley publicada en el diario oficial de la fed' vs 'artículo 1'/'articulo 1'
+Checking Chunk 38: 'ación la entidad extranjera que
+no sea transparent' vs 'artículo 1'/'articulo 1'
+Checking Chunk 39: ' la entidad extranjera transparente
+fiscal o figur' vs 'artículo 1'/'articulo 1'
+Checking Chunk 45: ' con motivo de la
+escisión.
+en el caso de las pers' vs 'artículo 1'/'articulo 1'
+Checking Chunk 54: '2-11-2021
+se dará el tratamiento establecido en es' vs 'artículo 1'/'articulo 1'
+Checking Chunk 85: 'nueva ley publicada en el diario oficial de la fed' vs 'artículo 1'/'articulo 1'
+Checking Chunk 94: 'ación la entidad extranjera que
+no sea transparent' vs 'artículo 1'/'articulo 1'
+Checking Chunk 95: ' la entidad extranjera transparente
+fiscal o figur' vs 'artículo 1'/'articulo 1'
+Checking Chunk 101: ' con motivo de la
+escisión.
+en el caso de las pers' vs 'artículo 1'/'articulo 1'
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Qué puedo hacer con ayuda con trámites ante el IMSS'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola Quién eres'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'tente virtual de tripa ley mi objetivo es responder tus preguntas sobre trámites del IMSS basándome en la información proporcionada'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Lamento no tener esa información específica por favor contacte directamente a'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Cuál es el horario en el que me puedes atender'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'pretensiones asterisco lunes a viernes 9 de la mañana 6 de la tarde asterisco sábados 9 de la mañana 1 de la tarde estamos disponibles por WhatsApp teléfono email'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Cuáles son los servicios digitales del IMSS'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola estás activo'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'eres una hermosura Muchas gracias'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola quieres especialista'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola Sí sabes algo del del IMSS'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola es para configurar la voz'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'sí estás viendo que puedes coger la voz'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola solo para probar la voz'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Hola Qué dice el artículo primero de la ley del impuesto sobre la renta'
+ProfID: 3
+Checking Chunk 1: '=== página 1 ===
+nueva ley publicada en el diario ' vs 'artículo 1'/'articulo 1'
+Checking Chunk 10: 'extranjera, o cuando  
+tengan una participación in' vs 'artículo 1'/'articulo 1'
+Checking Chunk 11: 'distribuya efectivamente un dividendo o utilidad, ' vs 'artículo 1'/'articulo 1'
+Checking Chunk 17: 'proporcional del impuesto sobre la renta corporati' vs 'artículo 1'/'articulo 1'
+Checking Chunk 18: ' del extranjero la tarifa establecida en el artícu' vs 'artículo 1'/'articulo 1'
+Checking Chunk 27: 'l ejercicio, las deduc ciones autorizadas por este' vs 'artículo 1'/'articulo 1'
+Checking Chunk 29: 'nueva ley publicada en el diario oficial de la fed' vs 'artículo 1'/'articulo 1'
+Checking Chunk 38: 'ación la entidad extranjera que
+no sea transparent' vs 'artículo 1'/'articulo 1'
+Checking Chunk 39: ' la entidad extranjera transparente
+fiscal o figur' vs 'artículo 1'/'articulo 1'
+Checking Chunk 45: ' con motivo de la
+escisión.
+en el caso de las pers' vs 'artículo 1'/'articulo 1'
+Checking Chunk 54: '2-11-2021
+se dará el tratamiento establecido en es' vs 'artículo 1'/'articulo 1'
+Checking Chunk 85: 'nueva ley publicada en el diario oficial de la fed' vs 'artículo 1'/'articulo 1'
+Checking Chunk 94: 'ación la entidad extranjera que
+no sea transparent' vs 'artículo 1'/'articulo 1'
+Checking Chunk 95: ' la entidad extranjera transparente
+fiscal o figur' vs 'artículo 1'/'articulo 1'
+Checking Chunk 101: ' con motivo de la
+escisión.
+en el caso de las pers' vs 'artículo 1'/'articulo 1'
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'Cuál es la raíz cuadrada de 50.55'
+ProfID: 3
+
+--- RETRIEVE CONTEXT CALLED ---
+Query: 'https://www.tiktok.com/@frostechgmz/video/7570065205879753992?_r=1&_t=ZS-92KsVsklijA'
+ProfID: 6

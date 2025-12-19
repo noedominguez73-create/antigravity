@@ -1,0 +1,14 @@
+Logging in as prof@test.com...
+Login successful
+Getting professional ID...
+
+Testing URL endpoints for Professional ID: 1
+
+1. Adding Valid URL (https://www.imss.gob.mx)...
+Status: 500
+Response: {
+  "error": "Ocurri\u00f3 un error interno en el servidor. Por favor contacte a soporte.",
+  "success": false
+}
+
+Failed to add valid URL

@@ -1,0 +1,235 @@
+.venv\Scripts\python
+.exe : [2025-11-27 
+14:14:33,074] INFO 
+in logging_config: 
+=== Logging System 
+Initialized ===
+En línea: 1 
+Carácter: 1
++ .venv\Scripts\pyth
+on.exe 
+create_prof_user.py 
+> output_create_user
+_3.t ...
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: ([202   
+ 5-11-27 14:...I    
+nitialized ===:    
+String) [], Rem    
+oteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+Traceback (most 
+recent call last):
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 1967, in 
+_exec_single_context
+APP.MODELS LOADED FULLY
+    self.dialect.do_
+execute(
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\default.py"
+, line 951, in 
+do_execute
+    cursor.execute(s
+tatement, 
+parameters)
+sqlite3.OperationalE
+rror: no such 
+table: users
+
+The above exception 
+was the direct 
+cause of the 
+following exception:
+
+Traceback (most 
+recent call last):
+  File "C:\asesoriai
+mss.io\create_prof_u
+ser.py", line 9, in 
+<module>
+    user = User.quer
+y.filter_by(email='p
+rof@test.com').first
+()
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\query.py", 
+line 2759, in first
+    return self.limi
+t(1)._iter().first()
+  # type: ignore
+           ^^^^^^^^^
+^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\query.py", 
+line 2857, in _iter
+    result: Union[Sc
+alarResult[_T], 
+Result[_T]] = self.s
+ession.execute(
+                    
+                    
+          ^^^^^^^^^^
+^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\session.py", 
+line 2351, in 
+execute
+    return self._exe
+cute_internal(
+           ^^^^^^^^^
+^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\session.py", 
+line 2249, in 
+_execute_internal
+    result: 
+Result[Any] = compil
+e_state_cls.orm_exec
+ute_statement(
+                    
+      ^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\context.py", 
+line 306, in orm_exe
+cute_statement
+    result = 
+conn.execute(
+             
+^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 1419, in 
+execute
+    return meth(
+           ^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\sql\elements.py", 
+line 526, in _execut
+e_on_connection
+    return connectio
+n._execute_clauseele
+ment(
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 1641, in _execu
+te_clauseelement
+    ret = self._exec
+ute_context(
+          ^^^^^^^^^^
+^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 1846, in 
+_execute_context
+    return self._exe
+c_single_context(
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 1986, in 
+_exec_single_context
+    self._handle_dba
+pi_exception(
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 2355, in _handl
+e_dbapi_exception
+    raise sqlalchemy
+_exception.with_trac
+eback(exc_info[2]) 
+from e
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 1967, in 
+_exec_single_context
+    self.dialect.do_
+execute(
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\default.py"
+, line 951, in 
+do_execute
+    cursor.execute(s
+tatement, 
+parameters)
+sqlalchemy.exc.Opera
+tionalError: (sqlite
+3.OperationalError) 
+no such table: users
+[SQL: SELECT 
+users.id AS 
+users_id, 
+users.email AS 
+users_email, 
+users.password_hash 
+AS users_password_ha
+sh, users.full_name 
+AS users_full_name, 
+users.role AS 
+users_role, 
+users.created_at AS 
+users_created_at, 
+users.google_id AS 
+users_google_id, 
+users.facebook_id 
+AS 
+users_facebook_id 
+FROM users 
+WHERE users.email = 
+?
+ LIMIT ? OFFSET ?]
+[parameters: 
+('prof@test.com', 
+1, 0)]
+(Background on this 
+error at: https://sq
+lalche.me/e/20/e3q8)

@@ -1,0 +1,27 @@
+﻿============================================================
+Testing Login Endpoint
+============================================================
+URL: http://127.0.0.1:5000/api/auth/login
+Data: {
+  "email": "juan.perez@example.com",
+  "password": "password123"
+}
+
+Status Code: 200
+Content-Type: application/json
+
+[SUCCESS] Login successful!
+Response: {
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoidXNlciIsImV4cCI6MTc2NDI0OTI3NCwiaWF0IjoxNzY0MTYyODc0fQ.lBEC_5PxPQWhan78VSiApVxEyAVi2AIkxay4UfECnPE",
+    "user": {
+      "email": "juan.perez@example.com",
+      "full_name": "Juan P\u00e9rez Garc\u00eda",
+      "id": 1,
+      "role": "user"
+    }
+  },
+  "message": "Inicio de sesi\u00f3n exitoso",
+  "success": true
+}
+============================================================

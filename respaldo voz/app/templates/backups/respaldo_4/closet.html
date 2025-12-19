@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closet IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            font-family: sans-serif;
+        }
+
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="py-10 px-4">
+    <main class="w-full max-w-5xl mx-auto space-y-16">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="/" class="bg-white p-3 rounded-full shadow-md hover:scale-105 transition-transform text-2xl">
+                    ⬅️
+                </a>
+                <div>
+                    <h1 class="text-4xl font-bold text-slate-800">Mi Closet IA</h1>
+                    <p class="text-slate-500">Gestiona tu inventario digital</p>
+                </div>
+            </div>
+        </div>
+        <!-- SECCIÓN 1: CÁMARA Y PRE-GUARDADO -->
+        <div class="flex flex-col items-center gap-8 w-full max-w-md mx-auto">
+            <!-- Contenedor "Cámara" -->
+            <div id="camara" onclick="activarCamara()"
+                class="bg-white p-6 rounded-[30px] shadow-2xl text-center w-full cursor-pointer hover:scale-105 transition-transform duration-300 border-4 border-dashed border-slate-200 hover:border-blue-500 group relative overflow-hidden">
+                <!-- Vista previa de la cámara -->
+                <video id="videoFeed" class="hidden w-full aspect-square object-cover rounded-2xl mb-4" autoplay
+                    playsinline></video>
+                <!-- Vista previa de la captura -->
+                <img id="photoPreview" class="hidden w-full aspect-square object-cover rounded-2xl mb-4">
+                <!-- Placeholder Inicial -->
+                <div id="cameraPlaceholder"
+                    class="relative w-full aspect-square bg-slate-100 rounded-2xl flex items-center justify-center mb-4 overflow-hidden group-hover:bg-blue-50 transition-colors">
+                    <span
+                        class="text-8xl drop-shadow-lg filter group-hover:rotate-12 transition-transform duration-300">📸</span>
+                </div>
+                <h2 id="cameraTitle" class="text-2xl font-bold text-slate-800 mb-1">Cámara</h2>
+                <p id="cameraDesc" class="text-slate-500 text-sm">Toca para activar</p>
+                <!-- Botón de Captura -->
+                <button id="btnCapturar" onclick="tomarFoto(event)"
+                    class="hidden mt-4 bg-blue-600 text-white w-full py-3 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition-colors">
+                    📸 Tomar Fotografía
+                </button>
+                <!-- Botones de Confirmación -->
+                <div id="confirmActions" class="hidden mt-4 grid grid-cols-2 gap-3">
+                    <button onclick="descartarFoto(event)"
+                        class="bg-red-100 text-red-600 py-3 rounded-xl font-bold hover:bg-red-200 transition-colors">
+                        ❌ Descartar
+                    </button>
+                    <button onclick="confirmarGuardado(event)"
+                        class="bg-green-500 text-white py-3 rounded-xl font-bold shadow-lg hover:bg-green-600 transition-colors">
+                        ✅ Guardar
+                    </button>
+                </div>
+            </div>
+            <!-- Botón "Ropa en pre guardado" -->
+            <button onclick="abrirModal()"
+                class="bg-slate-800 text-white px-8 py-4 rounded-full font-bold shadow-xl flex items-center gap-3 hover:scale-105 transition-transform">
+                <span>👕</span>
+                Ropa en pre guardado
+                <span id="contadorPreguardado"
+                    class="bg-white text-slate-900 px-2 py-0.5 rounded-full text-xs font-bold">0</span>
+            </button>
+        </div>
+        <!-- SECCIÓN 2: CONTENEDOR IA (12 CATEGORÍAS) -->
+        <div id="contenedor-ia" class="w-full">
+            <div class="flex items-center gap-4 mb-8 justify-center">
+                <span class="text-4xl">🤖</span>
+                <h2 class="text-4xl font-bold text-slate-800">Contenedor IA</h2>
+            </div>
+            <div id="grid-inventario" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Las tarjetas de categoría se generarán aquí -->
+            </div>
+        </div>
+    </main>
+    <!-- Modal de Clasificación -->
+    <div id="modalClasificacion"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[30px] w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800">Clasificación IA</h3>
+                    <p class="text-slate-500 text-sm">Prepara tus prendas para el inventario</p>
+                </div>
+                <button onclick="cerrarModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <span class="text-2xl">✕</span>
+                </button>
+            </div>
+            <div id="listaClasificacion" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/50"></div>
+            <div class="p-6 border-t border-slate-100 bg-white flex justify-between items-center">
+                <span id="resumenSeleccion" class="text-slate-500 font-medium">0 seleccionados</span>
+                <button id="btnProcesarIA" onclick="procesarSeleccionIA()" disabled
+                    class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                    <span>💾</span> Guardar y Generar IA
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Ver Categoría -->
+    <div id="modalVerCategoria"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[30px] w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <span id="iconoCategoriaModal" class="text-3xl">📂</span>
+                    <div>
+                        <h3 id="tituloCategoriaModal" class="text-2xl font-bold text-slate-800">Categoría</h3>
+                        <p id="subtituloCategoriaModal" class="text-slate-500 text-sm">Explora tus prendas</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalCategoria()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <span class="text-2xl">✕</span>
+                </button>
+            </div>
+            <div id="gridCategoriaContenido"
+                class="flex-1 overflow-y-auto p-6 bg-slate-50/50 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Items de la categoría -->
+            </div>
+        </div>
+    </div>
+    <!-- Canvas oculto -->
+    <canvas id="canvas" class="hidden"></canvas>
+    <script>
+        // --- ESTADO ---
+        let preguardado = [];
+        let inventario_ia = [];
+        let currentStream = null;
+        let currentPhotoData = null;
+
+        const categoriasSlots = [
+            { nombre: "Blusa", icono: "👚" },
+            { nombre: "Jeans", icono: "👖" },
+            { nombre: "Vestido", icono: "👗" },
+            { nombre: "Zapatos", icono: "👠" },
+            { nombre: "Abrigo", icono: "🧥" },
+            { nombre: "Bolso", icono: "👜" },
+            { nombre: "Accesorios", icono: "🧢" },
+            { nombre: "Camiseta", icono: "👕" },
+            { nombre: "Shorts", icono: "🩳" },
+            { nombre: "Botas", icono: "👢" },
+            { nombre: "Bufanda", icono: "🧣" },
+            { nombre: "Lentes", icono: "🕶️" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cargar inventario desde localStorage
+            const savedInventory = localStorage.getItem('inventario_ia');
+            if (savedInventory) {
+                inventario_ia = JSON.parse(savedInventory);
+            }
+            renderizarInventario();
+        });
+
+        // --- INVENTARIO (CONTENEDORES) ---
+        function renderizarInventario() {
+            const grid = document.getElementById('grid-inventario');
+            grid.innerHTML = '';
+
+            categoriasSlots.forEach(slot => {
+                // Filtrar items que pertenecen a esta categoría
+                const itemsEnCategoria = inventario_ia.filter(i => i.categoria === slot.nombre);
+                const count = itemsEnCategoria.length;
+                const ultimaImagen = count > 0 ? itemsEnCategoria[itemsEnCategoria.length - 1].imagen_base64 : null;
+
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-3xl shadow-lg border border-slate-100 hover:shadow-xl transition-all group cursor-pointer relative overflow-hidden";
+                card.onclick = () => abrirCategoria(slot.nombre);
+
+                // Diseño de la tarjeta "Contenedor"
+                let previewHtml = '';
+                if (ultimaImagen) {
+                    // Si hay items, mostrar preview sutil de fondo o miniatura
+                    previewHtml = `
+                        <div class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <img src="${ultimaImagen}" class="w-full h-full object-cover blur-sm">
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    ${previewHtml}
+                    <div class="relative z-10 flex flex-col items-center justify-center h-full py-4">
+                        <div class="bg-blue-50 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-3 shadow-inner group-hover:scale-110 transition-transform duration-300">
+                            ${slot.icono}
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg">${slot.nombre}</h3>
+                        <span class="text-sm font-medium ${count > 0 ? 'text-blue-600 bg-blue-100 px-3 py-1 rounded-full mt-2' : 'text-slate-400 mt-1'}">
+                            ${count} prendas
+                        </span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- MODAL VER CATEGORÍA ---
+        function abrirCategoria(nombreCategoria) {
+            const modal = document.getElementById('modalVerCategoria');
+            const titulo = document.getElementById('tituloCategoriaModal');
+            const subtitulo = document.getElementById('subtituloCategoriaModal');
+            const icono = document.getElementById('iconoCategoriaModal');
+            const grid = document.getElementById('gridCategoriaContenido');
+
+            const slot = categoriasSlots.find(s => s.nombre === nombreCategoria);
+            const items = inventario_ia.filter(i => i.categoria === nombreCategoria);
+
+            titulo.textContent = slot.nombre;
+            icono.textContent = slot.icono;
+            subtitulo.textContent = `${items.length} prendas guardadas`;
+
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full flex flex-col items-center justify-center py-12 text-slate-400">
+                        <span class="text-6xl mb-4 opacity-50">📂</span>
+                        <p>No hay prendas en esta categoría aún.</p>
+                    </div>
+                `;
+            } else {
+                items.forEach(item => {
+                    const itemCard = document.createElement('div');
+                    itemCard.className = "bg-white p-3 rounded-2xl shadow border border-slate-100 relative group";
+
+                    // Display Occasion Tag if available
+                    let occasionTag = '';
+                    if (item.ocasion) {
+                        const occasionMap = {
+                            'casual': '🧢 Casual',
+                            'formal': '💼 Formal',
+                            'party': '🥂 Fiesta',
+                            'date': '🌹 Cita',
+                            'sport': '🏃 Sport',
+                            'gala': '✨ Gala'
+                        };
+                        occasionTag = `<div class="absolute top-2 left-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded-full backdrop-blur-sm">${occasionMap[item.ocasion] || item.ocasion}</div>`;
+                    }
+
+                    itemCard.innerHTML = `
+                        <div class="aspect-square rounded-xl overflow-hidden mb-2 bg-slate-50 relative">
+                            <img src="${item.imagen_base64}" class="w-full h-full object-cover">
+                            ${occasionTag}
+                        </div>
+                        <div class="text-xs text-slate-400 text-center">ID: ${item.id.toString().slice(-4)}</div>
+                        <button onclick="eliminarItem(event, ${item.id}, '${nombreCategoria}')" 
+                            class="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-red-600">
+                            🗑️
+                        </button>
+                    `;
+                    grid.appendChild(itemCard);
+                });
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function cerrarModalCategoria() {
+            document.getElementById('modalVerCategoria').classList.add('hidden');
+        }
+
+        function eliminarItem(event, id, nombreCategoria) {
+            event.stopPropagation();
+            if (confirm("¿Eliminar esta prenda?")) {
+                const index = inventario_ia.findIndex(i => i.id === id);
+                if (index !== -1) {
+                    inventario_ia.splice(index, 1);
+                    localStorage.setItem('inventario_ia', JSON.stringify(inventario_ia)); // Guardar cambios
+                    // Recargar el modal actual y el grid principal
+                    abrirCategoria(nombreCategoria);
+                    renderizarInventario();
+                }
+            }
+        }
+
+        // --- CLASIFICACIÓN ---
+        function abrirModal() {
+            if (preguardado.length === 0) {
+                alert("No hay ropa en pre-guardado.");
+                return;
+            }
+            document.getElementById('modalClasificacion').classList.remove('hidden');
+            renderizarListaClasificacion();
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalClasificacion').classList.add('hidden');
+        }
+
+        function renderizarListaClasificacion() {
+            const lista = document.getElementById('listaClasificacion');
+            lista.innerHTML = '';
+
+            preguardado.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = "bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-3 transition-all hover:shadow-md";
+
+                const topRow = document.createElement('div');
+                topRow.className = "flex items-center gap-4";
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = "w-6 h-6 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer";
+                checkbox.onchange = () => actualizarEstadoSeleccion();
+                checkbox.dataset.index = index;
+
+                const img = document.createElement('img');
+                img.src = item.imagen;
+                img.className = "w-16 h-16 rounded-lg object-cover border border-slate-200";
+
+                const selectCat = document.createElement('select');
+                selectCat.className = "flex-1 rounded-xl border-slate-200 py-2 px-3 text-slate-700 focus:border-blue-500 focus:ring-blue-500 text-sm";
+                selectCat.innerHTML = `<option value="">Categoría...</option>` +
+                    categoriasSlots.map(cat => `<option value="${cat.nombre}">${cat.nombre} ${cat.icono}</option>`).join('');
+                selectCat.onchange = () => {
+                    if (selectCat.value) checkbox.checked = true;
+                    actualizarEstadoSeleccion();
+                };
+
+                topRow.appendChild(checkbox);
+                topRow.appendChild(img);
+                topRow.appendChild(selectCat);
+
+                // Event/Occasion Selector
+                const occasionRow = document.createElement('div');
+                occasionRow.className = "flex items-center gap-2 pl-10";
+
+                const selectOccasion = document.createElement('select');
+                selectOccasion.className = "w-full rounded-xl border-slate-200 py-2 px-3 text-slate-600 text-xs focus:border-blue-500 focus:ring-blue-500 bg-slate-50";
+                selectOccasion.innerHTML = `
+                    <option value="">Seleccionar Ocasión (Opcional)...</option>
+                    <option value="casual">Casual / Diario 🧢</option>
+                    <option value="formal">Formal / Oficina 💼</option>
+                    <option value="party">Fiesta / Noche 🥂</option>
+                    <option value="date">Cita Romántica 🌹</option>
+                    <option value="sport">Deportivo 🏃</option>
+                    <option value="gala">Gala / Evento Especial ✨</option>
+                `;
+
+                occasionRow.appendChild(selectOccasion);
+
+                row.appendChild(topRow);
+                row.appendChild(occasionRow);
+                lista.appendChild(row);
+            });
+            actualizarEstadoSeleccion();
+        }
+
+        function actualizarEstadoSeleccion() {
+            const lista = document.getElementById('listaClasificacion');
+            const rows = Array.from(lista.children);
+            let count = 0;
+            let valid = true;
+
+            rows.forEach(row => {
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                if (checkbox.checked) {
+                    count++;
+                    const selectCat = row.querySelector('select'); // First select is Category
+                    if (!selectCat.value) valid = false;
+                }
+            });
+
+            const btn = document.getElementById('btnProcesarIA');
+            document.getElementById('resumenSeleccion').textContent = `${count} seleccionados`;
+            btn.disabled = count === 0 || !valid;
+        }
+
+        async function procesarSeleccionIA() {
+            const btn = document.getElementById('btnProcesarIA');
+            btn.textContent = "⏳ Analizando con Gemini Vision...";
+            btn.disabled = true;
+
+            const lista = document.getElementById('listaClasificacion');
+            const rows = Array.from(lista.children);
+            const indicesAEliminar = [];
+            let processedCount = 0;
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                // Selects are now nested in divs
+                const selectCat = row.querySelectorAll('select')[0];
+                const selectOccasion = row.querySelectorAll('select')[1];
+
+                if (checkbox.checked && selectCat.value) {
+                    const index = parseInt(checkbox.dataset.index);
+                    const itemOriginal = preguardado[index];
+                    const occasionValue = selectOccasion ? selectOccasion.value : '';
+
+                    try {
+                        // Call API for analysis and steganography
+                        const result = await callAIProcess(itemOriginal.imagen, selectCat.value);
+
+                        if (result.success) {
+                            inventario_ia.push({
+                                id: Date.now() + i,
+                                categoria: selectCat.value,
+                                ocasion: occasionValue, // Save the occasion metadata
+                                imagen_base64: result.image, // Image with embedded metadata
+                                descripcion_ia: result.description // Save description separately too for easy access
+                            });
+                            indicesAEliminar.push(index);
+                            processedCount++;
+                            console.log("AI Description:", result.description);
+                        } else {
+                            console.error("Error processing item:", result.error);
+                            alert(`Error al procesar item ${i + 1}: ${result.error}`);
+                        }
+                    } catch (e) {
+                        console.error("Network error:", e);
+                        alert("Error de conexión al procesar imagen.");
+                    }
+                }
+            }
+
+            // Guardar en localStorage
+            localStorage.setItem('inventario_ia', JSON.stringify(inventario_ia));
+
+            indicesAEliminar.sort((a, b) => b - a).forEach(idx => preguardado.splice(idx, 1));
+
+            document.getElementById('contadorPreguardado').textContent = preguardado.length;
+            renderizarInventario();
+            cerrarModal();
+
+            btn.textContent = "💾 Guardar y Generar IA";
+            btn.disabled = false;
+
+            if (processedCount > 0) {
+                alert(`¡${processedCount} prendas analizadas y guardadas con éxito!\n\nLa IA ha generado descripciones detalladas y las ha incrustado en las imágenes.`);
+            }
+        }
+
+        async function callAIProcess(imageBase64, category) {
+            const response = await fetch('/api/process-closet-item', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    image: imageBase64,
+                    category: category
+                })
+            });
+            return await response.json();
+        }
+
+        // --- CÁMARA ---
+        async function activarCamara() {
+            const video = document.getElementById('videoFeed');
+            if (!video.classList.contains('hidden')) return;
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                currentStream = stream;
+                video.srcObject = stream;
+                video.classList.remove('hidden');
+                document.getElementById('cameraPlaceholder').classList.add('hidden');
+                document.getElementById('btnCapturar').classList.remove('hidden');
+                document.getElementById('cameraTitle').textContent = "Cámara Activa";
+                document.getElementById('cameraDesc').textContent = "Ajusta y captura";
+                document.getElementById('camara').onclick = null;
+            } catch (err) {
+                alert("Error cámara: " + err.message);
+            }
+        }
+
+        function tomarFoto(event) {
+            event.stopPropagation();
+            const video = document.getElementById('videoFeed');
+            const canvas = document.getElementById('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            currentPhotoData = canvas.toDataURL('image/png');
+            document.getElementById('photoPreview').src = currentPhotoData;
+            document.getElementById('photoPreview').classList.remove('hidden');
+            video.classList.add('hidden');
+            document.getElementById('btnCapturar').classList.add('hidden');
+            document.getElementById('confirmActions').classList.remove('hidden');
+            document.getElementById('cameraTitle').textContent = "¿Guardar Foto?";
+        }
+
+        function confirmarGuardado(event) {
+            event.stopPropagation();
+            if (currentPhotoData) {
+                preguardado.push({ id: Date.now(), imagen: currentPhotoData, fecha: new Date().toISOString() });
+                document.getElementById('contadorPreguardado').textContent = preguardado.length;
+                alert("¡Guardado!");
+            }
+            resetUI();
+        }
+
+        function descartarFoto(event) {
+            event.stopPropagation();
+            resetUI();
+        }
+
+        function resetUI() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+            document.getElementById('videoFeed').classList.add('hidden');
+            document.getElementById('photoPreview').classList.add('hidden');
+            document.getElementById('cameraPlaceholder').classList.remove('hidden');
+            document.getElementById('btnCapturar').classList.add('hidden');
+            document.getElementById('confirmActions').classList.add('hidden');
+            document.getElementById('cameraTitle').textContent = "Cámara";
+            document.getElementById('cameraDesc').textContent = "Toca para activar";
+            document.getElementById('camara').onclick = activarCamara;
+            currentPhotoData = null;
+        }
+    </script>
+</body>
+
+</html>

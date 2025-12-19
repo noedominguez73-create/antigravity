@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\asesoriaimss.io\app\routes\chatbot.py", line 314, in upload_knowledge_document
+    KnowledgeBaseDocument = db.Model._decl_class_registry.get('KnowledgeBaseDocument')
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'Model' has no attribute '_decl_class_registry'

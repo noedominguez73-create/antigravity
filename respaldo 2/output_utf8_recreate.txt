@@ -1,0 +1,61 @@
+.venv\Scripts\python
+.exe : [2025-11-27 
+14:16:28,079] INFO 
+in logging_config: 
+=== Logging System 
+Initialized ===
+En línea: 1 
+Carácter: 1
++ .venv\Scripts\pyth
+on.exe 
+recreate_db.py > 
+output_recreate.txt 
+2>&1
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: ([202   
+ 5-11-27 14:...I    
+nitialized ===:    
+String) [], Rem    
+oteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+APP.MODELS LOADED FULLY
+Removing existing database: instance/asesoriaimss.db
+Creating all tables...
+Traceback (most 
+recent call last):
+  File "C:\asesoriai
+mss.io\recreate_db.p
+y", line 17, in 
+<module>
+    print("\u2705 
+Database recreated 
+successfully with Kn
+owledgeBaseDocument 
+table.")
+  File "C:\Program F
+iles\Python311\Lib\e
+ncodings\cp1252.py",
+ line 19, in encode
+    return codecs.ch
+armap_encode(input,s
+elf.errors,encoding_
+table)[0]
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^
+UnicodeEncodeError: 
+'charmap' codec 
+can't encode 
+character '\u2705' 
+in position 0: 
+character maps to 
+<undefined>

@@ -1,0 +1,20 @@
+
+=== VERIFYING RAG FIX FOR PROFESSIONAL ID: 3 ===
+
+Testing Query: 'Qué dice el artículo tercero'
+----------------------------------------
+...
+----------------------------------------
+>>> FAILURE: Article 3 NOT found at the top. <<<
+
+Testing Query: 'dime el articulo 3'
+----------------------------------------
+...
+----------------------------------------
+>>> FAILURE: Article 3 NOT found at the top. <<<
+
+Testing Query: 'articulo 3'
+----------------------------------------
+...
+----------------------------------------
+>>> FAILURE: Article 3 NOT found at the top. <<<

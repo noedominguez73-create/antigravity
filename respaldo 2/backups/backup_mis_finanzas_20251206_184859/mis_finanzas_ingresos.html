@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresos - Mis Finanzas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-display {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Sidebar active state */
+        .nav-item.active {
+            background-color: #f3f4f6;
+            color: #111827;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+    {% include 'sidebar.html' %}
+
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <!-- Main Dashboard View -->
+        <main id="main-dashboard" class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-5xl mx-auto">
+                <!-- Top Header Section -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+                    <div class="w-full md:w-auto flex justify-between items-end flex-wrap gap-4">
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium mb-1 capitalize" id="current-date">Sábado, 6 de
+                                diciembre</p>
+                            <h1 class="font-serif text-3xl text-gray-900 font-semibold mb-2">Bancos</h1>
+                            <p class="text-gray-500 text-sm">Gestiona tus cuentas y movimientos</p>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="openTransferModal()"
+                                class="flex items-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm hover:translate-y-[-1px]">
+                                <i data-lucide="arrow-right-left" class="h-4 w-4"></i>
+                                Transferir
+                            </button>
+                            <button onclick="openNewAccountModal()"
+                                class="flex items-center gap-2 px-4 py-3 bg-[#E91E63] rounded-xl text-sm font-medium text-white hover:bg-pink-600 transition-colors shadow-md hover:shadow-lg hover:translate-y-[-1px]">
+                                <i data-lucide="plus" class="h-4 w-4"></i>
+                                Nueva cuenta
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Voice Interaction Card -->
+                    <div
+                        class="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-col items-center justify-center text-center w-full md:w-64 transition-transform hover:scale-[1.02]">
+                        <button id="voice-assistant-btn" onclick="toggleVoiceAssistant()"
+                            class="w-16 h-16 rounded-full bg-gradient-to-br from-rose-400 to-rose-500 text-white shadow-lg shadow-rose-200 flex items-center justify-center mb-3 hover:shadow-xl hover:scale-110 active:scale-95 transition-all group">
+                            <i data-lucide="mic" class="h-8 w-8 group-hover:animate-pulse"></i>
+                        </button>
+                        <h3 class="font-serif text-gray-900 font-medium">Toca para hablar</h3>
+                        <p class="text-xs text-gray-400">Registra gastos o consultas</p>
+                    </div>
+                </div>
+
+                <!-- KPI Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <!-- Total Balance -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                                <i data-lucide="wallet" class="h-5 w-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Saldo Total</p>
+                                <p class="text-xl font-bold text-gray-900" id="total-balance">$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Income -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center">
+                                <i data-lucide="trending-up" class="h-5 w-5 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Total Ingresos</p>
+                                <p class="text-xl font-bold text-emerald-600" id="total-income">+$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Expenses -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center">
+                                <i data-lucide="trending-down" class="h-5 w-5 text-rose-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Total Gastos</p>
+                                <p class="text-xl font-bold text-rose-600" id="total-expenses">-$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Accounts List -->
+            <div class="space-y-3" id="accounts-list">
+                <h2 class="font-semibold text-gray-900">Mis Cuentas</h2>
+                <!-- Content injected via JS -->
+            </div>
+    </div>
+    </main>
+    <!-- Account Details View (Hidden by default) -->
+    <main id="account-details" class="hidden flex-1 overflow-y-auto p-8">
+        <div class="max-w-5xl mx-auto">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+                <div class="w-full md:w-auto flex flex-col gap-4">
+                    <div class="flex items-center gap-3">
+                        <button onclick="showMainDashboard()"
+                            class="p-2 -ml-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-all">
+                            <i data-lucide="arrow-left" class="h-6 w-6"></i>
+                        </button>
+                        <div>
+                            <div class="flex items-center gap-2 group">
+                                <h1 class="font-display text-3xl font-bold text-gray-900 leading-none"
+                                    id="detail-account-name">
+                                    Nombre Cuenta</h1>
+                                <button onclick="editAccountName()"
+                                    class="text-gray-300 hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-all p-1"
+                                    title="Editar nombre"><i data-lucide="pencil" class="h-4 w-4"></i></button>
+                            </div>
+                            <span class="text-sm text-gray-500 font-medium" id="detail-account-type">Tipo</span>
+                        </div>
+                    </div>
+
+                    <!-- Period Selector Dropdown -->
+                    <div class="relative inline-block text-left w-fit ml-11">
+                        <div>
+                            <button type="button" onclick="togglePeriodDropdown()"
+                                class="inline-flex items-center gap-x-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all min-w-[140px] justify-between"
+                                id="period-menu-button" aria-expanded="true" aria-haspopup="true">
+                                <span id="period-label">Este Mes</span>
+                                <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                            </button>
+                        </div>
+
+                        <div class="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-xl bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden transform transition-all opacity-0 scale-95"
+                            role="menu" aria-orientation="vertical" aria-labelledby="period-menu-button" tabindex="-1"
+                            id="period-menu-dropdown">
+                            <div class="p-1 space-y-0.5" role="none">
+                                <button onclick="selectPeriod('week')"
+                                    class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                    role="menuitem">
+                                    <i data-lucide="calendar-days" class="w-4 h-4 mr-2 text-gray-400"></i>Esta Semana
+                                </button>
+                                <button onclick="selectPeriod('month')"
+                                    class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                    role="menuitem">
+                                    <i data-lucide="calendar" class="w-4 h-4 mr-2 text-gray-400"></i>Este Mes
+                                </button>
+                                <button onclick="selectPeriod('year')"
+                                    class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                    role="menuitem">
+                                    <i data-lucide="calendar-range" class="w-4 h-4 mr-2 text-gray-400"></i>Este Año
+                                </button>
+                                <div class="border-t border-gray-100 my-1"></div>
+                                <button onclick="selectPeriod('range')"
+                                    class="flex items-center w-full px-3 py-2 text-sm text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors"
+                                    role="menuitem">
+                                    <i data-lucide="sliders-horizontal" class="w-4 h-4 mr-2 text-blue-500"></i>Rango
+                                    Personalizado...
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Voice Interaction Card -->
+                <div
+                    class="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-col items-center justify-center text-center w-full md:w-64 transition-transform hover:scale-[1.02] flex-shrink-0">
+                    <button id="voice-assistant-btn-detail" onclick="toggleVoiceAssistant()"
+                        class="w-16 h-16 rounded-full bg-gradient-to-br from-rose-400 to-rose-500 text-white shadow-lg shadow-rose-200 flex items-center justify-center mb-3 hover:shadow-xl hover:scale-110 active:scale-95 transition-all group">
+                        <i data-lucide="mic" class="h-8 w-8 group-hover:animate-pulse"></i>
+                    </button>
+                    <h3 class="font-serif text-gray-900 font-medium">Toca para hablar</h3>
+                    <p class="text-xs text-gray-400">Registra gastos o consultas</p>
+                </div>
+            </div>
+            <!-- Account Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <!-- Ingresos -->
+                <div
+                    class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col items-center justify-center">
+                    <p class="text-sm text-gray-500 mb-1">Ingresos</p>
+                    <p class="text-2xl font-bold text-green-600" id="detail-income">+$0.00</p>
+                </div>
+                <!-- Gastos -->
+                <div
+                    class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col items-center justify-center">
+                    <p class="text-sm text-gray-500 mb-1">Gastos</p>
+                    <p class="text-2xl font-bold text-red-600" id="detail-expenses">- $0.00</p>
+                </div>
+                <!-- Saldo -->
+                <div
+                    class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col items-center justify-center">
+                    <p class="text-sm text-gray-500 mb-1">Saldo</p>
+                    <p class="text-2xl font-bold text-gray-900" id="detail-balance">$0.00
+                    </p>
+                </div>
+            </div>
+            <!-- Add Movement Button --><button onclick="openAddMovementModal()"
+                class="w-full bg-[#E91E63] text-white rounded-lg py-3 font-medium mb-8 hover:bg-pink-600 transition shadow-md flex items-center justify-center gap-2"><i
+                    data-lucide="plus" class="h-5 w-5"></i>Agregar movimiento </button>
+            <!-- Movements List -->
+            <div class="space-y-4">
+                <h3 class="font-semibold text-gray-900">Movimientos</h3>
+                <div id="detail-movements-list" class="space-y-3">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+    <!-- Transfer Modal -->
+    <div id="transfer-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-900">Transferir Fondos</h3><button onclick="closeTransferModal()"
+                    class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="h-5 w-5"></i></button>
+            </div>
+            <form id="transfer-form" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-xs font-medium text-gray-500 mb-1 uppercase">Origen</label><select
+                            id="transfer-from"
+                            class="w-full rounded-lg border-gray-300 border p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                            required></select></div>
+                    <div class="flex items-end justify-center pb-2"><i data-lucide="arrow-right"
+                            class="text-gray-400"></i></div>
+                    <div><label class="block text-xs font-medium text-gray-500 mb-1 uppercase">Destino</label><select
+                            id="transfer-to"
+                            class="w-full rounded-lg border-gray-300 border p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                            required></select></div>
+                </div>
+                <div><label class="block text-sm font-medium text-gray-700 mb-1">Monto a transferir</label>
+                    <div class="relative"><span
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span><input type="number"
+                            id="transfer-amount" min="1" step="0.01"
+                            class="w-full rounded-lg border-gray-300 border p-2.5 pl-7 focus:ring-2 focus:ring-blue-500 focus:outline-none text-lg font-semibold"
+                            placeholder="0.00" required></div>
+                </div>
+                <div class="bg-blue-50 p-3 rounded-lg flex items-start gap-2 text-sm text-blue-700"><i
+                        data-lucide="info" class="h-4 w-4 mt-0.5 flex-shrink-0"></i>
+                    <p>La transferencia se registrará como un gasto en la cuenta de origen y un ingreso en la
+                        cuenta
+                        de destino.</p>
+                </div>
+                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-100"><button type="button"
+                        onclick="closeTransferModal()"
+                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">Cancelar</button><button
+                        type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Confirmar
+                        Transferencia</button></div>
+            </form>
+        </div>
+    </div>
+    <!-- Edit Account Modal -->
+    <div id="edit-account-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-900">Editar Nombre de Cuenta</h3><button
+                    onclick="closeEditAccountModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x"
+                        class="h-5 w-5"></i></button>
+            </div>
+            <form id="edit-account-form" class="space-y-6"><input type="hidden" id="edit-account-id">
+                <div><label class="block text-sm font-medium text-gray-700 mb-2">Nombre de la
+                        cuenta</label><input type="text" id="edit-account-name"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all"
+                        placeholder="Nombre de la cuenta" required></div>
+                <div class="flex justify-end gap-3 pt-2"><button type="button" onclick="closeEditAccountModal()"
+                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">Cancelar
+                    </button><button type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Guardar
+                        Cambios </button></div>
+            </form>
+        </div>
+    </div>
+    <!-- New Account Modal -->
+    <div id="new-account-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-900">Nueva Cuenta</h3><button onclick="closeNewAccountModal()"
+                    class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="h-5 w-5"></i></button>
+            </div>
+            <form id="new-account-form" class="space-y-6">
+                <div><label class="block text-sm font-medium text-gray-700 mb-2">Nombre de la
+                        cuenta</label><input type="text" id="new-account-name"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:outline-none transition-all"
+                        placeholder="Ej: Cuenta de nómina, Efectivo casa..." required></div>
+                <div><label class="block text-sm font-medium text-gray-700 mb-2">Tipo de cuenta</label>
+                    <div class="grid grid-cols-5 gap-2"><label class="cursor-pointer"><input type="radio"
+                                name="account-type" value="cash" class="peer sr-only" checked>
+                            <div
+                                class="flex flex-col items-center justify-center p-2 rounded-lg border border-gray-200 peer-checked:border-pink-500 peer-checked:bg-pink-50 transition-all hover:bg-gray-50">
+                                <i data-lucide="wallet"
+                                    class="h-5 w-5 mb-1 text-gray-500 peer-checked:text-pink-600"></i><span
+                                    class="text-[10px] font-medium text-gray-600 peer-checked:text-pink-700">Efectivo</span>
+                            </div>
+                        </label><label class="cursor-pointer"><input type="radio" name="account-type" value="debit"
+                                class="peer sr-only">
+                            <div
+                                class="flex flex-col items-center justify-center p-2 rounded-lg border border-gray-200 peer-checked:border-pink-500 peer-checked:bg-pink-50 transition-all hover:bg-gray-50">
+                                <i data-lucide="landmark"
+                                    class="h-5 w-5 mb-1 text-gray-500 peer-checked:text-pink-600"></i><span
+                                    class="text-[10px] font-medium text-gray-600 peer-checked:text-pink-700">Banco</span>
+                            </div>
+                        </label><label class="cursor-pointer"><input type="radio" name="account-type" value="savings"
+                                class="peer sr-only">
+                            <div
+                                class="flex flex-col items-center justify-center p-2 rounded-lg border border-gray-200 peer-checked:border-pink-500 peer-checked:bg-pink-50 transition-all hover:bg-gray-50">
+                                <i data-lucide="piggy-bank"
+                                    class="h-5 w-5 mb-1 text-gray-500 peer-checked:text-pink-600"></i><span
+                                    class="text-[10px] font-medium text-gray-600 peer-checked:text-pink-700">Ahorro</span>
+                            </div>
+                        </label><label class="cursor-pointer"><input type="radio" name="account-type" value="credit"
+                                class="peer sr-only">
+                            <div
+                                class="flex flex-col items-center justify-center p-2 rounded-lg border border-gray-200 peer-checked:border-pink-500 peer-checked:bg-pink-50 transition-all hover:bg-gray-50">
+                                <i data-lucide="credit-card"
+                                    class="h-5 w-5 mb-1 text-gray-500 peer-checked:text-pink-600"></i><span
+                                    class="text-[10px] font-medium text-gray-600 peer-checked:text-pink-700">Tarjeta</span>
+                            </div>
+                        </label><label class="cursor-pointer"><input type="radio" name="account-type" value="other"
+                                class="peer sr-only">
+                            <div
+                                class="flex flex-col items-center justify-center p-2 rounded-lg border border-gray-200 peer-checked:border-pink-500 peer-checked:bg-pink-50 transition-all hover:bg-gray-50">
+                                <i data-lucide="circle-dollar-sign"
+                                    class="h-5 w-5 mb-1 text-gray-500 peer-checked:text-pink-600"></i><span
+                                    class="text-[10px] font-medium text-gray-600 peer-checked:text-pink-700">Otro</span>
+                            </div>
+                        </label></div>
+                </div>
+                <div><label class="block text-sm font-medium text-gray-700 mb-2">Saldo inicial</label>
+                    <div class="relative"><span
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span><input type="number"
+                            id="new-account-balance" min="0" step="0.01"
+                            class="w-full rounded-xl border-gray-200 border p-3 pl-7 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:outline-none transition-all"
+                            placeholder="0.00" required></div>
+                </div>
+                <div class="flex justify-end gap-3 pt-2"><button type="button" onclick="closeNewAccountModal()"
+                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">Cancelar
+                    </button><button type="submit"
+                        class="px-6 py-2 bg-[#E91E63] text-white rounded-lg hover:bg-pink-600 font-medium shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Crear
+                        cuenta </button></div>
+            </form>
+        </div>
+    </div>
+    <!-- Add Movement Modal -->
+    <div id="add-movement-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-900">Agregar Movimiento</h3><button
+                    onclick="closeAddMovementModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x"
+                        class="h-5 w-5"></i></button>
+            </div>
+            <form id="add-movement-form" class="space-y-4">
+                <!-- Type Toggle -->
+                <div class="grid grid-cols-2 gap-2 p-1 bg-gray-100 rounded-xl"><button type="button"
+                        onclick="setMovementType('expense')" id="btn-type-expense"
+                        class="py-2 text-sm font-medium rounded-lg transition-all bg-white text-red-600 shadow-sm">Gasto
+                    </button><button type="button" onclick="setMovementType('income')" id="btn-type-income"
+                        class="py-2 text-sm font-medium rounded-lg transition-all text-gray-500 hover:text-gray-900">Ingreso
+                    </button></div><input type="hidden" id="movement-type" value="expense">
+                <!-- Account -->
+                <div><label class="block text-xs font-medium text-gray-500 mb-1">Cuenta</label><select
+                        id="movement-account"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900"
+                        required>
+                        <!-- Populated by JS -->
+                    </select></div>
+                <!-- Category (Dynamic) -->
+                <div id="category-container"><label
+                        class="block text-xs font-medium text-gray-500 mb-1">Categoría</label><select
+                        id="movement-category"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900">
+                        <!-- Populated by JS -->
+                    </select></div>
+                <!-- Amount -->
+                <div><label class="block text-xs font-medium text-gray-500 mb-1">Monto</label>
+                    <div class="relative"><span class="absolute left-3 top-3 text-gray-400">$</span><input type="number"
+                            id="movement-amount" step="0.01" min="0.01"
+                            class="w-full rounded-xl border-gray-200 border p-3 pl-7 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
+                            placeholder="0.00" required></div>
+                </div>
+                <!-- Description -->
+                <div><label class="block text-xs font-medium text-gray-500 mb-1">Descripción</label><input type="text"
+                        id="movement-desc"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
+                        placeholder="Ej: Tacos, Nómina, Regalo..." required>
+                </div>
+                <!-- Date -->
+                <div><label class="block text-xs font-medium text-gray-500 mb-1">Fecha</label><input type="date"
+                        id="movement-date"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900">
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-2">
+                    <button type="button" onclick="closeAddMovementModal()"
+                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors text-sm">Cancelar
+                    </button><button type="submit"
+                        class="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 font-medium shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 text-sm">Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Receipt Viewer Modal -->
+    <div id="receipt-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center z-50 p-4">
+        <div class="relative max-w-3xl max-h-full"><button onclick="closeReceiptModal()"
+                class="absolute -top-10 right-0 text-white hover:text-gray-300"><i data-lucide="x"
+                    class="h-8 w-8"></i></button><img id="receipt-image" src="" alt="Recibo"
+                class="max-w-full max-h-[80vh] rounded-lg shadow-2xl"></div>
+    </div>
+    <!-- Camera Modal -->
+    <div id="camera-modal"
+        class="fixed inset-0 bg-black bg-opacity-90 hidden flex-col items-center justify-center z-50">
+        <div class="relative w-full max-w-md bg-black rounded-xl overflow-hidden"><video id="camera-feed" autoplay
+                playsinline class="w-full h-auto object-cover"></video><canvas id="camera-canvas"
+                class="hidden"></canvas>
+            <!-- Camera Controls -->
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-4 z-10">
+                <button onclick="closeCameraModal()"
+                    class="p-3 bg-gray-800 text-white rounded-full hover:bg-gray-700"><i data-lucide="x"
+                        class="h-6 w-6"></i></button><button onclick="takePhoto()"
+                    class="p-4 bg-white rounded-full border-4 border-gray-300 hover:border-rose-500 transition-all transform active:scale-95">
+                    <div class="w-4 h-4 bg-rose-500 rounded-full"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Range Modal -->
+    <div id="date-range-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Seleccionar Rango</h3>
+                <button onclick="closeDateRangeModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+
+            <form onsubmit="applyCustomRange(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Inicio</label>
+                    <input type="date" id="range-start" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Fin</label>
+                    <input type="date" id="range-end" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900">
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 shadow-lg transition-all transform hover:-translate-y-0.5">
+                    Aplicar Filtro
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- Hidden File Inputs --><input type="file" id="upload-input" accept="image/*" class="hidden"><input type="file"
+        id="camera-input" accept="image/*" capture="environment" class="hidden">
+    <!-- Scripts -->
+    <script src="/static/js/finance-core.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            // Subscribe & Init
+            FinanceCore.subscribe(updateIncomeUI);
+            setTimeout(() => updateIncomeUI(FinanceCore.data), 100);
+        });
+
+        let activeTransactionId = null;
+        let videoStream = null;
+        let currentPeriodFilter = 'month';
+        let customDateRange = { start: null, end: null };
+
+        // --- Period Filter Logic ---
+        function togglePeriodDropdown() {
+            const dropdown = document.getElementById('period-menu-dropdown');
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+                setTimeout(() => {
+                    dropdown.classList.remove('opacity-0', 'scale-95');
+                }, 10);
+            } else {
+                dropdown.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    dropdown.classList.add('hidden');
+                }, 100);
+            }
+        }
+
+        function selectPeriod(period) {
+            if (period === 'range') {
+                // Trigger Modal
+                togglePeriodDropdown();
+                openDateRangeModal();
+                return;
+            }
+
+            currentPeriodFilter = period;
+            const label = document.getElementById('period-label');
+
+            if (period === 'week') label.textContent = 'Esta Semana';
+            if (period === 'month') label.textContent = 'Este Mes';
+            if (period === 'year') label.textContent = 'Este Año';
+
+            // Close Dropdown
+            togglePeriodDropdown();
+
+            // Refresh View
+            const currentDetailId = FinanceCore.getAccounts().find(a => a.name === document.getElementById('detail-account-name').textContent)?.id;
+            if (currentDetailId) showAccountDetails(currentDetailId);
+        }
+
+        function openDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // Set default dates if empty
+            if (!document.getElementById('range-start').value) {
+                const now = new Date();
+                const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+                document.getElementById('range-start').valueAsDate = firstDay;
+                document.getElementById('range-end').valueAsDate = now;
+            }
+        }
+
+        function closeDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function applyCustomRange(e) {
+            e.preventDefault();
+            const start = document.getElementById('range-start').value;
+            const end = document.getElementById('range-end').value;
+
+            if (start && end) {
+                customDateRange = { start: new Date(start), end: new Date(end) };
+                currentPeriodFilter = 'range';
+                document.getElementById('period-label').innerText = `Rango: ${start.substring(5)} / ${end.substring(5)}`;
+
+                closeDateRangeModal();
+                // Refresh View
+                const currentDetailId = FinanceCore.getAccounts().find(a => a.name === document.getElementById('detail-account-name').textContent)?.id;
+                if (currentDetailId) showAccountDetails(currentDetailId);
+            }
+        }
+
+        function filterTransactionsByPeriod(transactions, period) {
+            const now = new Date();
+            return transactions.filter(t => {
+                const tDate = new Date(t.date + 'T00:00:00'); // Force local time
+
+                if (period === 'week') {
+                    const firstDay = new Date(now.setDate(now.getDate() - now.getDay()));
+                    const lastDay = new Date(now.setDate(now.getDate() - now.getDay() + 6));
+                    return tDate >= firstDay && tDate <= lastDay;
+                }
+                if (period === 'month') {
+                    return tDate.getMonth() === new Date().getMonth() && tDate.getFullYear() === new Date().getFullYear();
+                }
+                if (period === 'year') {
+                    return tDate.getFullYear() === new Date().getFullYear();
+                }
+                if (period === 'range' && customDateRange.start && customDateRange.end) {
+                    return tDate >= customDateRange.start && tDate <= customDateRange.end;
+                }
+                return true;
+            });
+        }
+
+
+        // --- Income Logic ---
+        function updateIncomeUI(data) {
+            // 1. Totals
+            const totalBalance = FinanceCore.getTotalBalance();
+            const totalIncome = data.transactions.filter(t => t.type === 'income' && t.category !== 'Transferencia').reduce((sum, t) => sum + t.amount, 0);
+            const totalExpenses = data.transactions.filter(t => t.type === 'expense' && t.category !== 'Transferencia').reduce((sum, t) => sum + t.amount, 0);
+
+            document.getElementById('total-balance').textContent = FinanceCore.formatCurrency(totalBalance);
+            document.getElementById('total-income').textContent = '+' + FinanceCore.formatCurrency(totalIncome);
+            document.getElementById('total-expenses').textContent = '-' + FinanceCore.formatCurrency(totalExpenses);
+
+            // 2. Accounts List
+            const accountsContainer = document.getElementById('accounts-list');
+
+            if (data.accounts.length === 0) {
+                accountsContainer.innerHTML = ` <h2 class="font-semibold text-gray-900">Mis Cuentas</h2><div class="text-center py-12 bg-white border border-gray-200 rounded-xl"><i data-lucide="wallet" class="h-12 w-12 mx-auto text-gray-400 mb-3"></i><p class="text-gray-500 mb-4">No tienes cuentas registradas</p><button onclick="openNewAccountModal()" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 text-white hover:bg-gray-800 h-9 px-3"><i data-lucide="plus" class="h-4 w-4 mr-2"></i>Crear primera cuenta </button></div>`;
+            }
+
+            else {
+                accountsContainer.innerHTML = ` <h2 class="font-semibold text-gray-900">Mis Cuentas</h2>` + data.accounts.map(acc => ` <div class="bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between shadow-sm" > <div class="flex items-center gap-4" > <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: ${acc.color}20" > <i data-lucide="credit-card" class="h-6 w-6" style="color: ${acc.color}" ></i> </div> <div> <h3 class="font-bold text-gray-900" >${acc.name
+                    }
+
+                    </h3> <p class="text-sm text-gray-500 capitalize" >${acc.type === 'debit' ? 'Débito' : acc.type === 'credit' ? 'Crédito' : 'Efectivo'
+                    }
+
+                    </p> </div> </div> <div class="text-right" > <p class="font-bold text-lg text-gray-900" >${FinanceCore.formatCurrency(acc.balance)
+                    }
+
+                    </p> <button onclick="showAccountDetails('${acc.id}')" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium" >Ver movimientos</button> </div> </div> `).join('');
+            }
+
+            lucide.createIcons();
+        }
+
+        // --- Account Details Logic ---
+        function showAccountDetails(accountId) {
+            const account = FinanceCore.getAccounts().find(a => a.id === accountId);
+            if (!account) return;
+
+            // Hide Dashboard, Show Details
+            document.getElementById('main-dashboard').classList.add('hidden');
+            document.getElementById('account-details').classList.remove('hidden');
+
+            // Populate Header
+            document.getElementById('detail-account-name').textContent = account.name;
+            document.getElementById('detail-account-type').textContent = account.type === 'debit' ? 'Débito' : account.type === 'credit' ? 'Crédito' : 'Efectivo';
+
+            // Calculate Totals for this Account
+            let transactions = FinanceCore.getTransactions().filter(t => t.accountId === accountId);
+
+            // Apply Period Filter
+            transactions = filterTransactionsByPeriod(transactions, currentPeriodFilter);
+
+            const income = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            const expenses = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+
+            document.getElementById('detail-income').textContent = '+' + FinanceCore.formatCurrency(income);
+            document.getElementById('detail-expenses').textContent = '-' + FinanceCore.formatCurrency(expenses);
+            document.getElementById('detail-balance').textContent = FinanceCore.formatCurrency(account.balance);
+
+            // Populate Movements List
+            const list = document.getElementById('detail-movements-list');
+
+            if (transactions.length === 0) {
+                list.innerHTML = `<p class="text-center text-gray-500 py-8">No hay movimientos registrados en esta cuenta.</p>`;
+            }
+
+            else {
+                list.innerHTML = transactions.map(t => {
+                    const isIncome = t.type === 'income';
+                    const icon = isIncome ? 'arrow-down-left' : 'arrow-up-right';
+                    const colorClass = isIncome ? 'text-green-600' : 'text-red-600';
+                    const bgClass = isIncome ? 'bg-green-100' : 'bg-red-100';
+                    const sign = isIncome ? '+' : '-';
+
+                    return ` <div class="bg-white border border-gray-100 rounded-xl p-4 flex items-center justify-between shadow-sm group" > <div class="flex items-center gap-4" > <div class="w-10 h-10 rounded-full ${bgClass} flex items-center justify-center" > <i data-lucide="${icon}" class="h-5 w-5 ${colorClass}" ></i> </div> <div> <h4 class="font-bold text-gray-900 text-sm" >${t.description || t.category
+                        }
+
+                        </h4> <p class="text-xs text-gray-500" >${new Date(t.date).toLocaleDateString()
+                        }
+
+                        </p> </div> </div> <div class="flex items-center gap-4" > <p class="font-bold ${colorClass}" >${sign
+                        }
+
+                        ${FinanceCore.formatCurrency(t.amount)
+                        }
+
+                        </p>
+<!-- Document Buttons -->
+${t.document ?
+                            `<button onclick="viewReceipt('${t.id}')" class="text-blue-500 hover:text-blue-700 transition-all" title="Ver Documento"><i data-lucide="image" class="h-4 w-4"></i></button>` :
+                            `<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+        <button onclick="triggerCamera('${t.id}')" class="text-gray-300 hover:text-blue-500" title="Tomar Foto"><i data-lucide="camera" class="h-4 w-4"></i></button>
+        <button onclick="triggerUpload('${t.id}')" class="text-gray-300 hover:text-purple-500" title="Subir Archivo"><i data-lucide="upload" class="h-4 w-4"></i></button>
+    </div>`
+                        }
+                                                        }
+
+                        <button onclick="deleteMovement('${t.id}')" class="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all" title="Eliminar" > <i data-lucide="trash-2" class="h-4 w-4" ></i> </button> </div> </div> `;
+                }).join('');
+            }
+
+            lucide.createIcons();
+        }
+
+        // --- Edit Account Logic ---
+        const editAccountModal = document.getElementById('edit-account-modal');
+        const editAccountForm = document.getElementById('edit-account-form');
+
+        function editAccountName() {
+            const currentName = document.getElementById('detail-account-name').textContent;
+            const account = FinanceCore.getAccounts().find(a => a.name === currentName);
+
+            if (!account) return;
+
+            document.getElementById('edit-account-id').value = account.id;
+            document.getElementById('edit-account-name').value = account.name;
+
+            editAccountModal.classList.remove('hidden');
+            editAccountModal.classList.add('flex');
+            lucide.createIcons();
+            document.getElementById('edit-account-name').focus();
+        }
+
+        function closeEditAccountModal() {
+            editAccountModal.classList.add('hidden');
+            editAccountModal.classList.remove('flex');
+            editAccountForm.reset();
+        }
+
+        editAccountForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-account-id').value;
+            const newName = document.getElementById('edit-account-name').value;
+
+            if (id && newName) {
+                FinanceCore.updateAccount(id, {
+                    name: newName
+                });
+                closeEditAccountModal();
+                // Refresh details
+                showAccountDetails(id);
+            }
+        });
+
+        function deleteMovement(id) {
+            if (confirm("¿Estás seguro de eliminar este movimiento?")) {
+                FinanceCore.deleteTransaction(id);
+                // Refresh details view
+                const currentDetailId = FinanceCore.getAccounts().find(a => a.name === document.getElementById('detail-account-name').textContent)?.id;
+                if (currentDetailId) showAccountDetails(currentDetailId);
+            }
+        }
+
+        function showMainDashboard() {
+            document.getElementById('account-details').classList.add('hidden');
+            document.getElementById('main-dashboard').classList.remove('hidden');
+        }
+
+        // --- New Account Logic ---
+        const newAccountModal = document.getElementById('new-account-modal');
+        const newAccountForm = document.getElementById('new-account-form');
+
+        function openNewAccountModal() {
+            newAccountModal.classList.remove('hidden');
+            newAccountModal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeNewAccountModal() {
+            newAccountModal.classList.add('hidden');
+            newAccountModal.classList.remove('flex');
+            newAccountForm.reset();
+        }
+
+        newAccountForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('new-account-name').value;
+            const type = document.querySelector('input[name="account-type"]:checked').value;
+            const balance = document.getElementById('new-account-balance').value;
+
+            if (name && balance) {
+                FinanceCore.addAccount(name, type, parseFloat(balance));
+                closeNewAccountModal();
+                // UI updates automatically via subscription
+            }
+        });
+
+        // --- Transfer Logic ---
+        const transferModal = document.getElementById('transfer-modal');
+        const transferForm = document.getElementById('transfer-form');
+        const fromSelect = document.getElementById('transfer-from');
+        const toSelect = document.getElementById('transfer-to');
+
+        function openTransferModal() {
+            // Populate Selects
+            const accounts = FinanceCore.getAccounts();
+
+            if (accounts.length < 2) {
+                alert("Necesitas al menos 2 cuentas para realizar una transferencia.");
+                return;
+            }
+
+            fromSelect.innerHTML = accounts.map(acc => `<option value="${acc.id}" >${acc.name
+                }
+
+                (${FinanceCore.formatCurrency(acc.balance)
+                })</option>`).join('');
+
+            // Initial population of 'To' select (exclude selected 'From')
+            updateToSelect();
+
+            transferModal.classList.remove('hidden');
+            transferModal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeTransferModal() {
+            transferModal.classList.add('hidden');
+            transferModal.classList.remove('flex');
+            transferForm.reset();
+        }
+
+        function updateToSelect() {
+            const accounts = FinanceCore.getAccounts();
+            const selectedFrom = fromSelect.value;
+
+            toSelect.innerHTML = accounts.filter(acc => acc.id !== selectedFrom).map(acc => `<option value="${acc.id}" >${acc.name
+                }
+
+                </option>`).join('');
+        }
+
+        fromSelect.addEventListener('change', updateToSelect);
+
+        transferForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fromId = fromSelect.value;
+            const toId = toSelect.value;
+            const amount = document.getElementById('transfer-amount').value;
+
+            if (FinanceCore.transfer(fromId, toId, amount)) {
+                closeTransferModal();
+                // UI updates automatically via subscription
+            }
+
+            else {
+                alert("Error en la transferencia. Verifica que tengas saldo suficiente.");
+            }
+        });
+
+        // --- Add Movement Logic ---
+        const movementModal = document.getElementById('add-movement-modal');
+        const movementForm = document.getElementById('add-movement-form');
+        let activeAccountId = null; // To pre-select account if opened from details
+
+        function openAddMovementModal(preSelectedAccountId = null) {
+            activeAccountId = preSelectedAccountId;
+
+            // Set Date to Today
+            document.getElementById('movement-date').valueAsDate = new Date();
+
+            // Populate Accounts
+            const accountSelect = document.getElementById('movement-account');
+            const accounts = FinanceCore.getAccounts();
+
+            if (accounts.length === 0) {
+                alert("Primero debes crear una cuenta.");
+                return;
+            }
+
+            accountSelect.innerHTML = accounts.map(acc => `<option value="${acc.id}"${acc.id === activeAccountId ? 'selected' : ''
+                }
+
+                >${acc.name
+                }
+
+                (${FinanceCore.formatCurrency(acc.balance)
+                })</option>`).join('');
+
+            // Populate Categories
+            updateCategorySelect();
+
+            movementModal.classList.remove('hidden');
+            movementModal.classList.add('flex');
+            document.getElementById('movement-amount').focus();
+        }
+
+        function closeAddMovementModal() {
+            movementModal.classList.add('hidden');
+            movementModal.classList.remove('flex');
+            movementForm.reset();
+            setMovementType('expense'); // Reset to default
+        }
+
+        function setMovementType(type) {
+            document.getElementById('movement-type').value = type;
+            const btnExpense = document.getElementById('btn-type-expense');
+            const btnIncome = document.getElementById('btn-type-income');
+            const categoryContainer = document.getElementById('category-container');
+
+            if (type === 'expense') {
+                btnExpense.className = "py-2 text-sm font-medium rounded-lg transition-all bg-white text-red-600 shadow-sm";
+                btnIncome.className = "py-2 text-sm font-medium rounded-lg transition-all text-gray-500 hover:text-gray-900";
+                categoryContainer.classList.remove('hidden');
+            }
+
+            else {
+                btnExpense.className = "py-2 text-sm font-medium rounded-lg transition-all text-gray-500 hover:text-gray-900";
+                btnIncome.className = "py-2 text-sm font-medium rounded-lg transition-all bg-white text-green-600 shadow-sm";
+                categoryContainer.classList.add('hidden');
+            }
+        }
+
+        function updateCategorySelect() {
+            const categorySelect = document.getElementById('movement-category');
+
+            categorySelect.innerHTML = FinanceCore.data.categories.map(cat => `<option value="${cat.name}" >${cat.name
+                }
+
+                </option>`).join('');
+        }
+
+        movementForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const type = document.getElementById('movement-type').value;
+            const accountId = document.getElementById('movement-account').value;
+            const amount = document.getElementById('movement-amount').value;
+            const description = document.getElementById('movement-desc').value;
+            const date = document.getElementById('movement-date').value;
+
+            let category = 'Ingreso';
+
+            if (type === 'expense') {
+                category = document.getElementById('movement-category').value;
+            }
+
+            if (accountId && amount && description) {
+                FinanceCore.addTransaction(type, amount, category, description, accountId);
+                closeAddMovementModal();
+
+                // If in details view, refresh it
+                if (!document.getElementById('account-details').classList.contains('hidden')) {
+                    const currentDetailId = FinanceCore.getAccounts().find(a => a.name === document.getElementById('detail-account-name').textContent)?.id;
+                    if (currentDetailId) showAccountDetails(currentDetailId);
+                }
+            }
+        });
+
+        // --- Camera Logic ---
+        async function triggerCamera(id) {
+            activeTransactionId = id;
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-feed');
+
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: 'environment'
+                    }
+                });
+                video.srcObject = videoStream;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                lucide.createIcons();
+            }
+
+            catch (err) {
+                console.error("Error accessing camera:", err);
+                // Fallback to native input
+                document.getElementById('camera-input').click();
+            }
+        }
+
+        function closeCameraModal() {
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-feed');
+
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+
+            video.srcObject = null;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeTransactionId = null;
+        }
+
+        function takePhoto() {
+            const video = document.getElementById('camera-feed');
+            const canvas = document.getElementById('camera-canvas');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageDataUrl = canvas.toDataURL('image/jpeg');
+
+            FinanceCore.attachTransactionDocument(activeTransactionId, imageDataUrl);
+            closeCameraModal();
+            // Refresh details view
+            const currentDetailId = FinanceCore.getAccounts().find(a => a.name === document.getElementById('detail-account-name').textContent)?.id;
+            if (currentDetailId) showAccountDetails(currentDetailId);
+        }
+
+        // --- Upload Logic ---
+        function triggerUpload(id) {
+            activeTransactionId = id;
+            document.getElementById('upload-input').click();
+        }
+
+        function handleFileSelect(e) {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    FinanceCore.attachTransactionDocument(activeTransactionId, e.target.result);
+                    activeTransactionId = null;
+                    // Refresh details view
+                    const currentDetailId = FinanceCore.getAccounts().find(a => a.name === document.getElementById('detail-account-name').textContent)?.id;
+                    if (currentDetailId) showAccountDetails(currentDetailId);
+                }
+
+                    ;
+                reader.readAsDataURL(this.files[0]);
+            }
+        }
+
+        document.getElementById('camera-input').addEventListener('change', handleFileSelect);
+        document.getElementById('upload-input').addEventListener('change', handleFileSelect);
+
+        // --- Receipt Viewer ---
+        function viewReceipt(id) {
+            const transaction = FinanceCore.getTransactions().find(t => t.id === id);
+
+            if (transaction && transaction.document) {
+                document.getElementById('receipt-image').src = transaction.document;
+                const modal = document.getElementById('receipt-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeReceiptModal() {
+            const modal = document.getElementById('receipt-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Bind Buttons
+
+
+    </script>
+    <script src="/static/js/finance-ai.js"></script>
+    <script>
+        // Voice Logic
+        function toggleVoiceAssistant() {
+            // Check both buttons (main view and detail view)
+            const btnMain = document.getElementById('voice-assistant-btn');
+            const btnDetail = document.getElementById('voice-assistant-btn-detail');
+
+            // Use whichever is currently visible or default to one if logic requires
+            // For animation purposes, we might want to animate BOTH if they exist
+            const btns = [btnMain, btnDetail].filter(b => b);
+
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Tu navegador no soporta reconocimiento de voz.");
+                return;
+            }
+            const recognition = new webkitSpeechRecognition();
+            recognition.lang = 'es-MX';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                btns.forEach(btn => {
+                    btn.classList.remove('from-rose-400', 'to-rose-500');
+                    btn.classList.add('bg-rose-600', 'animate-pulse', 'ring-4', 'ring-rose-200');
+                });
+            };
+
+            recognition.onend = () => {
+                btns.forEach(btn => {
+                    btn.classList.remove('bg-rose-600', 'animate-pulse', 'ring-4', 'ring-rose-200');
+                    btn.classList.add('from-rose-400', 'to-rose-500');
+                });
+            };
+
+            // ... rest of logic ...
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                if (typeof FinanceAI !== 'undefined') {
+                    const result = FinanceAI.parse(transcript);
+                    const msg = result.type === 'success' ? result.message : "No entendí ese comando";
+                    // Simple Toast
+                    const toast = document.createElement('div');
+                    toast.className = 'fixed bottom-4 right-4 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-50 text-sm animate-fade-in';
+                    toast.innerText = msg;
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 4000);
+                }
+            };
+            recognition.start();
+        }
+    </script>
+</body>
+
+</html>

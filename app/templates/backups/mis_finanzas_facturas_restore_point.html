@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facturas - Mis Finanzas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-display {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+    {% include 'sidebar.html' %}
+
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-5xl mx-auto">
+                <!-- Top Header Section (Dashboard Style) -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+                    <div class="w-full md:w-auto flex flex-col gap-4">
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium mb-1 capitalize" id="current-date"></p>
+                            <h1 class="font-display text-3xl font-bold text-gray-900 leading-none">Gastos
+                            </h1>
+                            <p class="text-gray-500 font-medium mt-1">Gestiona tus compromisos de pago</p>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <!-- Period Selector Dropdown -->
+                            <div class="relative inline-block text-left w-fit">
+                                <div>
+                                    <button type="button" onclick="togglePeriodDropdown()"
+                                        class="inline-flex items-center gap-x-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all min-w-[140px] justify-between"
+                                        id="period-menu-button" aria-expanded="true" aria-haspopup="true">
+                                        <span id="period-label">Este Mes</span>
+                                        <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                                    </button>
+                                </div>
+
+                                <div class="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-xl bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden transform transition-all opacity-0 scale-95"
+                                    role="menu" aria-orientation="vertical" aria-labelledby="period-menu-button"
+                                    tabindex="-1" id="period-menu-dropdown">
+                                    <div class="p-1 space-y-0.5" role="none">
+                                        <button onclick="selectPeriod('week')"
+                                            class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                            role="menuitem">
+                                            <i data-lucide="calendar-days" class="w-4 h-4 mr-2 text-gray-400"></i>Esta
+                                            Semana
+                                        </button>
+                                        <button onclick="selectPeriod('month')"
+                                            class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                            role="menuitem">
+                                            <i data-lucide="calendar" class="w-4 h-4 mr-2 text-gray-400"></i>Este Mes
+                                        </button>
+                                        <button onclick="selectPeriod('year')"
+                                            class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                            role="menuitem">
+                                            <i data-lucide="calendar-range" class="w-4 h-4 mr-2 text-gray-400"></i>Este
+                                            Año
+                                        </button>
+                                        <div class="border-t border-gray-100 my-1"></div>
+                                        <button onclick="selectPeriod('range')"
+                                            class="flex items-center w-full px-3 py-2 text-sm text-rose-600 font-medium rounded-lg hover:bg-rose-50 transition-colors"
+                                            role="menuitem">
+                                            <i data-lucide="sliders-horizontal"
+                                                class="w-4 h-4 mr-2 text-rose-500"></i>Rango
+                                            Personalizado...
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- New Invoice Button -->
+                            <button onclick="openAddBillModal()"
+                                class="inline-flex items-center justify-center rounded-xl text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-rose-600 text-white hover:bg-rose-700 h-10 px-4 shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+                                <i data-lucide="plus" class="h-5 w-5 mr-2"></i>Nueva Factura
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Settings & Voice -->
+                    <div class="flex items-center gap-6">
+                        <button onclick="openManageAccountsModal()"
+                            class="bg-white p-3 rounded-full shadow-sm border border-gray-100 text-gray-400 hover:text-gray-600 hover:shadow-md transition-all">
+                            <i data-lucide="settings" class="h-6 w-6"></i>
+                        </button>
+
+                        <!-- Voice Interaction Card -->
+                        <div
+                            class="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-col items-center justify-center text-center w-full md:w-64 transition-transform hover:scale-[1.02]">
+                            <button id="voice-assistant-btn" onclick="toggleVoiceAssistant()"
+                                class="w-16 h-16 rounded-full bg-gradient-to-br from-rose-400 to-rose-500 text-white shadow-lg shadow-rose-200 flex items-center justify-center mb-3 hover:shadow-xl hover:scale-110 active:scale-95 transition-all group">
+                                <i data-lucide="mic" class="h-8 w-8 group-hover:animate-pulse"></i>
+                            </button>
+                            <h3 class="font-serif text-gray-900 font-medium">Toca para hablar</h3>
+                            <p class="text-xs text-gray-400">Registra gastos o consultas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div
+                        class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500">Total Facturas</p>
+                            <p class="text-2xl font-bold text-gray-900" id="count-total">0</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                            <i data-lucide="file-text" class="h-5 w-5 text-gray-600"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500">Pendientes</p>
+                            <p class="text-2xl font-bold text-orange-600" id="count-pending">0</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+                            <i data-lucide="clock" class="h-5 w-5 text-orange-600"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500">Pagadas</p>
+                            <p class="text-2xl font-bold text-green-600" id="count-paid">0</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                            <i data-lucide="check-circle" class="h-5 w-5 text-green-600"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visible Spacer -->
+                <div
+                    class="w-full h-12 bg-yellow-100 rounded-xl mb-6 border border-dashed border-yellow-200 opacity-80 flex items-center justify-center">
+                    <p class="text-yellow-700 text-sm font-medium flex items-center gap-2">
+                        <i data-lucide="mic" class="h-4 w-4"></i> por voz, llenado rapido
+                    </p>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex gap-2 mb-6 bg-gray-100 p-1 rounded-lg w-fit">
+                    <button
+                        class="filter-btn inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium bg-white text-gray-900 shadow-sm transition-all"
+                        data-filter="all">Todas</button>
+                    <button
+                        class="filter-btn inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-all"
+                        data-filter="pending">Pendientes</button>
+                    <button
+                        class="filter-btn inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-all"
+                        data-filter="paid">Pagadas</button>
+                </div>
+
+                <!-- Bills List -->
+                <div id="bills-list" class="space-y-3">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Bill Modal -->
+    <div id="add-bill-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-900" id="modal-title">Agregar Factura</h3>
+                <button onclick="closeAddBillModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+            <form id="add-bill-form" class="space-y-4">
+                <input type="hidden" id="bill-id">
+
+                <!-- Name -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Nombre / Concepto</label>
+                    <input type="text" id="bill-name"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
+                        placeholder="Ej: Luz, Internet, Netflix..." required>
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Categoría</label>
+                    <select id="bill-category"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:outline-none text-gray-900">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <!-- Due Date -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Día de vencimiento</label>
+                    <select id="bill-due-day"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:outline-none text-gray-900">
+                        <!-- JS will populate days 1-31 -->
+                    </select>
+                </div>
+
+                <!-- Recurring Toggle -->
+                <div class="flex items-center justify-between pt-2">
+                    <div class="flex flex-col">
+                        <span class="text-sm font-medium text-gray-900">Gasto recurrente</span>
+                        <span class="text-xs text-gray-500">Se repite cada mes</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="bill-recurring" class="sr-only peer" checked>
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-rose-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-500">
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Amount -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Monto (estimado o fijo)</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-gray-400">$</span>
+                        <input type="number" id="bill-amount"
+                            class="w-full rounded-xl border-gray-200 border p-3 pl-7 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
+                            placeholder="0.00" step="0.01">
+                    </div>
+                </div>
+
+                <!-- Notes (Optional) -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Notas (opcional)</label>
+                    <input type="text" id="bill-notes"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
+                        placeholder="Número de cuenta, referencia...">
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-2">
+                    <button type="button" onclick="closeAddBillModal()"
+                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors text-sm">Cancelar</button>
+                    <button type="submit"
+                        class="px-6 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 font-medium shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 text-sm">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pay Bill Modal -->
+    <div id="pay-bill-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-900">Pagar Factura</h3>
+                <button onclick="closePayBillModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-sm text-gray-500 mb-1">Estás pagando:</p>
+                <h4 id="pay-bill-name" class="text-lg font-bold text-gray-900">Factura</h4>
+                <p id="pay-bill-remaining" class="text-2xl font-bold text-rose-500 mt-1">$0.00</p>
+                <p class="text-xs text-gray-400">Total original: <span id="pay-bill-total"></span></p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Monto a pagar</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-gray-400">$</span>
+                        <input type="number" id="pay-amount-input"
+                            class="w-full rounded-xl border-gray-200 border p-3 pl-7 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
+                            placeholder="0.00" step="0.01">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Selecciona la cuenta de origen</label>
+                    <select id="pay-account-select"
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:outline-none text-gray-900">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+
+                <button onclick="confirmPayBill()"
+                    class="w-full py-3 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 shadow-lg shadow-green-200 transition-all transform hover:-translate-y-0.5">Confirmar
+                    Pago</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Viewer Modal -->
+    <div id="receipt-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center z-50 p-4">
+        <div class="relative max-w-3xl max-h-full">
+            <button onclick="closeReceiptModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300">
+                <i data-lucide="x" class="h-8 w-8"></i>
+            </button>
+            <img id="receipt-image" src="" alt="Recibo" class="max-w-full max-h-[80vh] rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Camera Modal -->
+    <div id="camera-modal"
+        class="fixed inset-0 bg-black bg-opacity-90 hidden flex-col items-center justify-center z-50">
+        <div class="relative w-full max-w-md bg-black rounded-xl overflow-hidden">
+            <video id="camera-feed" autoplay playsinline class="w-full h-auto object-cover"></video>
+            <canvas id="camera-canvas" class="hidden"></canvas>
+
+            <!-- Camera Controls -->
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-4 z-10">
+                <button onclick="closeCameraModal()" class="p-3 bg-gray-800 text-white rounded-full hover:bg-gray-700">
+                    <i data-lucide="x" class="h-6 w-6"></i>
+                </button>
+                <button onclick="takePhoto()"
+                    class="p-4 bg-white rounded-full border-4 border-gray-300 hover:border-rose-500 transition-all transform active:scale-95">
+                    <div class="w-4 h-4 bg-rose-500 rounded-full"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden File Inputs -->
+    <input type="file" id="upload-input" accept="image/*" class="hidden">
+    <input type="file" id="camera-input" accept="image/*" capture="environment" class="hidden">
+
+    <!-- Date Range Modal -->
+    <div id="date-range-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Seleccionar Rango</h3>
+                <button onclick="closeDateRangeModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+
+            <form onsubmit="applyCustomRange(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Inicio</label>
+                    <input type="date" id="range-start" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:outline-none text-gray-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Fin</label>
+                    <input type="date" id="range-end" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-rose-500 focus:outline-none text-gray-900">
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3 bg-rose-600 text-white rounded-xl font-bold hover:bg-rose-700 shadow-lg transition-all transform hover:-translate-y-0.5">
+                    Aplicar Filtro
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/finance-core.js"></script>
+    <script src="/static/js/finance-ai.js"></script>
+    <script>
+        // Global State
+        let currentPeriodFilter = 'month';
+        let customDateRange = { start: null, end: null };
+        let currentFilter = 'all'; // all, pending, paid
+        let activeBillId = null; // For payment or upload
+        let videoStream = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            FinanceCore.init();
+            lucide.createIcons();
+            // Subscribe & Init
+            FinanceCore.subscribe(updateBillsUI);
+            setTimeout(() => updateBillsUI(FinanceCore.data), 100);
+
+            // Populate days
+            const daySelect = document.getElementById('bill-due-day');
+            if (daySelect) {
+                for (let i = 1; i <= 31; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `Día ${i}`;
+                    daySelect.appendChild(option);
+                }
+            }
+
+            // Set Date
+            const dateOptions = { weekday: 'long', day: 'numeric', month: 'long' };
+            const dateStr = new Date().toLocaleDateString('es-ES', dateOptions);
+            document.getElementById('current-date').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        });
+
+        // --- Period Filter Logic ---
+        function togglePeriodDropdown() {
+            const dropdown = document.getElementById('period-menu-dropdown');
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+                setTimeout(() => {
+                    dropdown.classList.remove('opacity-0', 'scale-95');
+                }, 10);
+            } else {
+                dropdown.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    dropdown.classList.add('hidden');
+                }, 100);
+            }
+        }
+
+        function selectPeriod(period) {
+            if (period === 'range') {
+                togglePeriodDropdown();
+                openDateRangeModal();
+                return;
+            }
+            currentPeriodFilter = period;
+            const label = document.getElementById('period-label');
+
+            if (period === 'week') label.textContent = 'Esta Semana';
+            if (period === 'month') label.textContent = 'Este Mes';
+            if (period === 'year') label.textContent = 'Este Año';
+
+            togglePeriodDropdown();
+            updateBillsUI(FinanceCore.data);
+        }
+
+        function openDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if (!document.getElementById('range-start').value) {
+                const now = new Date();
+                const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+                document.getElementById('range-start').valueAsDate = firstDay;
+                document.getElementById('range-end').valueAsDate = now;
+            }
+        }
+
+        function closeDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function applyCustomRange(e) {
+            e.preventDefault();
+            const start = document.getElementById('range-start').value;
+            const end = document.getElementById('range-end').value;
+
+            if (start && end) {
+                customDateRange = { start: new Date(start), end: new Date(end) };
+                currentPeriodFilter = 'range';
+                document.getElementById('period-label').innerText = `Rango: ${start.substring(5)} / ${end.substring(5)}`;
+                closeDateRangeModal();
+                updateBillsUI(FinanceCore.data);
+            }
+        }
+
+        function filterBillsByPeriod(bills, period) {
+            const now = new Date();
+            return bills.filter(b => {
+                if (!b.dueDate) return true;
+                const tDate = new Date(b.dueDate + 'T00:00:00');
+
+                if (period === 'week') {
+                    const firstDay = new Date(now);
+                    firstDay.setDate(now.getDate() - now.getDay());
+                    firstDay.setHours(0, 0, 0, 0);
+                    const lastDay = new Date(firstDay);
+                    lastDay.setDate(firstDay.getDate() + 6);
+                    lastDay.setHours(23, 59, 59, 999);
+                    return tDate >= firstDay && tDate <= lastDay;
+                }
+                if (period === 'month') {
+                    return tDate.getMonth() === now.getMonth() && tDate.getFullYear() === now.getFullYear();
+                }
+                if (period === 'year') {
+                    return tDate.getFullYear() === now.getFullYear();
+                }
+                if (period === 'range' && customDateRange.start && customDateRange.end) {
+                    return tDate >= customDateRange.start && tDate <= customDateRange.end;
+                }
+                return true;
+            });
+        }
+
+        // --- UI Update Logic (Merged) ---
+        function updateBillsUI(data) {
+            // 1. Filter by Status first
+            let filteredBills = data.bills;
+            if (currentFilter === 'pending') filteredBills = data.bills.filter(b => !b.isPaid);
+            if (currentFilter === 'paid') filteredBills = data.bills.filter(b => b.isPaid);
+
+            // 2. Filter by Period
+            filteredBills = filterBillsByPeriod(filteredBills, currentPeriodFilter);
+
+            // 3. Update Counts (Based on filtered period)
+            const periodBills = filterBillsByPeriod(data.bills, currentPeriodFilter);
+            document.getElementById('count-total').textContent = periodBills.length;
+            document.getElementById('count-pending').textContent = periodBills.filter(b => !b.isPaid).length;
+            document.getElementById('count-paid').textContent = periodBills.filter(b => b.isPaid).length;
+
+            // 4. Render List
+            const listContainer = document.getElementById('bills-list');
+
+            if (filteredBills.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <i data-lucide="file-text" class="h-12 w-12 mx-auto mb-3 opacity-50"></i>
+                        <p>No hay facturas en este periodo</p>
+                    </div>`;
+            } else {
+                listContainer.innerHTML = filteredBills.map(bill => {
+                    const paidAmount = bill.paidAmount || 0;
+                    const remaining = bill.amount - paidAmount;
+                    const progress = Math.min((paidAmount / bill.amount) * 100, 100);
+
+                    return `
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full ${bill.isPaid ? 'bg-green-100' : 'bg-orange-100'} flex items-center justify-center">
+                                    <i data-lucide="${bill.isPaid ? 'check-circle-2' : 'clock'}" class="h-5 w-5 ${bill.isPaid ? 'text-green-600' : 'text-orange-600'}"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900">${bill.name}</h3>
+                                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                                        <span>Vence: ${bill.dueDate}</span>
+                                        ${bill.recurring ? '<span class="text-purple-500 flex items-center gap-1"><i data-lucide="repeat" class="h-3 w-3"></i></span>' : ''}
+                                    </div>
+                                    ${bill.notes ? `<p class="text-xs text-gray-400 mt-0.5">${bill.notes}</p>` : ''}
+                                    
+                                    <!-- Progress Bar -->
+                                    ${paidAmount > 0 && !bill.isPaid ? `
+                                        <div class="mt-2 w-32">
+                                            <div class="flex justify-between text-[10px] text-gray-500 mb-0.5">
+                                                <span>Pagado: ${FinanceCore.formatCurrency(paidAmount)}</span>
+                                            </div>
+                                            <div class="w-full bg-gray-100 rounded-full h-1.5">
+                                                <div class="bg-green-500 h-1.5 rounded-full" style="width: ${progress}%"></div>
+                                            </div>
+                                        </div>` : ''}
+                                </div>
+                            </div>
+                            <div class="text-right flex items-center gap-4">
+                                <div>
+                                    <p class="font-bold text-lg text-gray-900">${FinanceCore.formatCurrency(remaining > 0 ? remaining : 0)}</p>
+                                    <p class="text-xs text-gray-400 line-through">${remaining < bill.amount ? FinanceCore.formatCurrency(bill.amount) : ''}</p>
+                                    <p class="text-xs ${bill.isPaid ? 'text-green-600' : 'text-orange-600'} font-medium uppercase">${bill.isPaid ? 'Pagada' : 'Pendiente'}</p>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    ${bill.receipt ?
+                            `<button onclick="viewReceipt('${bill.id}')" class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" title="Ver Recibo"><i data-lucide="image" class="h-4 w-4"></i></button>` :
+                            `<div class="flex gap-1">
+                                            <button onclick="triggerCamera('${bill.id}')" class="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" title="Tomar Foto"><i data-lucide="camera" class="h-4 w-4"></i></button>
+                                            <button onclick="triggerUpload('${bill.id}')" class="p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-50 rounded-lg transition-colors" title="Subir Archivo"><i data-lucide="upload" class="h-4 w-4"></i></button>
+                                        </div>`
+                        }
+                                    <button onclick="openEditBillModal('${bill.id}')" class="p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors" title="Editar"><i data-lucide="pencil" class="h-4 w-4"></i></button>
+                                    ${!bill.isPaid ?
+                            `<button onclick="openPayBillModal('${bill.id}')" class="p-2 hover:bg-green-50 text-green-600 rounded-lg transition-colors" title="Pagar"><i data-lucide="dollar-sign" class="h-5 w-5"></i></button>` :
+                            `<button onclick="unpayBill('${bill.id}')" class="p-2 hover:bg-orange-50 text-orange-500 rounded-lg transition-colors" title="Deshacer Pago"><i data-lucide="rotate-ccw" class="h-5 w-5"></i></button>`
+                        }
+                                    <button onclick="deleteBill('${bill.id}')" class="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors" title="Eliminar"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            lucide.createIcons();
+        }
+
+        // --- Voice Logic ---
+        function toggleVoiceAssistant() {
+            const btn = document.getElementById('voice-assistant-btn');
+
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Tu navegador no soporta reconocimiento de voz.");
+                return;
+            }
+            const recognition = new webkitSpeechRecognition();
+            recognition.lang = 'es-MX';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                btn.classList.remove('from-rose-400', 'to-rose-500');
+                btn.classList.add('bg-rose-600', 'animate-pulse', 'ring-4', 'ring-rose-200');
+            };
+
+            recognition.onend = () => {
+                btn.classList.remove('bg-rose-600', 'animate-pulse', 'ring-4', 'ring-rose-200');
+                btn.classList.add('from-rose-400', 'to-rose-500');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                if (typeof FinanceAI !== 'undefined') {
+                    const result = FinanceAI.parse(transcript);
+                    const msg = result.type === 'success' ? result.message : "No entendí ese comando";
+                    // Simple Toast
+                    const toast = document.createElement('div');
+                    toast.className = 'fixed bottom-4 right-4 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-50 text-sm animate-fade-in';
+                    toast.innerText = msg;
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 4000);
+                }
+            };
+            recognition.start();
+        }
+
+        // --- CRUD / Action Logic ---
+        function deleteBill(id) {
+            if (confirm("¿Estás seguro de eliminar esta factura?")) {
+                FinanceCore.deleteBill(id);
+            }
+        }
+
+        function unpayBill(id) {
+            if (confirm("¿Deshacer TODOS los pagos de esta factura?")) {
+                FinanceCore.unpayBill(id);
+            }
+        }
+
+        // --- Payment Logic ---
+        function openPayBillModal(id) {
+            const bill = FinanceCore.data.bills.find(b => b.id === id);
+            if (!bill) return;
+
+            activeBillId = id;
+            const paid = bill.paidAmount || 0;
+            const remaining = bill.amount - paid;
+
+            document.getElementById('pay-bill-name').textContent = bill.name;
+            document.getElementById('pay-bill-remaining').textContent = FinanceCore.formatCurrency(remaining);
+            document.getElementById('pay-bill-total').textContent = FinanceCore.formatCurrency(bill.amount);
+            document.getElementById('pay-amount-input').value = remaining.toFixed(2);
+
+            // Populate Accounts
+            const accountSelect = document.getElementById('pay-account-select');
+            accountSelect.innerHTML = FinanceCore.data.accounts.map(acc =>
+                `<option value="${acc.id}">${acc.name} (${FinanceCore.formatCurrency(acc.balance)})</option>`
+            ).join('');
+
+            if (FinanceCore.data.accounts.length === 0) {
+                accountSelect.innerHTML = '<option disabled selected>No hay cuentas disponibles</option>';
+            }
+
+            const modal = document.getElementById('pay-bill-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('pay-amount-input').focus();
+        }
+
+        function closePayBillModal() {
+            const modal = document.getElementById('pay-bill-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeBillId = null;
+        }
+
+        function confirmPayBill() {
+            const accountId = document.getElementById('pay-account-select').value;
+            const amount = document.getElementById('pay-amount-input').value;
+            if (!accountId || !amount || parseFloat(amount) <= 0) {
+                alert("Verifica los datos de pago");
+                return;
+            }
+            if (FinanceCore.payBill(activeBillId, accountId, amount)) {
+                closePayBillModal();
+            } else {
+                alert("Error al pagar. Verifica el saldo.");
+            }
+        }
+
+        // --- Add/Edit Modal Logic ---
+        const addBillModal = document.getElementById('add-bill-modal');
+        const addBillForm = document.getElementById('add-bill-form');
+
+        function openAddBillModal() {
+            document.getElementById('modal-title').textContent = "Agregar Factura";
+            document.getElementById('bill-id').value = "";
+            addBillForm.reset();
+
+            // Populate Categories
+            const categorySelect = document.getElementById('bill-category');
+            if (categorySelect) {
+                categorySelect.innerHTML = FinanceCore.data.categories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('');
+            }
+
+            addBillModal.classList.remove('hidden');
+            addBillModal.classList.add('flex');
+            document.getElementById('bill-name').focus();
+        }
+
+        function openEditBillModal(id) {
+            const bill = FinanceCore.data.bills.find(b => b.id === id);
+            if (!bill) return;
+            document.getElementById('modal-title').textContent = "Editar Factura";
+            document.getElementById('bill-id').value = bill.id;
+            document.getElementById('bill-name').value = bill.name;
+            const categorySelect = document.getElementById('bill-category');
+            if (categorySelect) {
+                categorySelect.innerHTML = FinanceCore.data.categories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('');
+                if (bill.category) categorySelect.value = bill.category;
+            }
+
+            document.getElementById('bill-amount').value = bill.amount;
+            document.getElementById('bill-notes').value = bill.notes || '';
+            document.getElementById('bill-recurring').checked = bill.recurring;
+            if (bill.dueDate) {
+                const dayPart = parseInt(bill.dueDate.split('-')[2]);
+                document.getElementById('bill-due-day').value = dayPart;
+            }
+            addBillModal.classList.remove('hidden');
+            addBillModal.classList.add('flex');
+        }
+
+        function closeAddBillModal() {
+            addBillModal.classList.add('hidden');
+            addBillModal.classList.remove('flex');
+            addBillForm.reset();
+        }
+
+        addBillForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('bill-id').value;
+            const name = document.getElementById('bill-name').value;
+            const category = document.getElementById('bill-category').value;
+            const day = document.getElementById('bill-due-day').value;
+            const recurring = document.getElementById('bill-recurring').checked;
+            const amount = document.getElementById('bill-amount').value;
+            const notes = document.getElementById('bill-notes').value;
+
+            const today = new Date();
+            let dueDate = new Date(today.getFullYear(), today.getMonth(), day);
+
+            // Previously forwarded to next month if passed, now we keep it in current month
+            // so users can record overdue bills and see them immediately.
+            // if (dueDate < today) dueDate.setMonth(dueDate.getMonth() + 1);
+
+            const year = dueDate.getFullYear();
+            const month = String(dueDate.getMonth() + 1).padStart(2, '0');
+            const d = String(dueDate.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${d}`;
+
+            const billData = { name, category, dueDate: formattedDate, recurring, amount: parseFloat(amount || 0), notes };
+
+            if (id) FinanceCore.updateBill({ id, ...billData });
+            else FinanceCore.addBill(billData);
+
+            closeAddBillModal();
+        });
+
+        // --- Camera & Upload Logic ---
+        async function triggerCamera(id) {
+            activeBillId = id;
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-feed');
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                video.srcObject = videoStream;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } catch (err) {
+                console.error(err);
+                document.getElementById('camera-input').click();
+            }
+        }
+        function closeCameraModal() {
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-feed');
+            if (videoStream) { videoStream.getTracks().forEach(t => t.stop()); videoStream = null; }
+            video.srcObject = null;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        function takePhoto() {
+            const video = document.getElementById('camera-feed');
+            const canvas = document.getElementById('camera-canvas');
+            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            FinanceCore.attachReceipt(activeBillId, canvas.toDataURL('image/jpeg'));
+            closeCameraModal();
+        }
+        function triggerUpload(id) { activeBillId = id; document.getElementById('upload-input').click(); }
+        document.getElementById('camera-input').addEventListener('change', handleFileSelect);
+        document.getElementById('upload-input').addEventListener('change', handleFileSelect);
+        function handleFileSelect(e) {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => { FinanceCore.attachReceipt(activeBillId, e.target.result); activeBillId = null; };
+                reader.readAsDataURL(this.files[0]);
+            }
+        }
+        function viewReceipt(id) {
+            const bill = FinanceCore.data.bills.find(b => b.id === id);
+            if (bill && bill.receipt) {
+                document.getElementById('receipt-image').src = bill.receipt;
+                document.getElementById('receipt-modal').classList.remove('hidden');
+                document.getElementById('receipt-modal').classList.add('flex');
+            }
+        }
+        function closeReceiptModal() {
+            const m = document.getElementById('receipt-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        // --- Filters (Status) ---
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                currentFilter = e.target.dataset.filter;
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.className = "filter-btn inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-all";
+                });
+                e.target.className = "filter-btn inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium bg-white text-gray-900 shadow-sm transition-all";
+                updateBillsUI(FinanceCore.data);
+            });
+        });
+    </script>
+    <!-- Manage Accounts Modal -->
+    <div id="manage-accounts-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div
+            class="bg-white rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl transition-all transform scale-100">
+            <div
+                class="p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white rounded-t-2xl z-10">
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-gray-900">Gestionar Cuentas</h3>
+                    <p class="text-xs text-gray-500 mt-1">Las cuentas de mayor tienen subcuentas para organizar mejor
+                        tus gastos.</p>
+                </div>
+                <button onclick="closeManageAccountsModal()"
+                    class="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                    <i data-lucide="x" class="h-6 w-6"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-2" id="accounts-list-container">
+                <!-- Injected via JS -->
+            </div>
+
+            <div class="p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+                <button onclick="promptAddCategory()"
+                    class="w-full py-3 border-2 border-dashed border-gray-300 text-gray-500 rounded-xl font-medium hover:border-rose-300 hover:text-rose-500 hover:bg-rose-50 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="plus" class="h-4 w-4"></i> Nueva Cuenta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Manage Accounts Logic ---
+        function openManageAccountsModal() {
+            renderAccountsList();
+            const modal = document.getElementById('manage-accounts-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeManageAccountsModal() {
+            const modal = document.getElementById('manage-accounts-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function renderAccountsList() {
+            const container = document.getElementById('accounts-list-container');
+            container.innerHTML = FinanceCore.data.categories.map(cat => {
+                const subCount = cat.subcategories ? cat.subcategories.length : 0;
+                return `
+                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden transition-all hover:shadow-md group" id="cat-card-${cat.id}">
+                        <div class="p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50" onclick="toggleSubaccounts('${cat.id}')">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white" style="background-color: ${cat.color}">
+                                    <i data-lucide="${cat.icon}" class="h-5 w-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">${cat.name}</h4>
+                                    <p class="text-xs text-gray-400">${subCount} subcuentas</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="event.stopPropagation(); editCategory('${cat.id}')" class="p-2 text-gray-300 hover:text-blue-500 rounded-lg transition-colors"><i data-lucide="pencil" class="h-4 w-4"></i></button>
+                                <button onclick="event.stopPropagation(); deleteCategory('${cat.id}')" class="p-2 text-gray-300 hover:text-red-500 rounded-lg transition-colors"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+                                <i data-lucide="chevron-right" class="h-4 w-4 text-gray-300 transition-transform duration-200" id="chevron-${cat.id}"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Subaccounts Expansion -->
+                        <div class="hidden bg-gray-50 p-4 border-t border-gray-100" id="sub-${cat.id}">
+                            <div class="space-y-2 mb-3">
+                                ${(cat.subcategories || []).map((sub, idx) => `
+                                    <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-gray-200 pl-4">
+                                        <span class="text-sm text-gray-700">${sub}</span>
+                                        <button onclick="deleteSubcategory('${cat.id}', ${idx})" class="text-gray-400 hover:text-red-500 p-1"><i data-lucide="x" class="h-3 w-3"></i></button>
+                                    </div>
+                                `).join('')}
+                                ${(!cat.subcategories || cat.subcategories.length === 0) ? '<p class="text-xs text-gray-400 italic">No hay subcuentas</p>' : ''}
+                            </div>
+                            <div class="flex gap-2">
+                                <input type="text" id="new-sub-${cat.id}" placeholder="Nueva subcuenta..." 
+                                    class="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-rose-200">
+                                <button onclick="addSubcategory('${cat.id}')" class="bg-rose-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-rose-600 transition-colors">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function toggleSubaccounts(catId) {
+            const sub = document.getElementById(`sub-${catId}`);
+            const chevron = document.getElementById(`chevron-${catId}`);
+            if (sub.classList.contains('hidden')) {
+                sub.classList.remove('hidden');
+                chevron.classList.add('rotate-90');
+            } else {
+                sub.classList.add('hidden');
+                chevron.classList.remove('rotate-90');
+            }
+        }
+
+        function addSubcategory(catId) {
+            const input = document.getElementById(`new-sub-${catId}`);
+            const name = input.value.trim();
+            if (name) {
+                const cat = FinanceCore.data.categories.find(c => c.id === catId);
+                if (cat) {
+                    if (!cat.subcategories) cat.subcategories = [];
+                    cat.subcategories.push(name);
+                    FinanceCore.saveData();
+                    renderAccountsList();
+                    setTimeout(() => toggleSubaccounts(catId), 50);
+                }
+            }
+        }
+
+        function deleteSubcategory(catId, index) {
+            const cat = FinanceCore.data.categories.find(c => c.id === catId);
+            if (cat && cat.subcategories) {
+                cat.subcategories.splice(index, 1);
+                FinanceCore.saveData();
+                renderAccountsList();
+                setTimeout(() => toggleSubaccounts(catId), 50);
+            }
+        }
+
+        function promptAddCategory() {
+            const name = prompt("Nombre de la nueva cuenta mayor:");
+            if (name) {
+                FinanceCore.addCategory({ name, icon: 'circle', color: '#' + Math.floor(Math.random() * 16777215).toString(16) });
+                renderAccountsList();
+            }
+        }
+
+        function deleteCategory(id) {
+            if (confirm("¿Eliminar esta cuenta y todas sus subcuentas?")) {
+                FinanceCore.deleteCategory(id);
+                renderAccountsList();
+            }
+        }
+    </script>
+</body>
+
+</html>

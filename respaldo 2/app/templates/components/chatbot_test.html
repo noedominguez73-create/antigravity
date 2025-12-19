@@ -1,0 +1,67 @@
+<!-- Right Column: Test Chatbot -->
+<div class="flex flex-col h-[calc(100vh-140px)] sticky top-6">
+    <div class="bg-white rounded-lg shadow-lg flex flex-col h-full border border-gray-200">
+        <!-- Chat Header -->
+        <div class="p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg flex justify-between items-center">
+            <div>
+                <h2 class="text-lg font-bold text-gray-800">Probar Chatbot</h2>
+                <p class="text-xs text-gray-500">Prueba la configuración en tiempo real</p>
+            </div>
+            <button onclick="saveConfig()"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition flex items-center gap-2 shadow-sm">
+                <span>💾</span> Guardar Todo
+            </button>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div id="testChatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
+            <div class="text-center py-8">
+                <div class="bg-blue-50 text-blue-800 px-4 py-3 rounded-lg inline-block text-sm">
+                    👋 ¡Hola! Configura tu chatbot y pruébalo aquí.
+                    <br>Recuerda <strong>guardar los cambios</strong> antes de probar.
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input Area -->
+        <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+            <div class="flex flex-col gap-2">
+                <!-- Voice Selector Row -->
+                <div class="flex items-center gap-2">
+                    <label for="voiceSelector" class="text-xs text-gray-600 whitespace-nowrap">Voz:</label>
+                    <select id="voiceSelector"
+                        class="flex-1 text-sm px-3 py-2 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-white"
+                        onchange="handleVoiceChange()" title="Seleccionar voz para respuestas">
+                        <option value="">Detectando voces...</option>
+                    </select>
+                </div>
+
+                <!-- Input and Buttons Row -->
+                <div class="flex gap-2">
+                    <div class="flex-1 relative">
+                        <input type="text" id="testChatInput"
+                            class="w-full pl-4 pr-10 py-3 rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                            placeholder="Escribe un mensaje..." onkeypress="if(event.key==='Enter') sendTestMessage()">
+                    </div>
+                    <button onclick="sendTestMessage()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl transition shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                    </button>
+                    <button onclick="startTestVoiceRecognition()" id="micBtn"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 p-3 rounded-xl transition" title="Hablar">
+                        🎤
+                    </button>
+                    <button onclick="toggleContinuousConversation()" id="continuousBtn"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 p-3 rounded-xl transition"
+                        title="Modo Conversación Continua">
+                        <span class="text-xl font-bold">∞</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

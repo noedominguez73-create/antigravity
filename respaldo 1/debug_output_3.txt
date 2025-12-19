@@ -1,0 +1,33 @@
+C:\Program Files\Python311\Lib\site-packages\torchvision\io\image.py:13: UserWarning: Failed to load image Python extension: 'Could not load this library: C:\Program Files\Python311\Lib\site-packages\torchvision\image.pyd'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+[2025-12-05 04:50:03,889] INFO in logging_config: === Logging System Initialized ===
+[2025-12-05 04:50:04,150] INFO in rag_service: Loading RAG Model (all-MiniLM-L6-v2)...
+[2025-12-05 04:50:05,361] INFO in rag_service: RAG Index reloaded with 1284 chunks.
+DEBUG: Reloading Cache Index...
+DEBUG: Found 50 cached responses in DB.
+[2025-12-05 04:50:05,365] INFO in cache_service: Semantic Cache Index reloaded with 50 entries.
+DEBUG: Index reloaded. Total entries: 50
+[INFO] Testing Semantic Cache...
+DEBUG: Reloading Cache Index...
+DEBUG: Found 50 cached responses in DB.
+[2025-12-05 04:50:05,368] INFO in cache_service: Semantic Cache Index reloaded with 50 entries.
+DEBUG: Index reloaded. Total entries: 50
+[INFO] Adding to cache: 'requisitos modalidad 40'
+[2025-12-05 04:50:05,396] INFO in cache_service: Added to cache: requisitos modalidad 40
+
+[INFO] Testing Exact Match...
+[2025-12-05 04:50:05,405] INFO in cache_service: Cache HIT (1.00) for query: requisitos modalidad 40
+[SUCCESS] Exact match found!
+
+[INFO] Testing Semantic Match: 'cuales son los requisitos para la mod 40'
+[FAIL] Semantic match FAILED. Got: None
+
+[INFO] Testing Miss: 'como me doy de alta en la clinica'
+[SUCCESS] Correctly missed!
+
+[INFO] Testing Persistence (Reloading Index)...
+DEBUG: Reloading Cache Index...
+DEBUG: Found 51 cached responses in DB.
+[2025-12-05 04:50:05,422] INFO in cache_service: Semantic Cache Index reloaded with 51 entries.
+DEBUG: Index reloaded. Total entries: 51
+[FAIL] Persistence FAILED. Got: None

@@ -1,0 +1,484 @@
+.venv\Scripts\python
+.exe : [2025-11-27 
+14:13:05,484] INFO 
+in logging_config: 
+=== Logging System 
+Initialized ===
+En línea: 1 
+Carácter: 1
++ .venv\Scripts\pyth
+on.exe 
+create_prof_user.py 
+> output_create_user
+_2.t ...
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: ([202   
+ 5-11-27 14:...I    
+nitialized ===:    
+String) [], Rem    
+oteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+APP.MODELS LOADED FULLY
+Traceback (most 
+recent call last):
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 143, in 
+__init__
+    self._dbapi_conn
+ection = engine.raw_
+connection()
+                    
+         ^^^^^^^^^^^
+^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 3301, in 
+raw_connection
+    return 
+self.pool.connect()
+           
+^^^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 447, in connect
+    return _Connecti
+onFairy._checkout(se
+lf)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 1264, in 
+_checkout
+    fairy = _Connect
+ionRecord.checkout(p
+ool)
+            ^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 711, in 
+checkout
+    rec = 
+pool._do_get()
+          
+^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\impl.py", 
+line 177, in _do_get
+    with 
+util.safe_reraise():
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\util\langhelpers.p
+y", line 224, in 
+__exit__
+    raise exc_value.
+with_traceback(exc_t
+b)
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\impl.py", 
+line 175, in _do_get
+    return self._cre
+ate_connection()
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 388, in 
+_create_connection
+    return _Connecti
+onRecord(self)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 673, in 
+__init__
+    self.__connect()
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 899, in 
+__connect
+    with 
+util.safe_reraise():
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\util\langhelpers.p
+y", line 224, in 
+__exit__
+    raise exc_value.
+with_traceback(exc_t
+b)
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 895, in 
+__connect
+    self.dbapi_conne
+ction = connection 
+= pool._invoke_creat
+or(self)
+                    
+                    
+ ^^^^^^^^^^^^^^^^^^^
+^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\create.py",
+ line 661, in 
+connect
+    return dialect.c
+onnect(*cargs, 
+**cparams)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\default.py"
+, line 629, in 
+connect
+    return self.load
+ed_dbapi.connect(*ca
+rgs, **cparams)  # 
+type: ignore[no-any-
+return]  # NOQA: 
+E501
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
+sqlite3.OperationalE
+rror: unable to 
+open database file
+
+The above exception 
+was the direct 
+cause of the 
+following exception:
+
+Traceback (most 
+recent call last):
+  File "C:\asesoriai
+mss.io\create_prof_u
+ser.py", line 9, in 
+<module>
+    user = User.quer
+y.filter_by(email='p
+rof@test.com').first
+()
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\query.py", 
+line 2759, in first
+    return self.limi
+t(1)._iter().first()
+  # type: ignore
+           ^^^^^^^^^
+^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\query.py", 
+line 2857, in _iter
+    result: Union[Sc
+alarResult[_T], 
+Result[_T]] = self.s
+ession.execute(
+                    
+                    
+          ^^^^^^^^^^
+^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\session.py", 
+line 2351, in 
+execute
+    return self._exe
+cute_internal(
+           ^^^^^^^^^
+^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\session.py", 
+line 2239, in 
+_execute_internal
+    conn = self._con
+nection_for_bind(bin
+d)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\session.py", 
+line 2108, in 
+_connection_for_bind
+    return trans._co
+nnection_for_bind(en
+gine, 
+execution_options)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^
+  File "<string>", 
+line 2, in 
+_connection_for_bind
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\state_changes.
+py", line 137, in 
+_go
+    ret_value = 
+fn(self, *arg, **kw)
+                
+^^^^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\orm\session.py", 
+line 1187, in 
+_connection_for_bind
+    conn = 
+bind.connect()
+           
+^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 3277, in 
+connect
+    return self._con
+nection_cls(self)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 145, in 
+__init__
+    Connection._hand
+le_dbapi_exception_n
+oconnection(
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 2440, in _handl
+e_dbapi_exception_no
+connection
+    raise sqlalchemy
+_exception.with_trac
+eback(exc_info[2]) 
+from e
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 143, in 
+__init__
+    self._dbapi_conn
+ection = engine.raw_
+connection()
+                    
+         ^^^^^^^^^^^
+^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\base.py", 
+line 3301, in 
+raw_connection
+    return 
+self.pool.connect()
+           
+^^^^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 447, in connect
+    return _Connecti
+onFairy._checkout(se
+lf)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 1264, in 
+_checkout
+    fairy = _Connect
+ionRecord.checkout(p
+ool)
+            ^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 711, in 
+checkout
+    rec = 
+pool._do_get()
+          
+^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\impl.py", 
+line 177, in _do_get
+    with 
+util.safe_reraise():
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\util\langhelpers.p
+y", line 224, in 
+__exit__
+    raise exc_value.
+with_traceback(exc_t
+b)
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\impl.py", 
+line 175, in _do_get
+    return self._cre
+ate_connection()
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 388, in 
+_create_connection
+    return _Connecti
+onRecord(self)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 673, in 
+__init__
+    self.__connect()
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 899, in 
+__connect
+    with 
+util.safe_reraise():
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\util\langhelpers.p
+y", line 224, in 
+__exit__
+    raise exc_value.
+with_traceback(exc_t
+b)
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\pool\base.py", 
+line 895, in 
+__connect
+    self.dbapi_conne
+ction = connection 
+= pool._invoke_creat
+or(self)
+                    
+                    
+ ^^^^^^^^^^^^^^^^^^^
+^^^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\create.py",
+ line 661, in 
+connect
+    return dialect.c
+onnect(*cargs, 
+**cparams)
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^
+  File "C:\asesoriai
+mss.io\.venv\Lib\sit
+e-packages\sqlalchem
+y\engine\default.py"
+, line 629, in 
+connect
+    return self.load
+ed_dbapi.connect(*ca
+rgs, **cparams)  # 
+type: ignore[no-any-
+return]  # NOQA: 
+E501
+           ^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
+sqlalchemy.exc.Opera
+tionalError: (sqlite
+3.OperationalError) 
+unable to open 
+database file
+(Background on this 
+error at: https://sq
+lalche.me/e/20/e3q8)

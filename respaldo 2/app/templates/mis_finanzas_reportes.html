@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - Mis Finanzas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-display {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+    {% include 'sidebar.html' %}
+
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-5xl mx-auto">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+                    <div class="w-full md:w-auto flex flex-col gap-4">
+                        <div>
+                            <h1 class="font-display text-3xl font-bold text-gray-900 leading-none">Reportes Financieros
+                            </h1>
+                            <p class="text-gray-500 font-medium mt-1">Resumen de tus movimientos</p>
+                        </div>
+
+                        <!-- Period Selector Dropdown -->
+                        <div class="relative inline-block text-left w-fit">
+                            <div>
+                                <button type="button" onclick="togglePeriodDropdown()"
+                                    class="inline-flex items-center gap-x-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all min-w-[140px] justify-between"
+                                    id="period-menu-button" aria-expanded="true" aria-haspopup="true">
+                                    <span id="period-label">Este Mes</span>
+                                    <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                                </button>
+                            </div>
+
+                            <div class="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-xl bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden transform transition-all opacity-0 scale-95"
+                                role="menu" aria-orientation="vertical" aria-labelledby="period-menu-button"
+                                tabindex="-1" id="period-menu-dropdown">
+                                <div class="p-1 space-y-0.5" role="none">
+                                    <button onclick="selectPeriod('week')"
+                                        class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                        role="menuitem">
+                                        <i data-lucide="calendar-days" class="w-4 h-4 mr-2 text-gray-400"></i>Esta
+                                        Semana
+                                    </button>
+                                    <button onclick="selectPeriod('month')"
+                                        class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                        role="menuitem">
+                                        <i data-lucide="calendar" class="w-4 h-4 mr-2 text-gray-400"></i>Este Mes
+                                    </button>
+                                    <button onclick="selectPeriod('year')"
+                                        class="flex items-center w-full px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                        role="menuitem">
+                                        <i data-lucide="calendar-range" class="w-4 h-4 mr-2 text-gray-400"></i>Este Año
+                                    </button>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <button onclick="selectPeriod('range')"
+                                        class="flex items-center w-full px-3 py-2 text-sm text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition-colors"
+                                        role="menuitem">
+                                        <i data-lucide="sliders-horizontal"
+                                            class="w-4 h-4 mr-2 text-indigo-500"></i>Rango
+                                        Personalizado...
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Voice Interaction Card -->
+                    <div
+                        class="bg-white p-4 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-row items-center gap-4 transition-transform hover:scale-[1.02] flex-shrink-0">
+                        <button id="voice-assistant-btn" onclick="toggleVoiceAssistant()"
+                            class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-500 text-white shadow-lg shadow-indigo-200 flex items-center justify-center hover:shadow-xl hover:scale-110 active:scale-95 transition-all group">
+                            <i data-lucide="mic" class="h-5 w-5 group-hover:animate-pulse"></i>
+                        </button>
+                        <div class="text-left">
+                            <h3 class="font-serif text-gray-900 font-medium text-sm">Toca para hablar</h3>
+                            <p class="text-[10px] text-gray-400">Consulta reportes</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <!-- Income -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                <i data-lucide="trending-up" class="h-5 w-5 text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Ingresos</p>
+                                <p class="text-xl font-bold text-green-600" id="total-income">+$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Expenses -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                                <i data-lucide="trending-down" class="h-5 w-5 text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Gastos</p>
+                                <p class="text-xl font-bold text-red-600" id="total-expenses">-$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Net -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <i data-lucide="activity" class="h-5 w-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Resultado Neto</p>
+                                <p class="text-xl font-bold text-gray-900" id="net-result">$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounts Summary -->
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="font-bold text-gray-900">Balance por Cuentas</h2>
+                        <span class="text-2xl font-bold text-gray-900" id="total-balance">$0.00</span>
+                    </div>
+                    <div id="accounts-list" class="space-y-1">
+                        <!-- Injected -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Date Range Modal -->
+    <div id="date-range-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Seleccionar Rango</h3>
+                <button onclick="closeDateRangeModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+
+            <form onsubmit="applyCustomRange(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Inicio</label>
+                    <input type="date" id="range-start" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-gray-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Fecha Fin</label>
+                    <input type="date" id="range-end" required
+                        class="w-full rounded-xl border-gray-200 border p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-gray-900">
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-lg transition-all transform hover:-translate-y-0.5">
+                    Aplicar Filtro
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/finance-core.js"></script>
+    <script src="/static/js/finance-ai.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            FinanceCore.init();
+            lucide.createIcons();
+            // Init with default
+            updateReportsUI(FinanceCore.data);
+            // Subscribe
+            FinanceCore.subscribe(updateReportsUI);
+        });
+
+        let currentPeriodFilter = 'month';
+        let customDateRange = { start: null, end: null };
+
+        // --- Period Filter Logic (Standardized) ---
+        function togglePeriodDropdown() {
+            const dropdown = document.getElementById('period-menu-dropdown');
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+                setTimeout(() => {
+                    dropdown.classList.remove('opacity-0', 'scale-95');
+                }, 10);
+            } else {
+                dropdown.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    dropdown.classList.add('hidden');
+                }, 100);
+            }
+        }
+
+        function selectPeriod(period) {
+            if (period === 'range') {
+                togglePeriodDropdown();
+                openDateRangeModal();
+                return;
+            }
+            currentPeriodFilter = period;
+            const label = document.getElementById('period-label');
+
+            if (period === 'week') label.textContent = 'Esta Semana';
+            if (period === 'month') label.textContent = 'Este Mes';
+            if (period === 'year') label.textContent = 'Este Año';
+
+            togglePeriodDropdown();
+            updateReportsUI(FinanceCore.data);
+        }
+
+        function openDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if (!document.getElementById('range-start').value) {
+                const now = new Date();
+                const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+                document.getElementById('range-start').valueAsDate = firstDay;
+                document.getElementById('range-end').valueAsDate = now;
+            }
+        }
+
+        function closeDateRangeModal() {
+            const modal = document.getElementById('date-range-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function applyCustomRange(e) {
+            e.preventDefault();
+            const start = document.getElementById('range-start').value;
+            const end = document.getElementById('range-end').value;
+
+            if (start && end) {
+                customDateRange = { start: new Date(start), end: new Date(end) };
+                currentPeriodFilter = 'range';
+                document.getElementById('period-label').innerText = `Rango: ${start.substring(5)} / ${end.substring(5)}`;
+                closeDateRangeModal();
+                updateReportsUI(FinanceCore.data);
+            }
+        }
+
+        // --- Voice Assistant Toggle (Real) ---
+        function toggleVoiceAssistant() {
+            const btn = document.getElementById('voice-assistant-btn');
+
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Tu navegador no soporta reconocimiento de voz.");
+                return;
+            }
+            const recognition = new webkitSpeechRecognition();
+            recognition.lang = 'es-MX';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                btn.classList.remove('from-indigo-400', 'to-indigo-500');
+                btn.classList.add('bg-indigo-600', 'animate-pulse', 'ring-4', 'ring-indigo-200');
+            };
+
+            recognition.onend = () => {
+                btn.classList.remove('bg-indigo-600', 'animate-pulse', 'ring-4', 'ring-indigo-200');
+                btn.classList.add('from-indigo-400', 'to-indigo-500');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                if (typeof FinanceAI !== 'undefined') {
+                    const result = FinanceAI.parse(transcript);
+                    const msg = result.type === 'success' ? result.message : "No entendí ese comando";
+
+                    // Simple Toast
+                    const toast = document.createElement('div');
+                    toast.className = 'fixed bottom-4 right-4 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-50 text-sm animate-fade-in';
+                    toast.innerText = msg;
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 4000);
+                }
+            };
+            recognition.start();
+        }
+
+        // --- Core Logic ---
+        function updateReportsUI(data) {
+            const { start, end } = getDateRange(currentPeriodFilter);
+
+            // Filter Transactions by Date logic
+            const transactions = data.transactions.filter(t => {
+                if (!t.date) return false;
+                const tDate = new Date(t.date + 'T00:00:00');
+                // Fix timezone/midnight isues by appending time or just using compare
+                return tDate >= start && tDate <= end;
+            });
+
+            // 1. Calculate Income & Expenses
+            const income = transactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+
+            const expenses = transactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+
+            const net = income - expenses;
+
+            // Update DOM
+            document.getElementById('total-income').textContent = FinanceCore.formatCurrency(income);
+            document.getElementById('total-expenses').textContent = FinanceCore.formatCurrency(expenses);
+            document.getElementById('net-result').textContent = FinanceCore.formatCurrency(net);
+
+            // Style Net Result
+            const netEl = document.getElementById('net-result');
+            if (net >= 0) {
+                netEl.className = "text-xl font-bold text-green-600";
+                netEl.textContent = "+" + FinanceCore.formatCurrency(net);
+            } else {
+                netEl.className = "text-xl font-bold text-red-600";
+                netEl.textContent = FinanceCore.formatCurrency(net);
+            }
+
+            // 2. Balance per Account (Snapshot - not historical in this simple version)
+            const accountsContainer = document.getElementById('accounts-list');
+            const totalBalance = data.accounts.reduce((sum, a) => sum + a.balance, 0);
+
+            document.getElementById('total-balance').textContent = FinanceCore.formatCurrency(totalBalance);
+
+            if (data.accounts.length === 0) {
+                accountsContainer.innerHTML = '<p class="text-gray-500 text-sm text-center py-4">No hay cuentas registradas</p>';
+            } else {
+                accountsContainer.innerHTML = data.accounts.map(acc => `
+                    <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 px-2 rounded-lg transition-colors">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-600 font-bold text-xs">
+                                ${acc.name.substring(0, 2).toUpperCase()}
+                            </div>
+                            <span class="text-gray-700 font-medium">${acc.name}</span>
+                        </div>
+                        <span class="font-bold text-gray-900">${FinanceCore.formatCurrency(acc.balance)}</span>
+                    </div>
+                `).join('');
+            }
+            lucide.createIcons();
+        }
+
+        function getDateRange(period) {
+            const today = new Date();
+            let start, end;
+
+            // Set time to boundaries
+            today.setHours(0, 0, 0, 0);
+
+            if (period === 'month' || period === 'current') {
+                start = new Date(today.getFullYear(), today.getMonth(), 1);
+                end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                end.setHours(23, 59, 59, 999);
+            } else if (period === 'last') {
+                start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                end = new Date(today.getFullYear(), today.getMonth(), 0);
+                end.setHours(23, 59, 59, 999);
+            } else if (period === 'week') {
+                const day = today.getDay(); // 0 is Sunday
+                start = new Date(today);
+                start.setDate(today.getDate() - day); // Sunday start
+                start.setHours(0, 0, 0, 0);
+                end = new Date(start);
+                end.setDate(start.getDate() + 6);
+                end.setHours(23, 59, 59, 999);
+            } else if (period === 'year') {
+                start = new Date(today.getFullYear(), 0, 1);
+                end = new Date(today.getFullYear(), 11, 31, 23, 59, 59, 999);
+            } else if (period === 'range' && customDateRange.start) {
+                start = new Date(customDateRange.start);
+                start.setHours(0, 0, 0, 0);
+                end = new Date(customDateRange.end);
+                end.setHours(23, 59, 59, 999);
+                return { start, end };
+            } else {
+                start = new Date(today.getFullYear(), today.getMonth(), 1);
+                end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                end.setHours(23, 59, 59, 999);
+            }
+            return { start, end };
+        }
+    </script>
+</body>
+
+</html>

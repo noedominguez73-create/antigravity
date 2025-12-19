@@ -1,0 +1,48 @@
+C:\Program Files\Python311\Lib\site-packages\torchvision\io\image.py:13: UserWarning: Failed to load image Python extension: 'Could not load this library: C:\Program Files\Python311\Lib\site-packages\torchvision\image.pyd'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+[2025-12-05 04:42:09,902] INFO in logging_config: === Logging System Initialized ===
+[2025-12-05 04:42:10,158] INFO in rag_service: Loading RAG Model (all-MiniLM-L6-v2)...
+[2025-12-05 04:42:11,449] INFO in rag_service: RAG Index reloaded with 1284 chunks.
+DEBUG: Reloading Cache Index...
+[2025-12-05 04:42:11,452] ERROR in cache_service: Error reloading cache index: Neither 'InstrumentedAttribute' object nor 'Comparator' object associated with CachedResponse.query has an attribute 'all'
+DEBUG: Critical Error in reload_index: Neither 'InstrumentedAttribute' object nor 'Comparator' object associated with CachedResponse.query has an attribute 'all'
+Traceback (most recent call last):
+  File "C:\Program Files\Python311\Lib\site-packages\sqlalchemy\sql\elements.py", line 1517, in __getattr__
+    return getattr(self.comparator, key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Comparator' object has no attribute 'all'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Program Files\Python311\Lib\site-packages\sqlalchemy\orm\attributes.py", line 475, in __getattr__
+    return getattr(self.comparator, key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 1416, in __getattr__
+    return self._fallback_getattr(key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\site-packages\sqlalchemy\orm\properties.py", line 474, in _fallback_getattr
+    return getattr(self.__clause_element__(), key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\site-packages\sqlalchemy\sql\elements.py", line 1519, in __getattr__
+    raise AttributeError(
+AttributeError: Neither 'AnnotatedColumn' object nor 'Comparator' object has an attribute 'all'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\asesoriaimss.io\app\services\cache_service.py", line 59, in reload_index
+    responses = CachedResponse.query.all()
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\site-packages\sqlalchemy\orm\attributes.py", line 477, in __getattr__
+    raise AttributeError(
+AttributeError: Neither 'InstrumentedAttribute' object nor 'Comparator' object associated with CachedResponse.query has an attribute 'all'
+Traceback (most recent call last):
+  File "C:\asesoriaimss.io\scripts\test_semantic_cache.py", line 78, in <module>
+    test_semantic_cache()
+  File "C:\asesoriaimss.io\scripts\test_semantic_cache.py", line 15, in test_semantic_cache
+    print("\U0001f680 Testing Semantic Cache...")
+  File "C:\Program Files\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f680' in position 0: character maps to <undefined>
