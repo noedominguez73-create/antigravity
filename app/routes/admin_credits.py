@@ -25,6 +25,8 @@ def get_pending_transactions():
                 'id': credit.id,
                 'professional_id': credit.professional_id,
                 'professional_name': user.full_name if user else 'Desconocido',
+                'email': user.email if user else 'N/A',
+                'phone': user.phone_number if user else 'N/A',
                 'amount': credit.transaction_amount,
                 'price_mxn': credit.price_mxn,
                 'payment_method': credit.payment_method,

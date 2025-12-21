@@ -1215,8 +1215,19 @@
         }
 
         function pollConfig() {
-            fetch('/api/mirror/config?t=' + new Date().getTime())
-                .then(res => res.json())
+            const token = localStorage.getItem('token');
+            if (!token) return; // Wait for login or public mode?
+
+            fetch('/api/mirror/config?t=' + new Date().getTime(), {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+                .then(res => {
+                    if (res.status === 401) {
+                        console.log("Token expired or invalid");
+                        return null; // Handle logout if needed
+                    }
+                    return res.json();
+                })
                 .then(config => {
                     const root = document.documentElement;
                     if (config.selection_thickness) {

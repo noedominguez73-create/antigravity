@@ -66,7 +66,8 @@ def registro():
             email=data['email'],
             password_hash=generate_password_hash(data['password']),
             full_name=data['full_name'],
-            role=role
+            role=role,
+            phone_number=data.get('phone')
         )
         db.session.add(new_user)
         db.session.flush()  # Get user ID before commit
@@ -123,11 +124,14 @@ def login():
     if not valid:
         return error_response(message)
         
-    # Find user
-    user = User.query.filter_by(email=data['email']).first()
+    # Find user by email OR phone
+    identifier = data['email']
+    user = User.query.filter(
+        (User.email == identifier) | (User.phone_number == identifier)
+    ).first()
     
     if not user or not check_password_hash(user.password_hash, data['password']):
-        return error_response('Email o contraseña incorrectos', 401)
+        return error_response('Email, Teléfono o Contraseña incorrectos', 401)
     
     # Generate JWT token
     token = generate_token(user.id, user.role)
@@ -313,3 +317,23 @@ def facebook_login():
         },
         'token': token
     }, 'Inicio de sesión con Facebook exitoso')
+
+@auth_bp.route('/subscribe', methods=['POST'])
+@login_required
+def subscribe():
+    """Save Push Notification Subscription"""
+    data = request.get_json()
+    if not data or not data.get('subscription_info'):
+        return error_response('Información de suscripción requerida', 400)
+    
+    try:
+        user = User.query.get(request.current_user_id)
+        if user:
+            # Store as JSON string
+            import json
+            user.push_subscription = json.dumps(data['subscription_info'])
+            db.session.commit()
+            return success_response(None, 'Suscripción guardada')
+        return error_response('Usuario no encontrado', 404)
+    except Exception as e:
+        return error_response(f"Error guardando suscripción: {str(e)}", 500)

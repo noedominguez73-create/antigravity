@@ -23,8 +23,12 @@ def admin_login():
     if not valid:
         return error_response(message)
     
-    # Find admin user
-    user = User.query.filter_by(email=data['email'], role='admin').first()
+    # Find admin user by email OR phone
+    # Note: data['email'] holds the input, which could be phone
+    identifier = data['email']
+    user = User.query.filter(
+        (User.email == identifier) | (User.phone_number == identifier)
+    ).filter_by(role='admin').first()
     
     if not user or not check_password_hash(user.password_hash, data['password']):
         return error_response('Credenciales de administrador incorrectas', 401)
@@ -48,7 +52,8 @@ def admin_login():
 def dashboard():
     """Get admin dashboard statistics"""
     # Count users
-    total_users = User.query.filter_by(role='user').count()
+    # Count users (All non-admin users, including professionals)
+    total_users = User.query.filter(User.role != 'admin').count()
     total_professionals = Professional.query.filter_by(is_active=True).count()
     
     # Count pending comments
@@ -415,5 +420,83 @@ def delete_specialty(id):
     db.session.commit()
     return success_response(None, 'Especialidad eliminada')
 
+@admin_bp.route('/usuarios', methods=['GET'])
+@admin_required
+def get_users():
+    """Get all users with subscription status"""
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 20, type=int)
+    role_filter = request.args.get('role')
+    
+    query = User.query
+    if role_filter and role_filter != 'all':
+        query = query.filter_by(role=role_filter)
+        
+    pagination = query.order_by(User.created_at.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    
+    users = []
+    for user in pagination.items:
+        credits = 0
+        if user.role == 'professional' and user.professional_profile:
+            credits = next((c.amount for c in user.professional_profile.credits), 0) # Simplification
+            # Better credit calculation
+            credits = user.professional_profile.balance or 0
+            
+        users.append({
+            'id': user.id,
+            'full_name': user.full_name,
+            'email': user.email,
+            'role': user.role,
+            'subscription_status': getattr(user, 'subscription_status', 'active'),
+            'current_month_tokens': getattr(user, 'current_month_tokens', 0),
+            'monthly_token_limit': getattr(user, 'monthly_token_limit', 1000),
+            'credits': credits,
+            'created_at': user.created_at.isoformat()
+        })
+        
+    return success_response({
+        'users': users,
+        'total': pagination.total,
+        'pages': pagination.pages,
+        'current_page': page
+    })
+
+@admin_bp.route('/usuarios/<int:id>/status', methods=['POST'])
+@admin_required
+def toggle_user_status(id):
+    """Toggle user subscription status (Block/Unblock)"""
+    user = User.query.get(id)
+    if not user:
+        return error_response('Usuario no encontrado', 404)
+        
+    new_status = request.json.get('status') # 'active' or 'inactive'
+    if new_status not in ['active', 'inactive']:
+        return error_response('Estado inválido', 400)
+        
+    user.subscription_status = new_status
+    db.session.commit()
+    
+    return success_response(None, f'Usuario {new_status}')
+
+@admin_bp.route('/usuarios/<int:id>/quota', methods=['POST'])
+@admin_required
+def set_user_quota(id):
+    """Set monthly token limit"""
+    user = User.query.get(id)
+    if not user:
+        return error_response('Usuario no encontrado', 404)
+        
+    try:
+        limit = int(request.json.get('limit'))
+        user.monthly_token_limit = limit
+        db.session.commit()
+    except (ValueError, TypeError):
+        return error_response('Límite inválido', 400)
+        
+    return success_response(None, 'Límite actualizado')
+
 # Import additional admin routes
 from app.routes import admin_credits
+from app.routes import admin_salons

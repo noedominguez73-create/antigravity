@@ -4,157 +4,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - AsesoriaIMSS.io</title>
+    <title>Iniciar Sesión - CompletMirror.io</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50">
+<body class="hero-bg text-gray-800 flex flex-col justify-between">
     <!-- Header -->
-    <header class="bg-white shadow-md">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold text-blue-600">AsesoriaIMSS.io</a>
-            <a href="/registro" class="text-blue-600 hover:underline">¿No tienes cuenta? Regístrate</a>
+    <header class="w-full bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/"
+                class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0066CC] to-[#D946A6] tracking-tight flex items-center gap-2">
+                <span>✨</span> CompletMirror.io
+            </a>
+            <a href="/registro" class="text-sm font-medium text-[#0066CC] hover:underline">¿No tienes cuenta?
+                Regístrate</a>
         </nav>
     </header>
 
-    <!-- Login Form -->
-    <div class="container mx-auto px-4 py-12">
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
-            <h1 class="text-3xl font-bold text-center mb-6">Iniciar Sesión</h1>
-
-            <!-- Role Selection (Visual Preference) -->
-            <div class="mb-6">
-                <label class="block text-gray-700 font-semibold mb-2">Tipo de cuenta</label>
-                <div class="flex space-x-4">
-                    <button type="button" id="loginUserBtn" onclick="selectLoginRole('user')"
-                        class="flex-1 px-4 py-3 border-2 border-blue-600 bg-blue-600 text-white rounded-lg font-semibold transition-colors">
-                        Usuario
-                    </button>
-                    <button type="button" id="loginProfessionalBtn" onclick="selectLoginRole('professional')"
-                        class="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:border-blue-600 transition-colors">
-                        Profesional
-                    </button>
-                    <button type="button" id="loginStoreBtn" onclick="selectLoginRole('tienda')"
-                        class="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:border-blue-600 text-center flex items-center justify-center gap-2 transition-colors hover:bg-gray-50">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        Tienda
-                    </button>
-                </div>
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+        <div
+            class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 p-8 transform transition-all duration-500 hover:shadow-2xl">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-[#0D1A3B] mb-2">Bienvenido de nuevo</h1>
+                <p class="text-gray-500">Ingresa a tu cuenta para gestionar tu estilo.</p>
             </div>
 
-            <form id="loginForm" class="space-y-4">
-                <!-- Email -->
+            <!-- Role Selection -->
+            <div class="mb-6 bg-gray-100/50 p-1 rounded-xl flex">
+                <button type="button" id="loginUserBtn" onclick="selectLoginRole('user')"
+                    class="flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900">
+                    Usuario
+                </button>
+                <button type="button" id="loginProfessionalBtn" onclick="selectLoginRole('professional')"
+                    class="flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900">
+                    Profesional
+                </button>
+                <button type="button" id="loginStoreBtn" onclick="selectLoginRole('tienda')"
+                    class="flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900 flex items-center justify-center gap-1">
+                    <span>🏪</span> Tienda
+                </button>
+            </div>
+
+            <form id="loginForm" class="space-y-5">
+                <!-- Email/Phone -->
                 <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Correo electrónico</label>
-                    <input type="email" id="email" required
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                        placeholder="correo@ejemplo.com">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Correo o
+                        Teléfono</label>
+                    <div class="relative">
+                        <i data-lucide="mail" class="absolute left-4 top-3.5 h-5 w-5 text-gray-400"></i>
+                        <input type="text" id="email" required
+                            class="w-full pl-12 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:border-[#0066CC] focus:ring-2 focus:ring-blue-100 outline-none transition"
+                            placeholder="nombre@ejemplo.com">
+                    </div>
                 </div>
 
                 <!-- Password -->
                 <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Contraseña</label>
-                    <input type="password" id="password" required
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                        placeholder="Tu contraseña">
+                    <label
+                        class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Contraseña</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-4 top-3.5 h-5 w-5 text-gray-400"></i>
+                        <input type="password" id="password" required
+                            class="w-full pl-12 pr-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:border-[#0066CC] focus:ring-2 focus:ring-blue-100 outline-none transition"
+                            placeholder="••••••••">
+                    </div>
                 </div>
 
-                <!-- Remember Me & Forgot Password -->
-                <div class="flex items-center justify-between">
-                    <label class="flex items-center">
-                        <input type="checkbox" id="remember" class="mr-2">
-                        <span class="text-sm text-gray-600">Recordarme</span>
+                <!-- Remember & Forgot -->
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" id="remember"
+                            class="w-4 h-4 text-[#0066CC] rounded border-gray-300 focus:ring-blue-500">
+                        <span class="ml-2 text-gray-600">Recordarme</span>
                     </label>
-                    <a href="#" class="text-sm text-blue-600 hover:underline">¿Olvidaste tu contraseña?</a>
+                    <a href="#" class="text-[#0066CC] hover:underline font-medium hover:text-[#0055aa]">Recuperar
+                        clave</a>
                 </div>
 
                 <!-- Submit Button -->
                 <button type="submit" id="submitBtn"
-                    class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition">
+                    class="w-full py-3.5 bg-gradient-to-r from-[#0066CC] to-[#0055aa] text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all duration-200">
                     Iniciar Sesión
                 </button>
             </form>
 
-            <!-- OAuth Options -->
-            <div class="mt-6">
-                <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">O inicia sesión con</span>
-                    </div>
+            <!-- Divider -->
+            <div class="mt-8 relative flex items-center justify-center">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
                 </div>
-
-                <div class="mt-6 grid grid-cols-2 gap-3">
-                    <button onclick="loginWithGoogleOAuth()"
-                        class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                            <path fill="#4285F4"
-                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                            <path fill="#34A853"
-                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                            <path fill="#FBBC05"
-                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                            <path fill="#EA4335"
-                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                        </svg>
-                        Google
-                    </button>
-                    <button onclick="loginWithFacebookOAuth()"
-                        class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2" fill="#1877F2" viewBox="0 0 24 24">
-                            <path
-                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                        </svg>
-                        Facebook
-                    </button>
+                <div class="relative bg-white/0 px-4">
+                    <span class="text-xs text-gray-400 bg-white/80 px-2 rounded-full backdrop-blur-sm">O continúa
+                        con</span>
                 </div>
             </div>
+
+            <!-- Social Login -->
+            <div class="mt-6 grid grid-cols-2 gap-3">
+                <button onclick="loginWithGoogleOAuth()"
+                    class="px-4 py-2.5 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition flex items-center justify-center gap-2 font-medium text-gray-700 text-sm shadow-sm">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                    Google
+                </button>
+                <button onclick="loginWithFacebookOAuth()"
+                    class="px-4 py-2.5 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition flex items-center justify-center gap-2 font-medium text-gray-700 text-sm shadow-sm">
+                    <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" class="w-5 h-5" alt="Facebook">
+                    Facebook
+                </button>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <footer class="text-center py-6 text-xs text-gray-500">
+        &copy; 2025 completmirror.io - Todos los derechos reservados
+    </footer>
 
     <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
     <script src="{{ url_for('static', filename='js/api.js') }}"></script>
     <script src="{{ url_for('static', filename='js/components.js') }}"></script>
     <script>
-        // Check if already logged in
+        lucide.createIcons();
+
+        // --- Role Selection Logic ---
+        let selectedRole = 'user';
+
+        // Styles for active/inactive role buttons
+        const activeRoleClass = ['bg-white', 'text-[#0066CC]', 'shadow-sm', 'border', 'border-gray-200'];
+        const inactiveRoleClass = ['text-gray-500', 'hover:bg-white/50'];
+
+        function selectLoginRole(role) {
+            selectedRole = role;
+            const roles = ['user', 'professional', 'tienda'];
+
+            roles.forEach(r => {
+                const btn = document.getElementById(r === 'tienda' ? 'loginStoreBtn' : `login${r.charAt(0).toUpperCase() + r.slice(1)}Btn`);
+                if (r === role) {
+                    btn.classList.add(...activeRoleClass);
+                    btn.classList.remove(...inactiveRoleClass);
+                } else {
+                    btn.classList.remove(...activeRoleClass);
+                    btn.classList.add(...inactiveRoleClass);
+                }
+            });
+        }
+
+        // Initialize from URL or default
+        const urlParams = new URLSearchParams(window.location.search);
+        const roleParam = urlParams.get('role');
+        if (roleParam && ['user', 'professional', 'tienda'].includes(roleParam)) {
+            selectLoginRole(roleParam);
+        } else {
+            selectLoginRole('user');
+        }
+
+        // --- Auth Check ---
         if (isAuthenticated()) {
             const currentUser = getCurrentUser();
-            const urlParams = new URLSearchParams(window.location.search);
-            const roleParam = urlParams.get('role');
-            const redirectParam = urlParams.get('redirect');
-
-            // If there is a specific redirect intent (e.g. forced by auth guard), maybe we still auto-redirect?
-            // But if user just clicked "Login" manually, we should show options.
-            // Let's being safe: always show options unless it's a role conflict (which forces logout).
 
             if (roleParam && currentUser.role !== roleParam) {
                 logout();
-                setTimeout(() => {
-                    showToast(`Se cerró la sesión de "${currentUser.role}" para que puedas entrar como "${roleParam}".`, 'info');
-                }, 500);
+                // Toast logic ideally exists in auth.js or components.js
             } else {
-                // HIDE FORM, SHOW 'ALREADY LOGGED IN' STATE
+                // Replace form with 'Already Logged In' view
                 const container = document.querySelector('.max-w-md');
                 container.innerHTML = `
-                    <div class="text-center">
-                        <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <span class="text-4xl">👋</span>
+                    <div class="text-center py-8">
+                        <div class="w-20 h-20 bg-gradient-to-tr from-[#0066CC] to-[#D946A6] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/30 text-white text-4xl animate-bounce">
+                            👋
                         </div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Hola, ${currentUser.full_name || 'Usuario'}!</h2>
-                        <p class="text-gray-600 mb-8">Ya has iniciado sesión como <span class="font-semibold capitalize">${currentUser.role}</span>.</p>
+                        <h2 class="text-2xl font-bold text-[#0D1A3B] mb-2">¡Hola, ${currentUser.full_name || 'Usuario'}!</h2>
+                        <p class="text-gray-500 mb-8 bg-white/50 py-2 px-4 rounded-lg inline-block backdrop-blur-sm">Sesión activa como <span class="font-bold text-[#0066CC] uppercase">${currentUser.role}</span></p>
                         
-                        <div class="space-y-4">
-                            <button onclick="redirectToDashboard()" class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition shadow-lg transform hover:-translate-y-1">
+                        <div class="space-y-3">
+                            <button onclick="redirectToDashboard()" class="w-full py-3.5 bg-[#0066CC] text-white rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20 transform hover:-translate-y-1">
                                 Ir al Dashboard 🚀
                             </button>
-                            <button onclick="logout()" class="w-full px-6 py-3 bg-white border-2 border-red-100 text-red-500 rounded-lg font-semibold hover:bg-red-50 transition">
+                            <button onclick="logout()" class="w-full py-3.5 bg-white border border-gray-200 text-red-500 rounded-xl font-semibold hover:bg-red-50 transition">
                                 Cerrar Sesión
                             </button>
                         </div>
@@ -163,112 +206,42 @@
             }
         }
 
-        // Role Selection Logic for Login (Visual primarily, but can guide UX)
-        let selectedRole = 'user';
-
-        // Check URL for role preference
-        const urlParams = new URLSearchParams(window.location.search);
-        const roleParam = urlParams.get('role');
-        if (roleParam && ['user', 'professional', 'tienda'].includes(roleParam)) {
-            selectedRole = roleParam;
-        }
-
-        function selectLoginRole(role) {
-            selectedRole = role;
-            const userBtn = document.getElementById('loginUserBtn');
-            const professionalBtn = document.getElementById('loginProfessionalBtn');
-            const storeBtn = document.getElementById('loginStoreBtn');
-
-            // Reset styles
-            const activeClasses = ['bg-blue-600', 'text-white', 'border-blue-600'];
-            const inactiveClasses = ['bg-white', 'text-gray-700', 'border-gray-300'];
-
-            // Function to set active
-            const setActive = (btn) => {
-                btn.classList.add(...activeClasses);
-                btn.classList.remove('text-gray-700', 'border-gray-300', 'bg-white');
-            };
-
-            // Function to set inactive
-            const setInactive = (btn) => {
-                btn.classList.remove(...activeClasses);
-                btn.classList.add('text-gray-700', 'border-gray-300', 'bg-white');
-            };
-
-            if (role === 'user') {
-                setActive(userBtn);
-                setInactive(professionalBtn);
-                setInactive(storeBtn);
-            } else if (role === 'professional') {
-                setInactive(userBtn);
-                setActive(professionalBtn);
-                setInactive(storeBtn);
-            } else if (role === 'tienda') {
-                setInactive(userBtn);
-                setInactive(professionalBtn);
-                setActive(storeBtn);
-            }
-        }
-
-        // Initialize UI with selected role
-        selectLoginRole(selectedRole);
-
+        // --- Login Submission ---
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (!validateEmail(email)) {
-                showToast('Por favor ingresa un email válido', 'error');
-                return;
-            }
-
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
             const submitBtn = document.getElementById('submitBtn');
+
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Iniciando sesión...';
+            submitBtn.innerHTML = '<span class="animate-pulse">Iniciando...</span>';
 
             const result = await login(email, password);
 
             if (result.success) {
-                // Strict Role Check for Identification
-                if (result.user.role !== selectedRole) {
-                    showToast(`Esta cuenta es de tipo "${result.user.role}", no "${selectedRole}". Por favor selecciona la pestaña correcta.`, 'error');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Iniciar Sesión';
-                    // Clear auth to prevent partial login state if desired, or let them just switch tabs
-                    // Ideally we should logout if we want to be strict, but for UI experience, just warning is enough 
-                    // because saveAuth() was called inside login(). 
-                    // Actually, if we want to prevent entry, we should clearAuth()
-                    logout(); // Using the logout function from auth.js to clear token
+                if (result.user.role === 'admin') {
+                    window.location.href = '/admin';
                     return;
                 }
 
-                showToast(`¡Bienvenido ${result.user.full_name}!`, 'success');
-                setTimeout(() => {
-                    const redirect = new URLSearchParams(window.location.search).get('redirect');
-                    if (redirect) {
-                        window.location.href = redirect;
-                    } else {
-                        redirectToDashboard(); // Utilizes the updated auth.js with correct destinations
-                    }
-                }, 1000);
+                if (result.user.role !== selectedRole) {
+                    showToast(`Esta cuenta es de tipo "${result.user.role}". Cambia la pestaña.`, 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Iniciar Sesión';
+                    return;
+                }
+
+                const redirect = new URLSearchParams(window.location.search).get('redirect');
+                window.location.href = redirect || '/dashboard'; // Or appropriate dashboard
             } else {
-                showToast(result.error, 'error');
+                showToast(result.error || 'Credenciales inválidas', 'error');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Iniciar Sesión';
             }
         });
 
-        function loginWithGoogleOAuth() {
-            showToast('Función de Google OAuth en desarrollo', 'info');
-            // TODO: Implement Google OAuth
-        }
-
-        function loginWithFacebookOAuth() {
-            showToast('Función de Facebook OAuth en desarrollo', 'info');
-            // TODO: Implement Facebook OAuth
-        }
+        function loginWithGoogleOAuth() { showToast('Próximamente', 'info'); }
+        function loginWithFacebookOAuth() { showToast('Próximamente', 'info'); }
     </script>
 </body>
 

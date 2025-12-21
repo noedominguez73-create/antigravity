@@ -713,6 +713,7 @@
         }
 
         // --- TEXT TO SPEECH (SERVER SIDE - GEMINI) ---
+        // --- TEXT TO SPEECH (SERVER SIDE - GEMINI) ---
         async function speak(text) {
             // Cancel any browser speech if active
             if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -723,10 +724,17 @@
                 window.currentAudio = null;
             }
 
+            const indicator = document.getElementById('listeningIndicator');
+            const micStatus = document.getElementById('micStatus');
+
             try {
-                // Show visual indicator
-                const micStatus = document.getElementById('micStatus');
-                if (micStatus) micStatus.innerText = "Generando voz...";
+                // Show visual indicator (Reuse the big Listening indicator)
+                if (indicator) {
+                    indicator.innerText = "PREPARANDO VOZ...";
+                    indicator.style.display = 'block';
+                    indicator.classList.add('animate-pulse'); // Add pulse effect if available or just show it
+                }
+                if (micStatus) micStatus.innerText = "Generando audio neural...";
 
                 const response = await fetch('/api/mirror/tts', {
                     method: 'POST',
@@ -740,18 +748,30 @@
                 if (!response.ok) throw new Error("TTS Failed");
 
                 const data = await response.json();
+
+                // Audio ready - Hide indicator
+                if (indicator) {
+                    indicator.style.display = 'none';
+                    indicator.innerText = "ESCUCHANDO..."; // Reset text
+                }
+
                 if (data.url) {
                     const audio = new Audio(data.url);
                     window.currentAudio = audio;
                     audio.play().catch(e => console.log("Audio play error", e));
 
                     if (micStatus) micStatus.innerText = "Hablando...";
+
+                    // Add visual speaking wave here if desired
+
                     audio.onended = () => {
                         if (micStatus) micStatus.innerText = "Inactivo";
                     };
                 }
             } catch (e) {
                 console.error("TTS Server Error, fallback to browser", e);
+                if (indicator) indicator.style.display = 'none';
+
                 // Fallback to browser simple TTS
                 const u = new SpeechSynthesisUtterance(text);
                 window.speechSynthesis.speak(u);

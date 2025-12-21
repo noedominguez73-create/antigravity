@@ -222,7 +222,7 @@ def _get_credits_logic(profesional_id):
         'used': total_used,
         'available': available,
         'warning': warning,
-        'recent_transactions': history
+        'history': history
     })
 
 @creditos_bp.route('/confirmar-pago', methods=['POST'])

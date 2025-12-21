@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify, current_app, render_template
 from app import db
 # Force Reload Trigger
-from app.models import MirrorItem, MirrorUsage
+from app.models import MirrorItem, MirrorUsage, User, SalonConfig
+from app.utils.auth_utils import login_required
 from werkzeug.utils import secure_filename
 import os
 import time
@@ -57,51 +58,65 @@ def save_config(config_data):
 MIRROR_CONFIG = load_config()
 
 @mirror_api_bp.route('/config', methods=['GET', 'POST'])
-@limiter.exempt
+@login_required 
 def handle_config():
-    """Get or set mirror configuration."""
-    global MIRROR_CONFIG
+    """Get or set mirror configuration for the logged-in salon."""
+    user_id = request.current_user_id
+    config = SalonConfig.query.filter_by(user_id=user_id).first()
+    
     if request.method == 'POST':
         try:
-            data = request.json
-            if data is None:
-                return jsonify({'error': 'No JSON data'}), 400
-                
-            if 'selection_thickness' in data and data['selection_thickness'] is not None:
-                try:
-                    MIRROR_CONFIG['selection_thickness'] = int(float(data['selection_thickness']))
-                except (ValueError, TypeError):
-                    pass # Ignore invalid values
-                    
-            if 'selection_glow' in data and data['selection_glow'] is not None:
-                try:
-                    MIRROR_CONFIG['selection_glow'] = int(float(data['selection_glow']))
-                except (ValueError, TypeError):
-                    pass
-
-            if 'primary_color' in data and data['primary_color']:
-                MIRROR_CONFIG['primary_color'] = str(data['primary_color'])
-            if 'secondary_color' in data and data['secondary_color']:
-                MIRROR_CONFIG['secondary_color'] = str(data['secondary_color'])
-
-            if 'stylist_avatar_url' in data and data['stylist_avatar_url']:
-                MIRROR_CONFIG['stylist_avatar_url'] = str(data['stylist_avatar_url'])
-            if 'stylist_persona_prompt' in data:
-                MIRROR_CONFIG['stylist_persona_prompt'] = data['stylist_persona_prompt']
-            if 'stylist_voice_name' in data:
-                MIRROR_CONFIG['stylist_voice_name'] = data['stylist_voice_name']
+            data = request.json or {}
+            if not config:
+                config = SalonConfig(user_id=user_id)
+                db.session.add(config)
             
-            # Persist changes
-            save_config(MIRROR_CONFIG)
-                
-            return jsonify(MIRROR_CONFIG)
+            # Update fields
+            if 'logo_url' in data: config.logo_url = data['logo_url']
+            if 'promo_video_url' in data: config.promo_video_url = data['promo_video_url']
+            if 'primary_color' in data: config.primary_color = data['primary_color']
+            if 'secondary_color' in data: config.secondary_color = data['secondary_color']
+            
+            if 'stylist_name' in data: config.stylist_name = data['stylist_name']
+            if 'stylist_voice_name' in data: config.stylist_voice_id = data['stylist_voice_name'] # Mapping name to ID field
+            if 'stylist_persona_prompt' in data: config.stylist_personality_prompt = data['stylist_persona_prompt']
+            if 'welcome_message' in data: config.welcome_message = data['welcome_message']
+            
+            db.session.commit()
+            
+            return jsonify({
+                'logo_url': config.logo_url,
+                'primary_color': config.primary_color
+            })
         except Exception as e:
             current_app.logger.error(f"Config update error: {e}")
             return jsonify({'error': str(e)}), 500
     
-    # Reload from disk on GET to ensure sync if modified externally
-    MIRROR_CONFIG = load_config()
-    return jsonify(MIRROR_CONFIG)
+    # GET Request
+    if not config:
+        # Return defaults if no config exists yet
+        return jsonify({
+            'selection_thickness': 4, # Legacy support
+            'selection_glow': 10,     # Legacy support
+            'primary_color': '#00ff88',
+            'secondary_color': '#00ccff',
+            'stylist_name': 'Asesora IA',
+            'stylist_voice_name': '',
+            'stylist_persona_prompt': ''
+        })
+        
+    return jsonify({
+        'selection_thickness': 4,
+        'selection_glow': 10,
+        'logo_url': config.logo_url,
+        'promo_video_url': config.promo_video_url,
+        'primary_color': config.primary_color,
+        'secondary_color': config.secondary_color,
+        'stylist_name': config.stylist_name,
+        'stylist_voice_name': config.stylist_voice_id,
+        'stylist_persona_prompt': config.stylist_personality_prompt,
+        'welcome_message': config.welcome_message
+    })
 
 # --- Helper Functions ---
 
@@ -492,9 +507,26 @@ def delete_item(id):
     return jsonify({'message': 'Item deleted'})
 
 @mirror_api_bp.route('/generate', methods=['POST'])
+@login_required
 def generate_look():
     """Core endpoint for Hairstyle/Color generation."""
     try:
+        # 0. Subscription & Quota Check
+        user = User.query.get(request.current_user_id)
+        if not user:
+            return jsonify({'error': 'Usuario no encontrado'}), 404
+            
+        # Check Subscription Status (Only if strictly 'inactive' do we block)
+        # Default is 'active' or None.
+        if getattr(user, 'subscription_status', 'active') == 'inactive':
+            return jsonify({'error': 'Suscripción inactiva. Por favor contacte al administrador.'}), 403
+            
+        # Check Quota
+        current_usage = getattr(user, 'current_month_tokens', 0)
+        limit = getattr(user, 'monthly_token_limit', 1000) # Default 1000 tokens
+        if current_usage >= limit:
+             return jsonify({'error': 'Límite mensual de créditos IA excedido.'}), 403
+
         # 1. Validation & Setup
         if 'image' not in request.files:
             return jsonify({'error': 'No image provided'}), 400
@@ -616,8 +648,13 @@ def generate_look():
             total_tokens = 0
             # Note: result_image_url remains the original uploaded image as fallback
 
-        # 7. Record Stats
+        # 7. Record Stats & Billing
         record_token_usage('generation', prompt_tokens, completion_tokens, total_tokens)
+        
+        # Increment User Usage
+        if user:
+            user.current_month_tokens = (user.current_month_tokens or 0) + total_tokens
+            db.session.commit()
 
         return jsonify({
             'status': 'success',

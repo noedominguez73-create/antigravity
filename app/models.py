@@ -15,6 +15,16 @@ class User(db.Model):
     google_id = db.Column(db.String(255), unique=True, nullable=True)
     facebook_id = db.Column(db.String(255), unique=True, nullable=True)
     
+    # Contact & PWA
+    phone_number = db.Column(db.String(20), unique=True, nullable=True)
+    push_subscription = db.Column(db.Text, nullable=True)
+    
+    # Subscription
+    subscription_status = db.Column(db.String(20), default='inactive') # inactive, active, cancelled
+    subscription_end_date = db.Column(db.DateTime, nullable=True)
+    monthly_token_limit = db.Column(db.Integer, default=10)
+    current_month_tokens = db.Column(db.Integer, default=0)
+    
     # Relationships
     inquiries = db.relationship('Inquiry', backref='user', lazy=True)
     responses = db.relationship('Response', backref='responder', lazy=True)
@@ -418,3 +428,41 @@ class MirrorUsage(db.Model):
     __table_args__ = (
         db.Index('idx_mirror_usage_created_at', 'created_at'),
     )
+
+class SalonConfig(db.Model):
+    __tablename__ = 'salon_configs'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, nullable=False)
+    
+    # Branding
+    logo_url = db.Column(db.String(500))
+    promo_video_url = db.Column(db.String(500))
+    primary_color = db.Column(db.String(20), default='#00ff88')
+    secondary_color = db.Column(db.String(20), default='#00ccff')
+    
+    # AI Persona
+    stylist_name = db.Column(db.String(100), default='Asesora IA')
+    stylist_voice_id = db.Column(db.String(100))
+    stylist_personality_prompt = db.Column(db.Text)
+    
+    # Messages
+    welcome_message = db.Column(db.String(500))
+    
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationship
+    user = db.relationship('User', backref=db.backref('salon_config', uselist=False))
+
+    # New Fields requested
+    salon_name = db.Column(db.String(200))
+    address = db.Column(db.Text) # Maps to Street/Number/Colony
+    city = db.Column(db.String(100))
+    state = db.Column(db.String(100))
+    country = db.Column(db.String(100), default='México')
+    
+    start_date = db.Column(db.Date) # Fecha de inicio de operaciones
+    payment_date = db.Column(db.Date) # Fecha de cobro
+    tokens_consumed = db.Column(db.Integer, default=0) # Tokens consumidos global/historical
+    is_active_salon = db.Column(db.Boolean, default=True)

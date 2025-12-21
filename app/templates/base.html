@@ -7,6 +7,7 @@
     <title>{% block title %}AsesoriaIMSS.io{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
     {% block head %}{% endblock %}
 </head>
 
@@ -16,6 +17,38 @@
     <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
     <script src="{{ url_for('static', filename='js/api.js') }}"></script>
     <script src="{{ url_for('static', filename='js/components.js') }}"></script>
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")
+                    .then(function (registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function (err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+
+        async function subscribeUserToPush() {
+            if (!('serviceWorker' in navigator)) return;
+            const reg = await navigator.serviceWorker.ready;
+            try {
+                const sub = await reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: 'YOUR_VAPID_PUBLIC_KEY' // Replace with proper key generation later
+                });
+                console.log('Push Subscription:', JSON.stringify(sub));
+                // TODO: Send to backend
+            } catch (e) {
+                if (Notification.permission === 'denied') {
+                    console.warn('Permission for notifications was denied');
+                } else {
+                    console.error('Unable to subscribe to push', e);
+                }
+            }
+        }
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 
