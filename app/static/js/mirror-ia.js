@@ -20,6 +20,31 @@ let styleSlots = [];
 document.addEventListener('DOMContentLoaded', () => {
     loadGallery();
     initStyleSlots();
+
+    // Check for Admin Role or Salon Owner to show/hide Admin Button
+    const checkAdminAccess = () => {
+        if (typeof getCurrentUser === 'function') {
+            const user = getCurrentUser();
+            const adminBtn = document.getElementById('adminBtn');
+            console.log("Checking Admin Access for:", user);
+
+            if (user && (user.role === 'admin' || user.is_salon_owner === true || user.is_salon_owner === "true")) {
+                if (adminBtn) {
+                    console.log("Access Granted. Showing Admin Button.");
+                    adminBtn.style.display = 'flex';
+                    adminBtn.classList.remove('hidden'); // Just in case
+                } else {
+                    console.error("Admin Button not found in DOM");
+                }
+            } else {
+                console.log("Access Denied or User not Admin/Owner");
+            }
+        }
+    };
+
+    // Run immediately and after a short delay to handle race conditions
+    checkAdminAccess();
+    setTimeout(checkAdminAccess, 500);
 });
 
 // --- STYLE SLOTS LOGIC (Interface 2.0) ---

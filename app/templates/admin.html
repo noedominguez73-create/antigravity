@@ -559,7 +559,10 @@
                              <p>Inicio: ${s.start_date || '-'}</p>
                              <p>Cobro: ${s.payment_date || '-'}</p>
                         </td>
-                        <td class="py-4 text-sm font-bold text-gray-700">${s.tokens_consumed}</td>
+                        <td class="py-4 text-sm">
+                            <span class="font-bold text-gray-700">${s.user_tokens_used || 0}</span>
+                            <span class="text-gray-400">/ ${s.user_tokens_limit || '∞'}</span>
+                        </td>
                         <td class="py-4 text-right">
                              <button onclick="deleteSalon(${s.id})" class="text-rose-400 hover:text-rose-600 transition p-2"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
                         </td>

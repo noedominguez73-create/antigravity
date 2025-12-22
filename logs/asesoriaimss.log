@@ -5821,3 +5821,124 @@ Output ONLY the modified image. Ensure seamless blending between the new hair/cl
 2025-12-21 12:06:10 - app.services.rag_service - INFO - Loading RAG Model (all-MiniLM-L6-v2)...
 2025-12-21 12:06:14 - app.services.rag_service - INFO - RAG Index reloaded with 1284 chunks.
 2025-12-21 12:06:15 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:06:53 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:54 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:54 - app.services.rag_service - ERROR - RAG Service disabled: sentence-transformers or faiss-cpu not installed.
+2025-12-22 03:06:55 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:55 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:55 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:55 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:55 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:55 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:55 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:55 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:06:55 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:07:03 - app.services.rag_service - INFO - Loading RAG Model (all-MiniLM-L6-v2)...
+2025-12-22 03:07:06 - app.services.rag_service - INFO - RAG Index reloaded with 1284 chunks.
+2025-12-22 03:07:08 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:12:59 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:00 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:00 - app.services.rag_service - ERROR - RAG Service disabled: sentence-transformers or faiss-cpu not installed.
+2025-12-22 03:13:01 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:01 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:01 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:01 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:01 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:01 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:01 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:01 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:01 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:13:06 - app.services.rag_service - INFO - Loading RAG Model (all-MiniLM-L6-v2)...
+2025-12-22 03:13:09 - app.services.rag_service - INFO - RAG Index reloaded with 1284 chunks.
+2025-12-22 03:13:10 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:17:39 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:40 - app.services.rag_service - ERROR - RAG Service disabled: sentence-transformers or faiss-cpu not installed.
+2025-12-22 03:17:43 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:43 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:43 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:43 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:43 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:44 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:44 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:44 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:44 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:44 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:17:49 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:17:58 - app.services.rag_service - INFO - Loading RAG Model (all-MiniLM-L6-v2)...
+2025-12-22 03:18:01 - app.services.rag_service - INFO - RAG Index reloaded with 1284 chunks.
+2025-12-22 03:18:29 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:31 - app.services.rag_service - ERROR - RAG Service disabled: sentence-transformers or faiss-cpu not installed.
+2025-12-22 03:18:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:34 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:34 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:34 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:34 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:34 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:34 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:34 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:34 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:18:35 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:18:46 - app.services.rag_service - INFO - Loading RAG Model (all-MiniLM-L6-v2)...
+2025-12-22 03:18:49 - app.services.rag_service - INFO - RAG Index reloaded with 1284 chunks.
+2025-12-22 03:19:17 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:18 - app.services.rag_service - ERROR - RAG Service disabled: sentence-transformers or faiss-cpu not installed.
+2025-12-22 03:19:20 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:20 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:21 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:21 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:21 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:21 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:21 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:21 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:21 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:21 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:19:26 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:19:34 - app.services.rag_service - INFO - Loading RAG Model (all-MiniLM-L6-v2)...
+2025-12-22 03:19:37 - app.services.rag_service - INFO - RAG Index reloaded with 1284 chunks.
+2025-12-22 03:20:40 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:20:44 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:20:51 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:20:58 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:21:30 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:31 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:32 - app.services.rag_service - ERROR - RAG Service disabled: sentence-transformers or faiss-cpu not installed.
+2025-12-22 03:21:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:33 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:21:34 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:21:43 - app.services.rag_service - INFO - Loading RAG Model (all-MiniLM-L6-v2)...
+2025-12-22 03:21:46 - app.services.rag_service - INFO - RAG Index reloaded with 1284 chunks.
+2025-12-22 03:22:12 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:13 - app.services.rag_service - ERROR - RAG Service disabled: sentence-transformers or faiss-cpu not installed.
+2025-12-22 03:22:14 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:14 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:14 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:14 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:14 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:14 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:14 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:14 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:14 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:15 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:22:52 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:53 - app.services.rag_service - ERROR - RAG Service disabled: sentence-transformers or faiss-cpu not installed.
+2025-12-22 03:22:56 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:56 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:56 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:56 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:56 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:57 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:57 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:57 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:57 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:22:57 - app - WARNING - Client Error (401): Email, Teléfono o Contraseña incorrectos
+2025-12-22 03:23:02 - app - INFO - === Logging System Initialized ===
+2025-12-22 03:23:10 - app.services.rag_service - INFO - Loading RAG Model (all-MiniLM-L6-v2)...
+2025-12-22 03:23:13 - app.services.rag_service - INFO - RAG Index reloaded with 1284 chunks.

@@ -28,7 +28,9 @@ def get_salons():
             'country': salon.country or 'México',
             'start_date': salon.start_date.isoformat() if salon.start_date else None,
             'payment_date': salon.payment_date.isoformat() if salon.payment_date else None,
-            'tokens_consumed': salon.tokens_consumed,
+            'tokens_consumed': salon.tokens_consumed, # Keeping legacy field just in case
+            'user_tokens_used': user.current_month_tokens,
+            'user_tokens_limit': user.monthly_token_limit,
             'created_at': salon.created_at.isoformat()
         }
         

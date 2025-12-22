@@ -544,9 +544,21 @@
 <body>
     <div class="background-network"></div>
 
-    <a href="/mis-finanzas" class="nav-link nav-back">
+    <a href="/mis-finanzas" id="navBackBtn" class="nav-link nav-back">
         <i class="fas fa-arrow-left"></i> Volver
     </a>
+    <script>
+        // Inline check to hide Back button for Salons
+        (function () {
+            try {
+                const u = JSON.parse(localStorage.getItem('asesoriaimss_user'));
+                if (u && u.is_salon_owner) {
+                    const btn = document.getElementById('navBackBtn');
+                    if (btn) btn.style.display = 'none';
+                }
+            } catch (e) { }
+        })();
+    </script>
 
     <!-- Removed floating Asesora IA link -->
 
@@ -554,7 +566,7 @@
         <i class="fas fa-sliders-h"></i> CONTROL
     </a>
 
-    <a href="/api/mirror/admin" class="nav-link nav-admin nav-pos-admin">
+    <a href="/api/mirror/admin" id="adminBtn" class="nav-link nav-admin nav-pos-admin" style="display: none;">
         <i class="fas fa-user-shield"></i> ADMIN
     </a>
 
@@ -1202,6 +1214,27 @@
         }
 
 
+        // --- Auth Helper ---
+        function getCurrentUser() {
+            const userStr = localStorage.getItem('asesoriaimss_user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+
+        function checkAdminAccess() {
+            const user = getCurrentUser();
+            const adminBtn = document.getElementById('adminBtn');
+            console.log("Checking Admin Access for:", user);
+
+            if (user && (user.role === 'admin' || user.is_salon_owner)) {
+                if (adminBtn) {
+                    console.log("Access Granted. Showing Admin Button.");
+                    adminBtn.style.display = 'flex';
+                    // Ensure it overrides any specific display: none
+                    adminBtn.setAttribute('style', 'display: flex !important; position: absolute; top: 2rem; right: 2rem; border: 2px solid var(--primary-color); padding: 0.8rem 1.5rem; border-radius: 30px; z-index: 100; background: rgba(0, 0, 0, 0.6); color: white !important; font-weight: bold; font-family: "Orbitron", sans-serif; text-transform: uppercase;');
+                }
+            }
+        }
+
         // --- Config Polling ---
         function hexToRgb(hex) {
             // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
@@ -1215,20 +1248,25 @@
         }
 
         function pollConfig() {
-            const token = localStorage.getItem('token');
-            if (!token) return; // Wait for login or public mode?
+            const token = localStorage.getItem('asesoriaimss_token'); // Use correct key
+            if (!token) return;
 
             fetch('/api/mirror/config?t=' + new Date().getTime(), {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
                 .then(res => {
+                    if (res.status === 429) {
+                        console.warn("Rate limited, backing off polling");
+                        return null;
+                    }
                     if (res.status === 401) {
-                        console.log("Token expired or invalid");
-                        return null; // Handle logout if needed
+                        // Token bad
+                        return null;
                     }
                     return res.json();
                 })
                 .then(config => {
+                    if (!config) return;
                     const root = document.documentElement;
                     if (config.selection_thickness) {
                         root.style.setProperty('--selection-width', config.selection_thickness + 'px');
@@ -1248,9 +1286,13 @@
                 .catch(err => console.error("Poll error", err));
         }
 
-        // Poll every 2 seconds
-        setInterval(pollConfig, 2000);
-        pollConfig(); // Initial fetch
+        // Poll every 60 seconds (relaxed)
+        setInterval(pollConfig, 60000);
+        setTimeout(pollConfig, 1000); // Initial fetch delayed slightly
+
+        // Run Admin Check
+        checkAdminAccess();
+        setTimeout(checkAdminAccess, 1000);
     </script>
 </body>
 

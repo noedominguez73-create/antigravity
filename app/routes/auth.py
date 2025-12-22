@@ -141,7 +141,8 @@ def login():
             'id': user.id,
             'email': user.email,
             'full_name': user.full_name,
-            'role': user.role
+            'role': user.role,
+            'is_salon_owner': bool(user.salon_config)
         },
         'token': token
     }, 'Inicio de sesión exitoso')

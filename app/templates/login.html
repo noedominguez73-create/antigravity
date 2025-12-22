@@ -48,17 +48,21 @@
             </div>
 
             <!-- Role Selection -->
-            <div class="mb-6 bg-gray-100/50 p-1 rounded-xl flex">
+            <div class="mb-6 bg-gray-100/50 p-1 rounded-xl flex gap-1 overflow-x-auto">
                 <button type="button" id="loginUserBtn" onclick="selectLoginRole('user')"
-                    class="flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900">
+                    class="flex-1 py-2 px-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900 whitespace-nowrap">
                     Usuario
                 </button>
+                <button type="button" id="loginSalonBtn" onclick="selectLoginRole('salon')"
+                    class="flex-1 py-2 px-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900 flex items-center justify-center gap-1 whitespace-nowrap">
+                    <span>💇‍♀️</span> Salón
+                </button>
                 <button type="button" id="loginProfessionalBtn" onclick="selectLoginRole('professional')"
-                    class="flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900">
+                    class="flex-1 py-2 px-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900 whitespace-nowrap">
                     Profesional
                 </button>
                 <button type="button" id="loginStoreBtn" onclick="selectLoginRole('tienda')"
-                    class="flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900 flex items-center justify-center gap-1">
+                    class="flex-1 py-2 px-2 text-sm font-semibold rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900 flex items-center justify-center gap-1 whitespace-nowrap">
                     <span>🏪</span> Tienda
                 </button>
             </div>
@@ -152,10 +156,14 @@
 
         function selectLoginRole(role) {
             selectedRole = role;
-            const roles = ['user', 'professional', 'tienda'];
+            const roles = ['user', 'salon', 'professional', 'tienda'];
 
             roles.forEach(r => {
-                const btn = document.getElementById(r === 'tienda' ? 'loginStoreBtn' : `login${r.charAt(0).toUpperCase() + r.slice(1)}Btn`);
+                const btnId = r === 'tienda' ? 'loginStoreBtn' :
+                    r === 'salon' ? 'loginSalonBtn' :
+                        `login${r.charAt(0).toUpperCase() + r.slice(1)}Btn`;
+
+                const btn = document.getElementById(btnId);
                 if (r === role) {
                     btn.classList.add(...activeRoleClass);
                     btn.classList.remove(...inactiveRoleClass);
@@ -169,7 +177,7 @@
         // Initialize from URL or default
         const urlParams = new URLSearchParams(window.location.search);
         const roleParam = urlParams.get('role');
-        if (roleParam && ['user', 'professional', 'tienda'].includes(roleParam)) {
+        if (roleParam && ['user', 'salon', 'professional', 'tienda'].includes(roleParam)) {
             selectLoginRole(roleParam);
         } else {
             selectLoginRole('user');
@@ -179,7 +187,19 @@
         if (isAuthenticated()) {
             const currentUser = getCurrentUser();
 
-            if (roleParam && currentUser.role !== roleParam) {
+            // Allow sloppy match for salon
+            let isRoleMatch = false;
+
+            // Allow override logic where if we are expecting 'salon' and get 'user' with flag
+            if (roleParam === 'salon' && currentUser.role === 'user' && currentUser.is_salon_owner) {
+                isRoleMatch = true;
+            } else if (roleParam && currentUser.role === roleParam) {
+                isRoleMatch = true;
+            } else if (!roleParam) {
+                isRoleMatch = true; // Default to success if no param forced
+            }
+
+            if (roleParam && !isRoleMatch) {
                 logout();
                 // Toast logic ideally exists in auth.js or components.js
             } else {
@@ -191,7 +211,9 @@
                             👋
                         </div>
                         <h2 class="text-2xl font-bold text-[#0D1A3B] mb-2">¡Hola, ${currentUser.full_name || 'Usuario'}!</h2>
-                        <p class="text-gray-500 mb-8 bg-white/50 py-2 px-4 rounded-lg inline-block backdrop-blur-sm">Sesión activa como <span class="font-bold text-[#0066CC] uppercase">${currentUser.role}</span></p>
+                        <p class="text-gray-500 mb-8 bg-white/50 py-2 px-4 rounded-lg inline-block backdrop-blur-sm">
+                            Sesión activa como <span class="font-bold text-[#0066CC] uppercase">${currentUser.is_salon_owner && currentUser.role === 'user' ? 'SALÓN' : currentUser.role}</span>
+                        </p>
                         
                         <div class="space-y-3">
                             <button onclick="redirectToDashboard()" class="w-full py-3.5 bg-[#0066CC] text-white rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20 transform hover:-translate-y-1">
@@ -224,15 +246,45 @@
                     return;
                 }
 
-                if (result.user.role !== selectedRole) {
-                    showToast(`Esta cuenta es de tipo "${result.user.role}". Cambia la pestaña.`, 'error');
+                // Smart Role Validation
+                let isValidRole = false;
+                if (selectedRole === 'salon') {
+                    // Expecting a user role BUT must be salon owner
+                    if (result.user.role === 'user' && result.user.is_salon_owner) {
+                        isValidRole = true;
+                    } else if (result.user.role === 'user' && !result.user.is_salon_owner) {
+                        showToast('Esta cuenta es de Usuario normal, no de Salón.', 'warning');
+                        isValidRole = false;
+                    } else {
+                        isValidRole = false;
+                    }
+                } else {
+                    // Normal matching
+                    isValidRole = (result.user.role === selectedRole);
+
+                    // Special case: Allow salon owners to log in as users without error
+                    if (selectedRole === 'user' && result.user.role === 'user') {
+                        isValidRole = true;
+                    }
+                }
+
+                if (!isValidRole) {
+                    showToast(`Esta cuenta es de tipo "${result.user.role}". Verifica tu selección.`, 'error');
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Iniciar Sesión';
+                    // Force logout to clean state
+                    logout();
                     return;
                 }
 
                 const redirect = new URLSearchParams(window.location.search).get('redirect');
-                window.location.href = redirect || '/dashboard'; // Or appropriate dashboard
+                if (redirect) {
+                    window.location.href = redirect;
+                } else if (result.user.is_salon_owner) {
+                    window.location.href = '/mirror';
+                } else {
+                    window.location.href = '/dashboard';
+                }
             } else {
                 showToast(result.error || 'Credenciales inválidas', 'error');
                 submitBtn.disabled = false;
