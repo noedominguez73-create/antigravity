@@ -17,16 +17,20 @@ def create_app():
     from app.extensions import limiter
     limiter.init_app(app)
     
-    # Force SQLite configuration (temporary fix)
-    # Security: SECRET_KEY is mandatory
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-    if not app.config['SECRET_KEY']:
-        raise ValueError(
-            "SECRET_KEY must be set in environment variables. "
-            "Generate a secure key with: python -c 'import secrets; print(secrets.token_hex(32))'"
-        )
-    db_path = os.path.join(app.instance_path, 'asesoriaimss.db').replace('\\', '/')
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'  # Force SQLite
+    # Database Configuration
+    # Prioritize environment variable (for Postgres/Production), fallback to local SQLite
+    database_url = os.getenv('DATABASE_URL')
+    if database_url and database_url.startswith("postgres://"):
+        # Fix for SQLAlchemy requiring postgresql:// instead of postgres://
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+    if database_url:
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    else:
+        # Fallback to SQLite
+        db_path = os.path.join(app.instance_path, 'asesoriaimss.db').replace('\\', '/')
+        app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+        
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     db.init_app(app)

@@ -1,3 +1,4 @@
+
 Flask==3.0.0
 Flask-SQLAlchemy==3.1.1
 Flask-CORS==4.0.0
@@ -12,3 +13,4 @@ Pillow==10.2.0
 numpy==1.26.4
 gunicorn==21.2.0
 werkzeug==3.0.1
+SQLAlchemy==2.0.23

@@ -5942,3 +5942,14 @@ Output ONLY the modified image. Ensure seamless blending between the new hair/cl
 2025-12-22 03:23:02 - app - INFO - === Logging System Initialized ===
 2025-12-22 03:23:10 - app.services.rag_service - INFO - Loading RAG Model (all-MiniLM-L6-v2)...
 2025-12-22 03:23:13 - app.services.rag_service - INFO - RAG Index reloaded with 1284 chunks.
+2025-12-22 19:26:25 - app - INFO - === Logging System Initialized ===
+2025-12-22 19:26:27 - app.services.rag_service - ERROR - RAG Service disabled: sentence-transformers or faiss-cpu not installed.
+2025-12-22 19:26:29 - app - INFO - === Logging System Initialized ===
+2025-12-22 19:26:29 - app - INFO - === Logging System Initialized ===
+2025-12-22 19:26:29 - app - INFO - === Logging System Initialized ===
+2025-12-22 19:26:29 - app - INFO - === Logging System Initialized ===
+2025-12-22 19:26:29 - app - INFO - === Logging System Initialized ===
+2025-12-22 19:26:29 - app - INFO - === Logging System Initialized ===
+2025-12-22 19:26:29 - app - INFO - === Logging System Initialized ===
+2025-12-22 19:26:29 - app - INFO - === Logging System Initialized ===
+2025-12-22 19:26:29 - app - INFO - === Logging System Initialized ===
